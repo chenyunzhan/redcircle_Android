@@ -32,4 +32,6 @@ dependencies {
     compile name:'SMSSDKGUI-2.0.2',ext:'aar'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.loopj.android:android-async-http:1.4.9'
+
 }
