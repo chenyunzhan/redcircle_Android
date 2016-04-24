@@ -10,8 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONObject;
+
 import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
+import cloud.com.redcircle.utils.AccountUtils;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
@@ -121,20 +124,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
     private void login() {
-        showProgressBar(true, getString(R.string.login_loging));
+//        showProgressBar(true, getString(R.string.login_loging));
 
         RedCircleManager.loginWithUsername(this,
                 mPhone.getText().toString(),
                 mVerificationCode.getText().toString(),
-                new HttpRequestHandler<Integer>() {
+                new HttpRequestHandler<JSONObject>() {
+
                     @Override
-                    public void onSuccess(Integer data) {
-//                        getProfile();
+                    public void onSuccess(JSONObject data) {
+                        showProgressBar(false);
+                        AccountUtils.writeLoginMember(LoginActivity.this, data, true);
+
                     }
 
                     @Override
-                    public void onSuccess(Integer data, int totalPages, int currentPage) {
-//                        getProfile();
+                    public void onSuccess(JSONObject data, int totalPages, int currentPage) {
+
                     }
 
                     @Override

@@ -3,9 +3,13 @@ package cloud.com.redcircle.utils;
 import android.content.Context;
 
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import cloud.com.redcircle.model.PersistenceHelper;
 
 /**
  * 登录帐号管理Created by yw on 2015/5/5.
@@ -56,22 +60,24 @@ public class AccountUtils {
         return FileUtils.isExistDataCache(cxt, key_login_member);
     }
 
-//    /**
-//     * 保存登录用户资料
-//     *
-//     * @param cxt
-//     * @param profile
-//     */
-//    public static void writeLoginMember(Context cxt, ProfileModel profile, boolean broadcast) {
-//        PersistenceHelper.saveModel(cxt, profile, key_login_member);
-//
-//        //通知所有页面,登录成功,更新用户信息
-//        if(broadcast) {
-//            for (OnAccountListener listener : listeners) {
+    /**
+     * 保存登录用户资料
+     *
+     * @param cxt
+     * @param profile
+     */
+    public static void writeLoginMember(Context cxt, JSONObject profile, boolean broadcast) {
+
+        PersistenceHelper.saveObject(cxt,profile.toString(),key_login_member);
+
+
+        //通知所有页面,登录成功,更新用户信息
+        if(broadcast) {
+            for (OnAccountListener listener : listeners) {
 //                listener.onLogin(profile);
-//            }
-//        }
-//    }
+            }
+        }
+    }
 
 //    /**
 //     * 获取登录用户信息
