@@ -12,4 +12,16 @@
     <string name="tab_book">朋友</string>
     <string name="tab_me">我的</string>
 
+    <string name="me_phone">手机</string>
+    <string name="me_name">姓名</string>
+    <string name="me_sex">性别</string>
+    <string name="me_logout">退出登录</string>
+
+
+    <string name="action_fastscroll">Fast scroll</string>
+    <string name="action_addpadding">Add padding</string>
+    <string name="action_showShadow">Show shadow</string>
+    <string name="action_showHeaderAndFooter">Show Header &amp; Footer</string>
+    <string name="action_updateDataset">Update dataset</string>
+
 </resources>
