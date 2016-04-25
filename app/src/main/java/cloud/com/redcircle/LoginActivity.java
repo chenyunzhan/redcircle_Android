@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -124,7 +125,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
     private void login() {
-//        showProgressBar(true, getString(R.string.login_loging));
+        showProgressBar(true, getString(R.string.login_loging));
 
         RedCircleManager.loginWithUsername(this,
                 mPhone.getText().toString(),
@@ -135,7 +136,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onSuccess(JSONObject data) {
                         showProgressBar(false);
                         AccountUtils.writeLoginMember(LoginActivity.this, data, true);
-
+                        Intent intent = new Intent();
+                        intent.putExtra("profile", (Parcelable) data);
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }
 
                     @Override

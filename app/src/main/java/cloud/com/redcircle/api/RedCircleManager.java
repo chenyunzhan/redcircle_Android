@@ -32,8 +32,8 @@ public class RedCircleManager {
     private static Application mApp = Application.getInstance();
 
     private static AsyncHttpClient sClient = null;
-//    public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-    public static final String HTTP_BASE_URL = "http://192.168.1.101:8080";
+    public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
+//    public static final String HTTP_BASE_URL = "http://192.168.1.101:8080";
 
     protected static final String ACTIVITY_TAG="MyAndroid";
 

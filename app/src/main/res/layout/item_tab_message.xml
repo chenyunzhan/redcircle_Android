@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cloud.com.redcircle.ui.widget.ChangeColorIconWithText
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_indicator_discovery"
+    android:layout_width="0dp"
+    android:layout_height="fill_parent"
+    android:padding="8dp"
+    app:tx_icon="@drawable/logooo"
+    app:tx_text="@string/tab_message"
+    app:tx_text_size="12sp"
+    app:tx_color="@color/colorPrimary" />

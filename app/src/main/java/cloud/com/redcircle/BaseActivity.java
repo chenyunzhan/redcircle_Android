@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import org.json.JSONObject;
+
 import cloud.com.redcircle.utils.AccountUtils;
 
 /**
@@ -14,6 +16,7 @@ public class BaseActivity extends AppCompatActivity implements AccountUtils.OnAc
 
     protected boolean mIsLogin;
     private ProgressDialog mProgressDialog;
+    protected JSONObject mUser;
 
 
     @Override
@@ -38,6 +41,12 @@ public class BaseActivity extends AppCompatActivity implements AccountUtils.OnAc
         mIsLogin = false;
     }
 
+    @Override
+    public void onLogin(JSONObject member) {
+        mIsLogin = true;
+        mUser = member;
+
+    }
 
 
     public void showProgressBar(boolean show) {

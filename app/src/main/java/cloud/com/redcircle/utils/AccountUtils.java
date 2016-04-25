@@ -27,7 +27,7 @@ public class AccountUtils {
     public static interface OnAccountListener {
         abstract public void onLogout();
 
-//        abstract public void onLogin(ProfileModel member);
+        abstract public void onLogin(JSONObject member);
     }
 
     private static HashSet<OnAccountListener> listeners = new HashSet<OnAccountListener>();
