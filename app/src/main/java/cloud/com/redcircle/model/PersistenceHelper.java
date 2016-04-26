@@ -3,6 +3,8 @@ package cloud.com.redcircle.model;
 import android.content.Context;
 
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,6 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import cloud.com.redcircle.utils.FileUtils;
 
 /**
  * Created by yw on 2015/5/4.
@@ -52,42 +56,42 @@ public class PersistenceHelper {
 //        return saveObject(cxt, objs, file);
 //    }
 
-//    public static Serializable loadObject(Context cxt, String file) {
-//        if (!FileUtils.isExistDataCache(cxt, file))
-//            return null;
-//
-//        FileInputStream fis = null;
-//        ObjectInputStream ois = null;
-//        try {
-//            fis = cxt.openFileInput(file);
-//            ois = new ObjectInputStream(fis);
-//            Object obj = ois.readObject();
-//            return (Serializable) obj;
-//        } catch (FileNotFoundException e) {
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            //反序列化失败 - 删除缓存文件
-//            if (e instanceof InvalidClassException) {
-//                File data = cxt.getFileStreamPath(file);
-//                data.delete();
-//            }
-//        } finally {
-//            try {
-//                ois.close();
-//            } catch (Exception e) {
-//            }
-//            try {
-//                fis.close();
-//            } catch (Exception e) {
-//            }
-//        }
-//
-//        return null;
-//    }
-//
-//    public static <T extends V2EXModel> T loadModel(Context cxt, String file) {
-//        return (T) loadObject(cxt, file);
-//    }
+    public static Serializable loadObject(Context cxt, String file) {
+        if (!FileUtils.isExistDataCache(cxt, file))
+            return null;
+
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        try {
+            fis = cxt.openFileInput(file);
+            ois = new ObjectInputStream(fis);
+            Object obj = ois.readObject();
+            return (Serializable) obj;
+        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            //反序列化失败 - 删除缓存文件
+            if (e instanceof InvalidClassException) {
+                File data = cxt.getFileStreamPath(file);
+                data.delete();
+            }
+        } finally {
+            try {
+                ois.close();
+            } catch (Exception e) {
+            }
+            try {
+                fis.close();
+            } catch (Exception e) {
+            }
+        }
+
+        return null;
+    }
+
+    public static <T extends String> T loadModel(Context cxt, String file) {
+        return (T) loadObject(cxt, file);
+    }
 //
 //    public static <T extends V2EXModel> ArrayList<T> loadModelList(Context cxt, String file) {
 //        return (ArrayList<T>) loadObject(cxt, file);

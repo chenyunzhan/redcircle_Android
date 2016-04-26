@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/IMKit/IMKit.iml" filepath="$PROJECT_DIR$/IMKit/IMKit.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/redcircle.iml" filepath="$PROJECT_DIR$/redcircle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/redcircle_Android.iml" filepath="$PROJECT_DIR$/redcircle_Android.iml" />
     </modules>
   </component>
 </project>

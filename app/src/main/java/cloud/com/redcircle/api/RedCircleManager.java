@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -33,13 +34,15 @@ public class RedCircleManager {
 
     private static AsyncHttpClient sClient = null;
     public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-//    public static final String HTTP_BASE_URL = "http://192.168.1.101:8080";
+//    public static final String HTTP_BASE_URL = "http://192.168.1.102:8080";
 
     protected static final String ACTIVITY_TAG="MyAndroid";
 
 
 
     public static final String LOGIN_IN_URL = HTTP_BASE_URL + "/login";
+
+    public static final String FRIENDS_URL = HTTP_BASE_URL + "/getFriends";
 
 
     /**
@@ -54,11 +57,7 @@ public class RedCircleManager {
                                          final HttpRequestHandler<JSONObject> handler) {
 
         AsyncHttpClient client = new AsyncHttpClient();
-
         StringEntity entity = new StringEntity("{\"mePhone\":\"" + phone +"\"}","UTF-8");
-
-        Map paramMap = new HashMap();
-        paramMap.put("mePhone",phone);
 
         client.post(cxt,LOGIN_IN_URL,entity,"application/json",new JsonHttpResponseHandler() {
 
@@ -81,6 +80,31 @@ public class RedCircleManager {
 
 
 
+
+    }
+
+
+
+    //获取所有节点
+    public static void getAllFriends(Context ctx, String mePhone,
+                                   final HttpRequestHandler<JSONArray> handler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        RequestParams params = new RequestParams();
+        params.put("mePhone", mePhone);
+
+        client.get(ctx,FRIENDS_URL,params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                SafeHandler.onSuccess(handler,response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
 
     }
 

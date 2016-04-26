@@ -3,6 +3,7 @@ package cloud.com.redcircle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.widget.TabHost;
@@ -14,6 +15,8 @@ import cloud.com.redcircle.ui.ButtonAwesome;
 import cloud.com.redcircle.ui.fragment.BookFragment;
 import cloud.com.redcircle.ui.fragment.MeFragment;
 import cloud.com.redcircle.ui.fragment.MessageFragment;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 
 public class MainActivity extends BaseActivity implements TabHost.OnTabChangeListener {
 
@@ -28,6 +31,7 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initTabHost();
+        initRongCloud();
 
     }
 
@@ -89,6 +93,32 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
     @Override
     public void onTabChanged(String tabId) {
         setTitle(tabId);
+    }
+
+
+    private void initRongCloud() {
+        String Token = "d6bCQsXiupB/4OyGkh+TOrI6ZiT8q7s0UEaMPWY0lMxmHdi1v/AAJxOma4aYXyaivfPIJjNHdE+FMH9kV/Jrxg==";//test
+        /**
+         * IMKit SDK调用第二步
+         *
+         * 建立与服务器的连接
+         *
+         */
+        RongIM.connect(Token, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+                //Connect Token 失效的状态处理，需要重新获取 Token
+            }
+            @Override
+            public void onSuccess(String userId) {
+                Log.e("MainActivity", "——onSuccess—-" + userId);
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.e("MainActivity", "——onError—-" + errorCode);
+            }
+        });
     }
 
 

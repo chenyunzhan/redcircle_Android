@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/zhan/Desktop/cloud/redcircle/Android/redcircle_Android/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xxhdpi-v4/rc_ic_bubble_white.9.png",
+        "source": "/Users/zhan/Desktop/cloud/redcircle/Android/redcircle_Android/IMKit/build/intermediates/bundles/debug/res/drawable-xxhdpi-v4/rc_ic_bubble_white.9.png"
+    },
+    {
+        "merged": "/Users/zhan/Desktop/cloud/redcircle/Android/redcircle_Android/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xxhdpi-v4/rc_group_default_portrait.png",
+        "source": "/Users/zhan/Desktop/cloud/redcircle/Android/redcircle_Android/IMKit/build/intermediates/bundles/debug/res/drawable-xxhdpi-v4/rc_group_default_portrait.png"
+    },
+    {
+        "merged": "/Users/zhan/Desktop/cloud/redcircle/Android/redcircle_Android/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xxhdpi-v4/rc_default_portrait.png",
+        "source": "/Users/zhan/Desktop/cloud/redcircle/Android/redcircle_Android/IMKit/build/intermediates/bundles/debug/res/drawable-xxhdpi-v4/rc_default_portrait.png"
+    },
+    {
+        "merged": "/Users/zhan/Desktop/cloud/redcircle/Android/redcircle_Android/IMKit/build/intermediates/res/merged/androidTest/debug/drawable-xxhdpi-v4/rc_ic_warning.png",
+        "source": "/Users/zhan/Desktop/cloud/redcircle/Android/redcircle_Android/IMKit/build/intermediates/bundles/debug/res/drawable-xxhdpi-v4/rc_ic_warning.png"
+    }
+]

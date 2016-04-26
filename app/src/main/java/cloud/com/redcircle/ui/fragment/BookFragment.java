@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,15 +20,37 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Locale;
 
 import cloud.com.redcircle.R;
+import cloud.com.redcircle.api.HttpRequestHandler;
+import cloud.com.redcircle.api.RedCircleManager;
 import cloud.com.redcircle.ui.PinnedSectionListView;
+import cloud.com.redcircle.utils.AccountUtils;
 
 /**
  * Created by zhan on 16/4/25.
  */
-public class BookFragment extends ListFragment implements View.OnClickListener {
+public class BookFragment extends ListFragment implements View.OnClickListener, AccountUtils.OnAccountListener {
+
+    protected JSONObject mUser;
+    protected JSONArray mData;
+    protected boolean mIsLogin;
+
+    @Override
+    public void onLogout() {
+
+    }
+
+    @Override
+    public void onLogin(JSONObject member) {
+
+    }
 
     static class SimpleAdapter extends ArrayAdapter<Item> implements PinnedSectionListView.PinnedSectionListAdapter {
 
@@ -37,7 +60,48 @@ public class BookFragment extends ListFragment implements View.OnClickListener {
 
         public SimpleAdapter(Context context, int resource, int textViewResourceId) {
             super(context, resource, textViewResourceId);
-            generateDataset('A', 'Z', false);
+            generateDataset(new JSONArray(), false);
+
+        }
+
+        public void generateDataset(JSONArray data, boolean clear)  {
+            if (clear) clear();
+
+
+            try {
+                final int  sectionsNumber = data.length();
+
+                int sectionPosition = 0, listPosition = 0;
+                prepareSections(sectionsNumber);
+                for (char i=0; i<sectionsNumber; i++) {
+                    JSONObject ffriends = data.getJSONObject(i);
+                    JSONObject friend = ffriends.getJSONObject("friend");
+                    Item section = new Item(Item.SECTION, friend.getString("friendPhone"));
+                    section.sectionPosition = sectionPosition;
+                    section.listPosition = listPosition++;
+                    onSectionAdded(section, sectionPosition);
+                    add(section);
+
+                    JSONArray friends = ffriends.getJSONArray("ffriend");
+                    final int itemsNumber = friends.length();
+                    for (int j=0;j<itemsNumber;j++) {
+                        JSONObject ffriend = friends.getJSONObject(j);
+                        Item item = new Item(Item.ITEM, ffriend.getString("mePhone"));
+                        item.sectionPosition = sectionPosition;
+                        item.listPosition = listPosition++;
+                        add(item);
+                    }
+
+                    sectionPosition++;
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+
         }
 
         public void generateDataset(char from, char to, boolean clear) {
@@ -117,7 +181,7 @@ public class BookFragment extends ListFragment implements View.OnClickListener {
             return sections;
         }
 
-        @Override public int getPositionForSection(int section) {
+            @Override public int getPositionForSection(int section) {
             if (section >= sections.length) {
                 section = sections.length - 1;
             }
@@ -161,26 +225,22 @@ public class BookFragment extends ListFragment implements View.OnClickListener {
     private boolean isShadowVisible = true;
     private int mDatasetUpdateCount;
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        if (savedInstanceState != null) {
-//            isFastScroll = savedInstanceState.getBoolean("isFastScroll");
-//            addPadding = savedInstanceState.getBoolean("addPadding");
-//            isShadowVisible = savedInstanceState.getBoolean("isShadowVisible");
-//            hasHeaderAndFooter = savedInstanceState.getBoolean("hasHeaderAndFooter");
-//        }
-//        initializeHeaderAndFooter();
-//        initializeAdapter();
-//        initializePadding();
-//    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mIsLogin = AccountUtils.isLogined(getActivity());
+        if (mIsLogin) {
+            mUser = AccountUtils.readLoginMember(getActivity());
+        }
+        AccountUtils.registerAccountListener(this);
+        setHasOptionsMenu(true);
+
+
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -191,27 +251,38 @@ public class BookFragment extends ListFragment implements View.OnClickListener {
             isShadowVisible = savedInstanceState.getBoolean("isShadowVisible");
             hasHeaderAndFooter = savedInstanceState.getBoolean("hasHeaderAndFooter");
         }
+
+
         return rootView;
 
+
+
+
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initializeHeaderAndFooter();
-        initializeAdapter();
-        initializePadding();
+
+
+        SimpleAdapter adapter = (SimpleAdapter) getListAdapter();
+
+        if (adapter == null) {
+            initializeHeaderAndFooter();
+            initializeAdapter();
+            initializePadding();
+            getFriends();
+        }
+
     }
 
-    //    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putBoolean("isFastScroll", isFastScroll);
-//        outState.putBoolean("addPadding", addPadding);
-//        outState.putBoolean("isShadowVisible", isShadowVisible);
-//        outState.putBoolean("hasHeaderAndFooter", hasHeaderAndFooter);
-//    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -224,6 +295,8 @@ public class BookFragment extends ListFragment implements View.OnClickListener {
     }
 
 
+
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Item item = (Item) getListView().getAdapter().getItem(position);
@@ -234,22 +307,11 @@ public class BookFragment extends ListFragment implements View.OnClickListener {
         }
     }
 
-
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        menu.getItem(0).setChecked(isFastScroll);
-//        menu.getItem(1).setChecked(addPadding);
-//        menu.getItem(2).setChecked(isShadowVisible);
-//        return true;
-//    }
-
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.main,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
         menu.getItem(0).setChecked(isFastScroll);
         menu.getItem(1).setChecked(addPadding);
         menu.getItem(2).setChecked(isShadowVisible);
@@ -297,6 +359,12 @@ public class BookFragment extends ListFragment implements View.OnClickListener {
         adapter.notifyDataSetChanged();
     }
 
+    private void updateDataset(JSONArray data) {
+        SimpleAdapter adapter = (SimpleAdapter) getListAdapter();
+        adapter.generateDataset(data,true);
+        adapter.notifyDataSetChanged();
+    }
+
     private void initializePadding() {
         float density = getResources().getDisplayMetrics().density;
         int padding = addPadding ? (int) (16 * density) : 0;
@@ -337,9 +405,37 @@ public class BookFragment extends ListFragment implements View.OnClickListener {
         }
     }
 
-    @Override
+        @Override
     public void onClick(View v) {
         Toast.makeText(this.getActivity(), "Item: " + v.getTag() , Toast.LENGTH_SHORT).show();
+    }
+
+    private void getFriends() {
+        String mePhone = null;
+        try {
+            mePhone = mUser.getString("mePhone");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        RedCircleManager.getAllFriends(this.getActivity(), mePhone, new HttpRequestHandler<JSONArray>() {
+
+            @Override
+            public void onSuccess(JSONArray data) {
+                mData = data;
+                updateDataset(data);
+            }
+
+            @Override
+            public void onSuccess(JSONArray data, int totalPages, int currentPage) {
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        });
     }
 
 }

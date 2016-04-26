@@ -3,6 +3,9 @@ package cloud.com.redcircle.ui.fragment;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -27,4 +30,6 @@ public class MessageFragment extends BaseFragment {
 //        mEmptyText = (TextView) rootView.findViewById(R.id.empty_layout);
         return rootView;
     }
+
+
 }

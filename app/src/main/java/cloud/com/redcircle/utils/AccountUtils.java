@@ -3,6 +3,7 @@ package cloud.com.redcircle.utils;
 import android.content.Context;
 
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -79,15 +80,23 @@ public class AccountUtils {
         }
     }
 
-//    /**
-//     * 获取登录用户信息
-//     *
-//     * @param cxt
-//     * @return
-//     */
-//    public static ProfileModel readLoginMember(Context cxt) {
-//        return PersistenceHelper.loadModel(cxt, key_login_member);
-//    }
+    /**
+     * 获取登录用户信息
+     *
+     * @param cxt
+     * @return
+     */
+    public static JSONObject readLoginMember(Context cxt) {
+
+        String userStr = PersistenceHelper.loadModel(cxt, key_login_member);
+        JSONObject mUser = null;
+        try {
+            mUser = new JSONObject(userStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return mUser;
+    }
 
     /**
      * 删除登录用户资料
