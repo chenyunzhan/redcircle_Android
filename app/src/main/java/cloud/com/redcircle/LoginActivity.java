@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import cloud.com.redcircle.api.HttpRequestHandler;
@@ -136,10 +137,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onSuccess(JSONObject data) {
                         showProgressBar(false);
                         AccountUtils.writeLoginMember(LoginActivity.this, data, true);
-                        Intent intent = new Intent();
-                        intent.putExtra("profile", (Parcelable) data);
-                        setResult(RESULT_OK, intent);
-                        finish();
+//                        Intent intent = new Intent();
+//                        intent.putExtra("profile", (Parcelable) data);
+//                        setResult(RESULT_OK, intent);
+//                        finish();
+                        getRongCloudToken();
                     }
 
                     @Override
@@ -153,6 +155,34 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         showProgressBar(false);
                     }
                 });
+    }
+
+
+    private void getRongCloudToken() {
+        try {
+            String mePhone = mUser.getString("mePhone");
+            String name = mUser.getString("name");
+
+            RedCircleManager.getRongCloudToken(this, mePhone, name, new HttpRequestHandler<JSONObject>() {
+                @Override
+                public void onSuccess(JSONObject data) {
+                    AccountUtils.writeRongCloudToken(LoginActivity.this,data);
+                }
+
+                @Override
+                public void onSuccess(JSONObject data, int totalPages, int currentPage) {
+
+                }
+
+                @Override
+                public void onFailure(String error) {
+
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

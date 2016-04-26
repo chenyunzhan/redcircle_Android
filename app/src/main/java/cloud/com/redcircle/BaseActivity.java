@@ -22,6 +22,8 @@ public class BaseActivity extends AppCompatActivity implements AccountUtils.OnAc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        AccountUtils.removeAll(this);
+
         mIsLogin = AccountUtils.isLogined(this);
         if (mIsLogin) {
 //            mLoginProfile = AccountUtils.readLoginMember(this);

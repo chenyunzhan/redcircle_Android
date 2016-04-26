@@ -32,6 +32,7 @@ import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
 import cloud.com.redcircle.ui.PinnedSectionListView;
 import cloud.com.redcircle.utils.AccountUtils;
+import io.rong.imkit.RongIM;
 
 /**
  * Created by zhan on 16/4/25.
@@ -301,6 +302,11 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
     public void onListItemClick(ListView l, View v, int position, long id) {
         Item item = (Item) getListView().getAdapter().getItem(position);
         if (item != null) {
+
+            //启动会话界面
+            if (RongIM.getInstance() != null)
+                RongIM.getInstance().startPrivateChat(this.getActivity(), item.text, item.text);
+
             Toast.makeText(this.getActivity(), "Item " + position + ": " + item.text, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this.getActivity(), "Item " + position, Toast.LENGTH_SHORT).show();

@@ -21,6 +21,7 @@ public class AccountUtils {
 
     private static final String key_login_member = "logined@profile";
     private static final String key_fav_nodes = "logined@fav_nodes";
+    private static final String key_rong_cloud_token = "logined@rong_cloud_tokne";
 
     /**
      * 帐号登陆登出监听接口
@@ -75,9 +76,22 @@ public class AccountUtils {
         //通知所有页面,登录成功,更新用户信息
         if(broadcast) {
             for (OnAccountListener listener : listeners) {
-//                listener.onLogin(profile);
+                listener.onLogin(profile);
             }
         }
+    }
+
+
+    /**
+     * 保存融云token
+     *
+     * @param cxt
+     * @param profile
+     */
+    public static void writeRongCloudToken(Context cxt, JSONObject profile) {
+
+        PersistenceHelper.saveObject(cxt,profile.toString(),key_rong_cloud_token);
+
     }
 
     /**
@@ -97,6 +111,26 @@ public class AccountUtils {
         }
         return mUser;
     }
+
+
+    /**
+     * 获取token
+     *
+     * @param cxt
+     * @return
+     */
+    public static JSONObject readRongCloudToken(Context cxt) {
+
+        String userStr = PersistenceHelper.loadModel(cxt, key_rong_cloud_token);
+        JSONObject rongCloudToke = null;
+        try {
+            rongCloudToke = new JSONObject(userStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return rongCloudToke;
+    }
+
 
     /**
      * 删除登录用户资料
@@ -143,6 +177,16 @@ public class AccountUtils {
     }
 
     /**
+     * 删除节点信息
+     *
+     * @param cxt
+     */
+    public static void removeRongCloudToken(Context cxt) {
+        File data = cxt.getFileStreamPath(key_rong_cloud_token);
+        data.delete();
+    }
+
+    /**
      * 清除所有用户相关资料
      *
      * @param cxt
@@ -150,6 +194,7 @@ public class AccountUtils {
     public static void removeAll(Context cxt) {
         removeLoginMember(cxt);
         removeFavNodes(cxt);
+
 
         //通知所有页面退出登录了,清除登录痕迹
         for (OnAccountListener listener : listeners) {

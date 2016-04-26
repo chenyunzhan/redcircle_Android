@@ -8,6 +8,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.widget.TabHost;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,7 @@ import cloud.com.redcircle.ui.ButtonAwesome;
 import cloud.com.redcircle.ui.fragment.BookFragment;
 import cloud.com.redcircle.ui.fragment.MeFragment;
 import cloud.com.redcircle.ui.fragment.MessageFragment;
+import cloud.com.redcircle.utils.AccountUtils;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
@@ -29,9 +33,12 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initTabHost();
-        initRongCloud();
+        if (mIsLogin) {
+            setContentView(R.layout.activity_main);
+            initTabHost();
+            initRongCloud();
+        }
+
 
     }
 
@@ -97,7 +104,16 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
 
 
     private void initRongCloud() {
-        String Token = "d6bCQsXiupB/4OyGkh+TOrI6ZiT8q7s0UEaMPWY0lMxmHdi1v/AAJxOma4aYXyaivfPIJjNHdE+FMH9kV/Jrxg==";//test
+
+        JSONObject rongCloudToken = AccountUtils.readRongCloudToken(this);
+
+
+        String Token = null;
+        try {
+            Token = rongCloudToken.getString("token");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         /**
          * IMKit SDK调用第二步
          *

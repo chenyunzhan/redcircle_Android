@@ -12,6 +12,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -44,6 +45,9 @@ public class RedCircleManager {
 
     public static final String FRIENDS_URL = HTTP_BASE_URL + "/getFriends";
 
+    public static final String RONG_CLOUD_KEY_URL = HTTP_BASE_URL + "/getRongCloudToken";
+
+
 
     /**
      * 使用用户名密码登录
@@ -67,6 +71,8 @@ public class RedCircleManager {
                 super.onSuccess(statusCode, headers, response);
                 Log.e(RedCircleManager.ACTIVITY_TAG,"1");
                 SafeHandler.onSuccess(handler,response);
+
+
             }
 
             @Override
@@ -85,7 +91,7 @@ public class RedCircleManager {
 
 
 
-    //获取所有节点
+    //获取所有朋友
     public static void getAllFriends(Context ctx, String mePhone,
                                    final HttpRequestHandler<JSONArray> handler) {
         AsyncHttpClient client = new AsyncHttpClient();
@@ -102,6 +108,42 @@ public class RedCircleManager {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+
+    }
+
+
+    //获取融云token
+    public static void getRongCloudToken(Context ctx, String mePhone, String name,
+                                     final HttpRequestHandler<JSONObject> handler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        RequestParams params = new RequestParams();
+        params.put("mePhone", mePhone);
+        params.put("name",name);
+
+        client.get(ctx,RONG_CLOUD_KEY_URL,params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+
+                try {
+                    int code = response.getInt("code");
+                    JSONObject result = response.getJSONObject("result");
+                    if (code == 200) {
+                        SafeHandler.onSuccess(handler,result);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
