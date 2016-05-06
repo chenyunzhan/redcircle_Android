@@ -1,5 +1,6 @@
 package cloud.com.redcircle;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -127,6 +128,9 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
             }
             @Override
             public void onSuccess(String userId) {
+                Fragment messageFragment = getSupportFragmentManager().findFragmentByTag("消息");
+                messageFragment.getActivity().recreate();
+
                 Log.e("MainActivity", "——onSuccess—-" + userId);
             }
 

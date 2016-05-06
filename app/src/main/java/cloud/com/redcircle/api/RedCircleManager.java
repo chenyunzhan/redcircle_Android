@@ -1,6 +1,7 @@
 package cloud.com.redcircle.api;
 
 import android.content.Context;
+import android.net.Uri;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 
@@ -9,13 +10,17 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.ResponseHandlerInterface;
+import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +29,10 @@ import java.util.regex.Pattern;
 
 import cloud.com.redcircle.Application;
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.entity.StringEntity;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * Created by zhan on 16/4/22.
@@ -47,6 +55,7 @@ public class RedCircleManager {
 
     public static final String RONG_CLOUD_KEY_URL = HTTP_BASE_URL + "/getRongCloudToken";
 
+    private static UserInfo userInfo;
 
 
     /**
@@ -89,6 +98,57 @@ public class RedCircleManager {
 
     }
 
+
+    /**
+     *
+     * @param userId
+     * @return
+     */
+    public static UserInfo getUserInfoById(Context ctx, String userId) {
+//
+//        StringEntity entity = new StringEntity("{\"mePhone\":\"" + userId +"\"}","UTF-8");
+//
+//        SyncHttpClient client = new SyncHttpClient();
+//
+//
+//        client.post(ctx,LOGIN_IN_URL,entity,"application/json", new JsonHttpResponseHandler(){
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                super.onSuccess(statusCode, headers, response);
+//                try {
+//                    RedCircleManager.userInfo = new UserInfo(response.getString("mePhone"),response.getString("name"), Uri.parse(response.getString("")));
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                super.onFailure(statusCode, headers, throwable, errorResponse);
+//            }
+//        });
+//
+//
+//
+//        return RedCircleManager.userInfo;
+
+
+        String result = HttpUtils.sendPostMessage(null,"{\"mePhone\":\"" + userId +"\"}","UTF-8");
+
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+
+            UserInfo userInfo = new UserInfo(jsonObject.getString("mePhone"),jsonObject.getString("name"),Uri.parse(""));
+
+            return userInfo;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
 
 
     //获取所有朋友

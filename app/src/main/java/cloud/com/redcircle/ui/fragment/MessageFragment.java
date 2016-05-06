@@ -12,18 +12,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import cloud.com.redcircle.R;
+import cloud.com.redcircle.api.HttpRequestHandler;
+import cloud.com.redcircle.api.RedCircleManager;
+import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * Created by zhan on 16/4/25.
  */
-public class MessageFragment extends BaseFragment {
+public class MessageFragment extends BaseFragment implements RongIM.UserInfoProvider{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RongIM.setUserInfoProvider(this,true);
     }
 
     @Override
@@ -49,4 +56,8 @@ public class MessageFragment extends BaseFragment {
     }
 
 
+    @Override
+    public UserInfo getUserInfo(String s) {
+        return RedCircleManager.getUserInfoById(this.getActivity(),s);
+    }
 }
