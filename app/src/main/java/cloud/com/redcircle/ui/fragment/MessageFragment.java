@@ -60,4 +60,7 @@ public class MessageFragment extends BaseFragment implements RongIM.UserInfoProv
     public UserInfo getUserInfo(String s) {
         return RedCircleManager.getUserInfoById(this.getActivity(),s);
     }
+
+
+
 }

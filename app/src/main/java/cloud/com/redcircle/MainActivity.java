@@ -129,7 +129,9 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
             @Override
             public void onSuccess(String userId) {
                 Fragment messageFragment = getSupportFragmentManager().findFragmentByTag("消息");
-                messageFragment.getActivity().recreate();
+                if (messageFragment != null && userId != null) {
+                    messageFragment.getActivity().recreate();
+                }
 
                 Log.e("MainActivity", "——onSuccess—-" + userId);
             }
