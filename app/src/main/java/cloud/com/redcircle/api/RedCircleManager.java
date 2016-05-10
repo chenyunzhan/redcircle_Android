@@ -297,4 +297,15 @@ public class RedCircleManager {
         return sClient;
     }
 
+
+    /**
+     * 退出登录
+     *
+     * @param context
+     */
+    public static void logout(Context context) {
+        PersistentCookieStore cookieStore = new PersistentCookieStore(context);
+        cookieStore.clear();
+    }
+
 }

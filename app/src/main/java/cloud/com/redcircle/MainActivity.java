@@ -36,8 +36,8 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         super.onCreate(savedInstanceState);
         if (mIsLogin) {
             setContentView(R.layout.activity_main);
-            initTabHost();
             initRongCloud();
+            initTabHost();
         }
 
 
@@ -128,10 +128,9 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
             }
             @Override
             public void onSuccess(String userId) {
-                Fragment messageFragment = getSupportFragmentManager().findFragmentByTag("消息");
-                if (messageFragment != null && userId != null) {
-                    messageFragment.getActivity().recreate();
-                }
+
+                mTabHost.onTabChanged("朋友");
+                mTabHost.onTabChanged("消息");
 
                 Log.e("MainActivity", "——onSuccess—-" + userId);
             }

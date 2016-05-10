@@ -49,6 +49,8 @@ public class MessageFragment extends BaseFragment implements RongIM.UserInfoProv
         fragment.setUri(uri);
 
 
+
+
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.rong_content, fragment);
         transaction.commit();

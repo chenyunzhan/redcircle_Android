@@ -8,4 +8,10 @@
     <color name="green_light">#ff99cc00</color>
     <color name="orange_light">#ffffbb33</color>
     <color name="blue_light">#ff33b5e5</color>
+
+
+    <color name="common_item_click">#ffd6f0fa</color>
+    <color name="bg_f9">#fff9f9f9</color>
+
+    <color name="gray_b2">#ffb2b2b2</color>
 </resources>

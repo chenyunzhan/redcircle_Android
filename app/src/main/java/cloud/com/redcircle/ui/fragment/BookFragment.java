@@ -77,7 +77,13 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
                 for (char i=0; i<sectionsNumber; i++) {
                     JSONObject ffriends = data.getJSONObject(i);
                     JSONObject friend = ffriends.getJSONObject("friend");
-                    Item section = new Item(Item.SECTION, friend.getString("friendPhone"));
+                    String sectionTitle = null;
+                    if (friend.getString("name").length()> 0) {
+                        sectionTitle = friend.getString("name") + "的朋友圈";
+                    } else {
+                        sectionTitle = friend.getString("friendPhone") + "的朋友圈";
+                    }
+                    Item section = new Item(Item.SECTION, sectionTitle);
                     section.sectionPosition = sectionPosition;
                     section.listPosition = listPosition++;
                     onSectionAdded(section, sectionPosition);
@@ -87,7 +93,13 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
                     final int itemsNumber = friends.length();
                     for (int j=0;j<itemsNumber;j++) {
                         JSONObject ffriend = friends.getJSONObject(j);
-                        Item item = new Item(Item.ITEM, ffriend.getString("mePhone"));
+                        String itemTitle = null;
+                        if (ffriend.getString("name").length()> 0) {
+                            itemTitle = ffriend.getString("name");
+                        } else {
+                            itemTitle = ffriend.getString("mePhone");
+                        }
+                        Item item = new Item(Item.ITEM, itemTitle);
                         item.sectionPosition = sectionPosition;
                         item.listPosition = listPosition++;
                         add(item);
@@ -143,6 +155,7 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
             if (item.type == Item.SECTION) {
                 //view.setOnClickListener(PinnedSectionListActivity.this);
                 view.setBackgroundColor(parent.getResources().getColor(COLORS[item.sectionPosition % COLORS.length]));
+//                view.setBackgroundColor(Color.GRAY);
             }
             return view;
         }

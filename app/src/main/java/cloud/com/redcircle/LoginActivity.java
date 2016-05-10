@@ -35,6 +35,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private EditText mVerificationCode;
     private EditText mPhone;
     private Button mLogin;
+    private Button mRegister;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,8 +46,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mPhone = (EditText) findViewById(R.id.login_phone_edit);
         mLogin = (Button) findViewById(R.id.login_login_btn);
         mVerificationCode = (EditText) findViewById(R.id.login_verificationCode_edit);
+        mRegister = (Button) findViewById(R.id.user_register_btn);
+
+
+
         mVerificationCodeButton.setOnClickListener(this);
         mLogin.setOnClickListener(this);
+        mRegister.setOnClickListener(this);
 
 
         initSDK();
@@ -68,6 +74,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (mPhone.getText().length() > 0 && mVerificationCode.getText().length() > 0) {
                     SMSSDK.submitVerificationCode("86",mPhone.getText().toString(),mVerificationCode.getText().toString());
                 }
+                break;
+            case R.id.user_register_btn:
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
         }
 
     }
@@ -142,6 +152,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 //                        setResult(RESULT_OK, intent);
 //                        finish();
                         getRongCloudToken();
+
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
 
                     @Override

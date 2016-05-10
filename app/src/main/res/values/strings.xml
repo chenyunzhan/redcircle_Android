@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">redcircle</string>
     <string name="title_activity_login">登录</string>
+    <string name="title_activity_register">注册</string>
 
     <string name="login_loging">登录中...</string>
     <string name="error_network_disconnect">网络不可达,请开启Wifi或者移动数据网络</string>
@@ -23,5 +24,14 @@
     <string name="action_showShadow">Show shadow</string>
     <string name="action_showHeaderAndFooter">Show Header &amp; Footer</string>
     <string name="action_updateDataset">Update dataset</string>
+
+
+    <string name="settings_dialog_hint">提示</string>
+    <string name="settings_logout_or_not">确定退出登录？</string>
+    <string name="title_confirm_yes">确定</string>
+    <string name="title_confirm_cancel">取消</string>
+
+
+    <string name="next_step">下一步</string>
 
 </resources>
