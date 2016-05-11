@@ -14,6 +14,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -30,6 +37,10 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
     private Button mVerificationCodeButton2;
     private EditText mVerificationCode2;
     private EditText mPhone2;
+
+
+    private ArrayList<JSONObject> mFriendsArray;
+    private JSONObject meInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +60,15 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
         mVerificationCodeButton1 = (Button) findViewById(R.id.register_friend_verificationCode_btn1);
         mVerificationCodeButton2 = (Button) findViewById(R.id.register_friend_verificationCode_btn2);
 
+        mFriendsArray = new ArrayList<JSONObject>();
+
+        Bundle extras = getIntent().getExtras();
+        String meInfoStr = extras.getString("meInfo");
+        try {
+            meInfo = new JSONObject(meInfoStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         mVerificationCodeButton1.setOnClickListener(this);
         mVerificationCodeButton2.setOnClickListener(this);
@@ -78,9 +98,9 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
                 if (mPhone1.getText().length() > 0 && mVerificationCode1.getText().length() > 0) {
                     SMSSDK.submitVerificationCode("86",mPhone1.getText().toString(),mVerificationCode1.getText().toString());
                 }
-                if (mPhone2.getText().length() > 0 && mVerificationCode2.getText().length() > 0) {
-                    SMSSDK.submitVerificationCode("86",mPhone2.getText().toString(),mVerificationCode2.getText().toString());
-                }
+//                if (mPhone2.getText().length() > 0 && mVerificationCode2.getText().length() > 0) {
+//                    SMSSDK.submitVerificationCode("86",mPhone2.getText().toString(),mVerificationCode2.getText().toString());
+//                }
                 break;
 
 
@@ -147,7 +167,51 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
         public void handleMessage(Message msg) {
             if (msg.arg2 == SMSSDK.RESULT_COMPLETE) {
                 if (msg.arg1 == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-//                    RedCircleManager
+                    try {
+                        HashMap map = (HashMap) msg.obj;
+                        String phone_text = (String) map.get("phone");
+
+                        for (int i=0; i<mFriendsArray.size(); i++) {
+                            JSONObject friend = mFriendsArray.get(i);
+                            if(friend.toString().contains(phone_text)) {
+                                return;
+                            }
+                        }
+
+                        mFriendsArray.add(new JSONObject("{\"phone_text\":\"" + phone_text + "\"}"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    if (mFriendsArray.size() == 2) {
+
+                        JSONObject friendsJsonObject = new JSONObject();
+                        try {
+                            friendsJsonObject.put("meInfo",meInfo);
+                            friendsJsonObject.put("friendArrayMap",mFriendsArray);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        RedCircleManager.registerAccount(FriendActivity.this, friendsJsonObject, new HttpRequestHandler<JSONObject>() {
+                            @Override
+                            public void onSuccess(JSONObject data) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(JSONObject data, int totalPages, int currentPage) {
+
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+
+                            }
+                        });
+                    }
+
                 }
 
             } else  {

@@ -35,6 +35,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private EditText mPhone;
     private Button mLogin;
     private Button mRegister;
+    private EventHandler eventHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +76,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 break;
             case R.id.user_register_btn:
+
+                SMSSDK.unregisterEventHandler(this.eventHandler);
+
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
         }
@@ -109,6 +113,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 handler.sendMessage(msg);
             }
         };
+
+        this.eventHandler = eventHandler;
         // 注册回调监听接口
         SMSSDK.registerEventHandler(eventHandler);
 

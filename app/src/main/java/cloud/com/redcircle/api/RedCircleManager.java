@@ -53,6 +53,8 @@ public class RedCircleManager {
 
     public static final String LOGIN_IN_URL = HTTP_BASE_URL + "/login";
 
+    public static final String REGISTER_URL = HTTP_BASE_URL + "/register";
+
     public static final String FRIENDS_URL = HTTP_BASE_URL + "/getFriends";
 
     public static final String RONG_CLOUD_KEY_URL = HTTP_BASE_URL + "/getRongCloudToken";
@@ -101,8 +103,34 @@ public class RedCircleManager {
     }
 
 
-    public static void registerAccount(Context ctx, JSONObject friendArrayMap, HttpRequestHandler<JSONObject> handler) {
+    public static void registerAccount(Context cxt, JSONObject friendArrayMap, final HttpRequestHandler<JSONObject> handler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(friendArrayMap.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
+        client.post(cxt,REGISTER_URL,entity,"application/json",new JsonHttpResponseHandler() {
+
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.e(RedCircleManager.ACTIVITY_TAG,"1");
+                SafeHandler.onSuccess(handler,response);
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e(RedCircleManager.ACTIVITY_TAG,"5");
+
+            }
+        });
     }
 
 

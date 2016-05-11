@@ -29,6 +29,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText mVerificationCode;
     private EditText mPhone;
 
+    private EventHandler eventHandler;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +122,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 handler.sendMessage(msg);
             }
         };
+        this.eventHandler = eventHandler;
         // 注册回调监听接口
         SMSSDK.registerEventHandler(eventHandler);
 
@@ -137,6 +140,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
 
             } else  {
+
+                SMSSDK.unregisterEventHandler(RegisterActivity.this.eventHandler);
 
                 Intent intent = new Intent(RegisterActivity.this, FriendActivity.class);
                 intent.putExtra("meInfo","{\"me_phone\":\" " + mPhone.getText().toString() + " \"}");
