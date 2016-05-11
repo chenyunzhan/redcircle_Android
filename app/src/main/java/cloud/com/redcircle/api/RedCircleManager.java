@@ -101,6 +101,11 @@ public class RedCircleManager {
     }
 
 
+    public static void registerAccount(Context ctx, JSONObject friendArrayMap, HttpRequestHandler<JSONObject> handler) {
+
+    }
+
+
     /**
      *
      * @param userId

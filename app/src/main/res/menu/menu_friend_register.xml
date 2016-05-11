@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/next_step_action"
+        android:id="@+id/do_finish_register"
         android:orderInCategory="100"
-        android:title="@string/next_step"
+        android:title="@string/do_finish_register"
         app:showAsAction="ifRoom|withText" />
 </menu>

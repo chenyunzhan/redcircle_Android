@@ -27,8 +27,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
 
-    private static final String APPKEY = "11f391ad7b6fd";
-    private static final String APPSECRET = "2d111f4bb7f9cd61815ca519bb63a2fc";
+
     protected static final String ACTIVITY_TAG="MyAndroid";
 
     private Button mVerificationCodeButton;
@@ -88,7 +87,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      */
     private void initSDK() {
 
-        SMSSDK.initSDK(this, APPKEY, APPSECRET);
+        SMSSDK.initSDK(this, Application.MOB_APPKEY, Application.MOB_APPSECRET);
         EventHandler eventHandler = new EventHandler() {
             /**
              * 在操作之后被触发

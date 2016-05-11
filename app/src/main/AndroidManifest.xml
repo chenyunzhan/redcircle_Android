@@ -36,8 +36,12 @@
 
         <activity
             android:name=".RegisterActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_register" >
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <activity
+            android:name=".FriendActivity"
+            android:screenOrientation="portrait" >
         </activity>
 
         <activity

@@ -14,40 +14,49 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.json.JSONObject;
-
+import cloud.com.redcircle.api.RedCircleManager;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 /**
- * Created by zhan on 16/5/10.
+ * Created by zhan on 16/5/11.
  */
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class FriendActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Menu mMenu;
-    private Button mVerificationCodeButton;
-    private EditText mVerificationCode;
-    private EditText mPhone;
+
+    private Button mVerificationCodeButton1;
+    private EditText mVerificationCode1;
+    private EditText mPhone1;
+    private Button mVerificationCodeButton2;
+    private EditText mVerificationCode2;
+    private EditText mPhone2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register_friend);
 
-        setTitle("注册");
+        setTitle("朋友信息");
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true); // 决定左上角图标的右侧是否有向左的小箭头, true
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        mPhone1 = (EditText) findViewById(R.id.register_friend_phone_edit1);
+        mPhone2 = (EditText) findViewById(R.id.register_friend_phone_edit2);
+
+        mVerificationCode1 = (EditText) findViewById(R.id.register_friend_verificationCode_edit1);
+        mVerificationCode2 = (EditText) findViewById(R.id.register_friend_verificationCode_edit1);
+
+        mVerificationCodeButton1 = (Button) findViewById(R.id.register_friend_verificationCode_btn1);
+        mVerificationCodeButton2 = (Button) findViewById(R.id.register_friend_verificationCode_btn2);
 
 
-
-        mVerificationCode = (EditText) findViewById(R.id.register_verificationCode_edit);
-        mPhone = (EditText) findViewById(R.id.register_phone_edit);
-        mVerificationCodeButton = (Button) findViewById(R.id.register_verificationCode_btn);
-
-
-        mVerificationCodeButton.setOnClickListener(this);
+        mVerificationCodeButton1.setOnClickListener(this);
+        mVerificationCodeButton2.setOnClickListener(this);
 
         initSDK();
+
+
+
     }
 
 
@@ -55,21 +64,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_register, menu);
-        this.mMenu = menu;
+        inflater.inflate(R.menu.menu_friend_register, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.next_step_action:
-                if (mPhone.getText().length() > 0 && mVerificationCode.getText().length() > 0) {
-                    SMSSDK.submitVerificationCode("86",mPhone.getText().toString(),mVerificationCode.getText().toString());
-                }
-                break;
             case android.R.id.home:// 点击返回图标事件
                 this.finish();
+                break;
+            case R.id.do_finish_register:
+                if (mPhone1.getText().length() > 0 && mVerificationCode1.getText().length() > 0) {
+                    SMSSDK.submitVerificationCode("86",mPhone1.getText().toString(),mVerificationCode1.getText().toString());
+                }
+                if (mPhone2.getText().length() > 0 && mVerificationCode2.getText().length() > 0) {
+                    SMSSDK.submitVerificationCode("86",mPhone2.getText().toString(),mVerificationCode2.getText().toString());
+                }
                 break;
 
 
@@ -81,13 +92,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.register_verificationCode_btn:
-                if (mPhone.getText().length() > 0) {
-                    SMSSDK.getVerificationCode("86",mPhone.getText().toString());
+            case R.id.register_friend_verificationCode_btn1:
+                if (mPhone1.getText().length() > 0) {
+                    SMSSDK.getVerificationCode("86",mPhone1.getText().toString());
                 }
                 break;
-
+            case R.id.register_friend_verificationCode_btn2:
+                if (mPhone2.getText().length() > 0) {
+                    SMSSDK.getVerificationCode("86",mPhone2.getText().toString());
+                }
+                break;
         }
+
     }
 
 
@@ -131,16 +147,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         public void handleMessage(Message msg) {
             if (msg.arg2 == SMSSDK.RESULT_COMPLETE) {
                 if (msg.arg1 == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                    Intent intent = new Intent(RegisterActivity.this, FriendActivity.class);
-                    intent.putExtra("meInfo","{\"me_phone\":\" " + mPhone.getText().toString() + " \"}");
-                    startActivity(intent);
+//                    RedCircleManager
                 }
 
             } else  {
-
-                Intent intent = new Intent(RegisterActivity.this, FriendActivity.class);
-                intent.putExtra("meInfo","{\"me_phone\":\" " + mPhone.getText().toString() + " \"}");
-                startActivity(intent);
 
                 ((Throwable)msg.obj).printStackTrace();
             }

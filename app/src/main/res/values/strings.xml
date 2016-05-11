@@ -33,5 +33,7 @@
 
 
     <string name="next_step">下一步</string>
+    <string name="do_finish_register">完成注册</string>
+
 
 </resources>

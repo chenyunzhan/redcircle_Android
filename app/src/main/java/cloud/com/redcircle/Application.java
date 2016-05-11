@@ -16,7 +16,8 @@ import io.rong.imkit.RongIM;
 public class Application extends android.app.Application {
 
 
-
+    public static final String MOB_APPKEY = "11f391ad7b6fd";
+    public static final String MOB_APPSECRET = "2d111f4bb7f9cd61815ca519bb63a2fc";
 
     private static Application mContext;
     private Boolean verifyResult;
