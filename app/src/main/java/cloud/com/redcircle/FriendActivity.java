@@ -171,20 +171,25 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
                         HashMap map = (HashMap) msg.obj;
                         String phone_text = (String) map.get("phone");
 
+
+                        Boolean isContain = false;
+
                         for (int i=0; i<mFriendsArray.size(); i++) {
                             JSONObject friend = mFriendsArray.get(i);
                             if(friend.toString().contains(phone_text)) {
-                                return;
+                                isContain = true;
+                                break;
                             }
                         }
-
-                        mFriendsArray.add(new JSONObject("{\"phone_text\":\"" + phone_text + "\"}"));
+                        if (!isContain) {
+                            mFriendsArray.add(new JSONObject("{\"phone_text\":\"" + phone_text + "\"}"));
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
 
-                    if (mFriendsArray.size() == 2) {
+                    if (mFriendsArray.size() == 1) {
 
                         JSONObject friendsJsonObject = new JSONObject();
                         try {
