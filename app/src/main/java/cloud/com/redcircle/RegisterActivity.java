@@ -134,6 +134,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         public void handleMessage(Message msg) {
             if (msg.arg2 == SMSSDK.RESULT_COMPLETE) {
                 if (msg.arg1 == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+
+                    SMSSDK.unregisterEventHandler(RegisterActivity.this.eventHandler);
                     Intent intent = new Intent(RegisterActivity.this, FriendActivity.class);
                     intent.putExtra("meInfo","{\"me_phone\":\" " + mPhone.getText().toString() + " \"}");
                     startActivity(intent);
@@ -141,11 +143,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             } else  {
 
-                SMSSDK.unregisterEventHandler(RegisterActivity.this.eventHandler);
 
-                Intent intent = new Intent(RegisterActivity.this, FriendActivity.class);
-                intent.putExtra("meInfo","{\"me_phone\":\" " + mPhone.getText().toString() + " \"}");
-                startActivity(intent);
+//                Intent intent = new Intent(RegisterActivity.this, FriendActivity.class);
+//                intent.putExtra("meInfo","{\"me_phone\":\" " + mPhone.getText().toString() + " \"}");
+//                startActivity(intent);
 
                 ((Throwable)msg.obj).printStackTrace();
             }

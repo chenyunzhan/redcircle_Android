@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,7 +40,7 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
     private EditText mPhone2;
 
 
-    private ArrayList<JSONObject> mFriendsArray;
+    private JSONArray mFriendsArray;
     private JSONObject meInfo;
 
     @Override
@@ -60,7 +61,7 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
         mVerificationCodeButton1 = (Button) findViewById(R.id.register_friend_verificationCode_btn1);
         mVerificationCodeButton2 = (Button) findViewById(R.id.register_friend_verificationCode_btn2);
 
-        mFriendsArray = new ArrayList<JSONObject>();
+        mFriendsArray = new JSONArray();
 
         Bundle extras = getIntent().getExtras();
         String meInfoStr = extras.getString("meInfo");
@@ -167,62 +168,78 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
         public void handleMessage(Message msg) {
             if (msg.arg2 == SMSSDK.RESULT_COMPLETE) {
                 if (msg.arg1 == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                    try {
-                        HashMap map = (HashMap) msg.obj;
-                        String phone_text = (String) map.get("phone");
 
-
-                        Boolean isContain = false;
-
-                        for (int i=0; i<mFriendsArray.size(); i++) {
-                            JSONObject friend = mFriendsArray.get(i);
-                            if(friend.toString().contains(phone_text)) {
-                                isContain = true;
-                                break;
-                            }
-                        }
-                        if (!isContain) {
-                            mFriendsArray.add(new JSONObject("{\"phone_text\":\"" + phone_text + "\"}"));
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    if (mFriendsArray.size() == 1) {
-
-                        JSONObject friendsJsonObject = new JSONObject();
-                        try {
-                            friendsJsonObject.put("meInfo",meInfo);
-                            friendsJsonObject.put("friendArrayMap",mFriendsArray);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        RedCircleManager.registerAccount(FriendActivity.this, friendsJsonObject, new HttpRequestHandler<JSONObject>() {
-                            @Override
-                            public void onSuccess(JSONObject data) {
-
-                            }
-
-                            @Override
-                            public void onSuccess(JSONObject data, int totalPages, int currentPage) {
-
-                            }
-
-                            @Override
-                            public void onFailure(String error) {
-
-                            }
-                        });
-                    }
+                    doRegister(msg);
 
                 }
-
             } else  {
+
+//                doRegister(msg);
 
                 ((Throwable)msg.obj).printStackTrace();
             }
         }
+
+
+        public void doRegister(Message msg) {
+            try {
+                HashMap map = (HashMap) msg.obj;
+                String phone_text = (String) map.get("phone");
+//                String phone_text = "sdfdsfs";
+
+
+                Boolean isContain = false;
+
+                for (int i=0; i<mFriendsArray.length(); i++) {
+                    JSONObject friend = (JSONObject) mFriendsArray.get(i);
+                    if(friend.toString().contains(phone_text)) {
+                        isContain = true;
+                        break;
+                    }
+                }
+                if (!isContain) {
+                    mFriendsArray.put(new JSONObject("{\"phone_text\":\"" + phone_text + "\"}"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            if (mFriendsArray.length() == 1) {
+
+                JSONObject friendsJsonObject = new JSONObject();
+                try {
+                    friendsJsonObject.put("meInfo",meInfo);
+
+                    friendsJsonObject.put("friendArrayMap",mFriendsArray);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                RedCircleManager.registerAccount(FriendActivity.this, friendsJsonObject, new HttpRequestHandler<JSONObject>() {
+                    @Override
+                    public void onSuccess(JSONObject data) {
+
+                        SMSSDK.unregisterAllEventHandler();
+                        Intent intent = new Intent(FriendActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onSuccess(JSONObject data, int totalPages, int currentPage) {
+
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+
+                    }
+                });
+            }
+
+        }
+
     };
 }

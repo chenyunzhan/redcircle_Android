@@ -43,7 +43,7 @@ public class RedCircleManager {
 
     private static AsyncHttpClient sClient = null;
     public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-//    public static final String HTTP_BASE_URL = "http://192.168.1.104:8080";
+//    public static final String HTTP_BASE_URL = "http://192.168.1.101:8080";
 
 //    public static final String HTTP_BASE_URL = "http://10.0.2.2:8080";
 
@@ -105,12 +105,8 @@ public class RedCircleManager {
 
     public static void registerAccount(Context cxt, JSONObject friendArrayMap, final HttpRequestHandler<JSONObject> handler) {
         AsyncHttpClient client = new AsyncHttpClient();
-        StringEntity entity = null;
-        try {
-            entity = new StringEntity(friendArrayMap.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        StringEntity entity = new StringEntity("{\"friendArrayMap\":[{\"phone_text\":\"\"}],\"meInfo\":{\"me_phone\":\"11\"}}","UTF-8");
+        StringEntity entity = new StringEntity(friendArrayMap.toString(),"UTF-8");
 
         client.post(cxt,REGISTER_URL,entity,"application/json",new JsonHttpResponseHandler() {
 
