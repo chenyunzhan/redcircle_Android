@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -205,7 +206,7 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
             }
 
 
-            if (mFriendsArray.length() == 1) {
+            if (mFriendsArray.length() == 2) {
 
                 JSONObject friendsJsonObject = new JSONObject();
                 try {
@@ -223,6 +224,10 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
                     public void onSuccess(JSONObject data) {
 
                         SMSSDK.unregisterAllEventHandler();
+
+                        Toast.makeText(FriendActivity.this, "恭喜注册成功,马上跳到登录页面...", Toast.LENGTH_LONG).show();
+
+
                         Intent intent = new Intent(FriendActivity.this, LoginActivity.class);
                         startActivity(intent);
                     }

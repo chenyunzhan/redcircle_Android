@@ -313,17 +313,63 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Item item = (Item) getListView().getAdapter().getItem(position);
-        if (item != null) {
 
-            //启动会话界面
-            if (RongIM.getInstance() != null)
-                RongIM.getInstance().startPrivateChat(this.getActivity(), item.text, item.text);
 
-            Toast.makeText(this.getActivity(), "Item " + position + ": " + item.text, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this.getActivity(), "Item " + position, Toast.LENGTH_SHORT).show();
+        try {
+
+            JSONObject friend = null;
+
+
+            int index = 0;
+            for (int i = 0; i < mData.length(); i++) {
+
+                if (friend != null) {
+                    break;
+                }
+
+                JSONObject ffriends = mData.getJSONObject(i);
+                JSONArray friends = ffriends.getJSONArray("ffriend");
+
+                index ++;
+                for (int j = 0; j < friends.length(); j++) {
+
+                    if (index == position) {
+                        friend = (JSONObject) friends.get(j);
+                        break;
+                    }
+
+                    index ++;
+
+                }
+            }
+
+
+            if (friend != null) {
+
+                //启动会话界面
+                if (RongIM.getInstance() != null) {
+
+                    String itemTitle = null;
+                    if (friend.getString("name").length()> 0) {
+                        itemTitle = friend.getString("name");
+                    } else {
+                        itemTitle = friend.getString("mePhone");
+                    }
+
+                    RongIM.getInstance().startPrivateChat(this.getActivity(), friend.getString("mePhone"), itemTitle);
+
+                    Toast.makeText(this.getActivity(), "Item " + position + ": " + friend.getString("mePhone"), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this.getActivity(), "Item " + position, Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+
+//        Item item = (Item) getListView().getAdapter().getItem(position);
+
     }
 
     @Override

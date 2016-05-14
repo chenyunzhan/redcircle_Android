@@ -126,14 +126,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         public void handleMessage(Message msg) {
             if (msg.arg2 == SMSSDK.RESULT_COMPLETE) {
                 if (msg.arg1 == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-
                     login();
-//                    Intent intent = new Intent(LoginActivity.this,
-//                            MainActivity.class);
-//                    startActivity(intent);
                 }
             } else  {
-                login();
+//                login();
                 ((Throwable)msg.obj).printStackTrace();
             }
         }
@@ -159,8 +155,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         getRongCloudToken();
 
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
+
                     }
 
                     @Override
@@ -186,6 +181,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 @Override
                 public void onSuccess(JSONObject data) {
                     AccountUtils.writeRongCloudToken(LoginActivity.this,data);
+
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
                 }
 
                 @Override

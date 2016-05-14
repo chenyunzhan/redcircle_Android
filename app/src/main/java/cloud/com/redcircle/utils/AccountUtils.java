@@ -124,7 +124,9 @@ public class AccountUtils {
         String userStr = PersistenceHelper.loadModel(cxt, key_rong_cloud_token);
         JSONObject rongCloudToke = null;
         try {
-            rongCloudToke = new JSONObject(userStr);
+            if (userStr != null) {
+                rongCloudToke = new JSONObject(userStr);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -194,7 +196,7 @@ public class AccountUtils {
     public static void removeAll(Context cxt) {
         removeLoginMember(cxt);
         removeFavNodes(cxt);
-
+        removeRongCloudToken(cxt);
 
         //通知所有页面退出登录了,清除登录痕迹
         for (OnAccountListener listener : listeners) {

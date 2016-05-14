@@ -111,7 +111,12 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
 
         String Token = null;
         try {
-            Token = rongCloudToken.getString("token");
+            if (rongCloudToken == null) {
+                AccountUtils.removeAll(this);
+                this.finish();
+            } else  {
+                Token = rongCloudToken.getString("token");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

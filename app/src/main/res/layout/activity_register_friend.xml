@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:hint="请输入您的手机号" />
+                android:hint="请输入朋友1的手机号" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:hint="请输入您的手机号" />
+                android:hint="请输入朋友2的手机号" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
