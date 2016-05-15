@@ -100,9 +100,9 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
                 if (mPhone1.getText().length() > 0 && mVerificationCode1.getText().length() > 0) {
                     SMSSDK.submitVerificationCode("86",mPhone1.getText().toString(),mVerificationCode1.getText().toString());
                 }
-//                if (mPhone2.getText().length() > 0 && mVerificationCode2.getText().length() > 0) {
-//                    SMSSDK.submitVerificationCode("86",mPhone2.getText().toString(),mVerificationCode2.getText().toString());
-//                }
+                if (mPhone2.getText().length() > 0 && mVerificationCode2.getText().length() > 0) {
+                    SMSSDK.submitVerificationCode("86",mPhone2.getText().toString(),mVerificationCode2.getText().toString());
+                }
                 break;
 
 
@@ -176,6 +176,7 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
             } else  {
 
 //                doRegister(msg);
+                Toast.makeText(FriendActivity.this, msg.toString(), Toast.LENGTH_LONG).show();
 
                 ((Throwable)msg.obj).printStackTrace();
             }

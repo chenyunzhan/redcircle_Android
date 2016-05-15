@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -137,7 +138,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                     SMSSDK.unregisterEventHandler(RegisterActivity.this.eventHandler);
                     Intent intent = new Intent(RegisterActivity.this, FriendActivity.class);
-                    intent.putExtra("meInfo","{\"me_phone\":\" " + mPhone.getText().toString() + " \"}");
+                    intent.putExtra("meInfo","{\"me_phone\":\"" + mPhone.getText().toString() + "\"}");
                     startActivity(intent);
                 }
 
@@ -147,6 +148,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 //                Intent intent = new Intent(RegisterActivity.this, FriendActivity.class);
 //                intent.putExtra("meInfo","{\"me_phone\":\" " + mPhone.getText().toString() + " \"}");
 //                startActivity(intent);
+                Toast.makeText(RegisterActivity.this, msg.toString(), Toast.LENGTH_LONG).show();
 
                 ((Throwable)msg.obj).printStackTrace();
             }

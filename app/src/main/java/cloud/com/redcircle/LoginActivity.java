@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -129,7 +130,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     login();
                 }
             } else  {
-//                login();
+                
+                Toast.makeText(LoginActivity.this, msg.toString(), Toast.LENGTH_LONG).show();
+
                 ((Throwable)msg.obj).printStackTrace();
             }
         }
