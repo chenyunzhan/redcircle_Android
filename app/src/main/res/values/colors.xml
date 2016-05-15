@@ -14,4 +14,15 @@
     <color name="bg_f9">#fff9f9f9</color>
 
     <color name="gray_b2">#ffb2b2b2</color>
+
+    <color name="red">#FF0000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#CDCDCD</color>
+    <color name="black">#000000</color>
+
+
+    <drawable name="white">#FFFFFF</drawable>
+    <drawable name="red">#FF0000</drawable>
+
+
 </resources>

@@ -2,6 +2,7 @@ package cloud.com.redcircle;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
@@ -18,8 +19,10 @@ import org.json.JSONObject;
 import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
 import cloud.com.redcircle.utils.AccountUtils;
+import cloud.com.redcircle.utils.TimeCount;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import info.hoang8f.widget.FButton;
 
 /**
  * Created by zhan on 16/4/19.
@@ -31,23 +34,27 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     protected static final String ACTIVITY_TAG="MyAndroid";
 
-    private Button mVerificationCodeButton;
+    private FButton mVerificationCodeButton;
     private EditText mVerificationCode;
     private EditText mPhone;
     private Button mLogin;
     private Button mRegister;
     private EventHandler eventHandler;
+    private TimeCount time;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mVerificationCodeButton = (Button) findViewById(R.id.login_verificationCode_btn);
+        mVerificationCodeButton = (FButton) findViewById(R.id.login_verificationCode_btn);
         mPhone = (EditText) findViewById(R.id.login_phone_edit);
         mLogin = (Button) findViewById(R.id.login_login_btn);
         mVerificationCode = (EditText) findViewById(R.id.login_verificationCode_edit);
         mRegister = (Button) findViewById(R.id.user_register_btn);
+
+        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        time.button = mVerificationCodeButton;
 
 
 
@@ -67,6 +74,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.login_verificationCode_btn:
 
                 if (mPhone.getText().length() > 0) {
+                    time.start();
                     SMSSDK.getVerificationCode("86",mPhone.getText().toString());
                 }
                 break;
@@ -204,8 +212,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             e.printStackTrace();
         }
     }
-
-
 
 
 
