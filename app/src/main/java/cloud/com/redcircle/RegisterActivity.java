@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import cloud.com.redcircle.utils.TimeCount;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import info.hoang8f.widget.FButton;
 
 /**
  * Created by zhan on 16/5/10.
@@ -26,9 +28,10 @@ import cn.smssdk.SMSSDK;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Menu mMenu;
-    private Button mVerificationCodeButton;
+    private FButton mVerificationCodeButton;
     private EditText mVerificationCode;
     private EditText mPhone;
+    private TimeCount time;
 
     private EventHandler eventHandler;
 
@@ -45,10 +48,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         mVerificationCode = (EditText) findViewById(R.id.register_verificationCode_edit);
         mPhone = (EditText) findViewById(R.id.register_phone_edit);
-        mVerificationCodeButton = (Button) findViewById(R.id.register_verificationCode_btn);
+        mVerificationCodeButton = (FButton) findViewById(R.id.register_verificationCode_btn);
 
 
         mVerificationCodeButton.setOnClickListener(this);
+
+        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        time.button = mVerificationCodeButton;
 
         initSDK();
     }
@@ -86,6 +92,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.register_verificationCode_btn:
                 if (mPhone.getText().length() > 0) {
+                    time.start();
                     SMSSDK.getVerificationCode("86",mPhone.getText().toString());
                 }
                 break;

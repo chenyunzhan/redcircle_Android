@@ -24,8 +24,10 @@ import java.util.HashMap;
 
 import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
+import cloud.com.redcircle.utils.TimeCount;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import info.hoang8f.widget.FButton;
 
 /**
  * Created by zhan on 16/5/11.
@@ -33,12 +35,15 @@ import cn.smssdk.SMSSDK;
 public class FriendActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    private Button mVerificationCodeButton1;
+    private FButton mVerificationCodeButton1;
     private EditText mVerificationCode1;
     private EditText mPhone1;
-    private Button mVerificationCodeButton2;
+    private FButton mVerificationCodeButton2;
     private EditText mVerificationCode2;
     private EditText mPhone2;
+
+    private TimeCount time1;
+    private TimeCount time2;
 
 
     private JSONArray mFriendsArray;
@@ -57,10 +62,10 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
         mPhone2 = (EditText) findViewById(R.id.register_friend_phone_edit2);
 
         mVerificationCode1 = (EditText) findViewById(R.id.register_friend_verificationCode_edit1);
-        mVerificationCode2 = (EditText) findViewById(R.id.register_friend_verificationCode_edit1);
+        mVerificationCode2 = (EditText) findViewById(R.id.register_friend_verificationCode_edit2);
 
-        mVerificationCodeButton1 = (Button) findViewById(R.id.register_friend_verificationCode_btn1);
-        mVerificationCodeButton2 = (Button) findViewById(R.id.register_friend_verificationCode_btn2);
+        mVerificationCodeButton1 = (FButton) findViewById(R.id.register_friend_verificationCode_btn1);
+        mVerificationCodeButton2 = (FButton) findViewById(R.id.register_friend_verificationCode_btn2);
 
         mFriendsArray = new JSONArray();
 
@@ -74,6 +79,12 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
 
         mVerificationCodeButton1.setOnClickListener(this);
         mVerificationCodeButton2.setOnClickListener(this);
+
+        time1 = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        time1.button = mVerificationCodeButton1;
+
+        time2 = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        time2.button = mVerificationCodeButton2;
 
         initSDK();
 
@@ -116,11 +127,13 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.register_friend_verificationCode_btn1:
                 if (mPhone1.getText().length() > 0) {
+                    time1.start();
                     SMSSDK.getVerificationCode("86",mPhone1.getText().toString());
                 }
                 break;
             case R.id.register_friend_verificationCode_btn2:
                 if (mPhone2.getText().length() > 0) {
+                    time2.start();
                     SMSSDK.getVerificationCode("86",mPhone2.getText().toString());
                 }
                 break;
@@ -226,7 +239,7 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
 
                         SMSSDK.unregisterAllEventHandler();
 
-                        Toast.makeText(FriendActivity.this, "恭喜注册成功,马上跳到登录页面...", Toast.LENGTH_LONG).show();
+                        Toast.makeText(FriendActivity.this, "恭喜注册成功,请进行登录", Toast.LENGTH_LONG).show();
 
 
                         Intent intent = new Intent(FriendActivity.this, LoginActivity.class);
