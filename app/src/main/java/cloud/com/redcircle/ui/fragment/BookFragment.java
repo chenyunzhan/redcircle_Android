@@ -1,7 +1,9 @@
 package cloud.com.redcircle.ui.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,7 +29,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import cloud.com.redcircle.AddFriendActivity;
 import cloud.com.redcircle.R;
+import cloud.com.redcircle.RegisterActivity;
 import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
 import cloud.com.redcircle.ui.PinnedSectionListView;
@@ -377,39 +381,29 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
         inflater.inflate(R.menu.main,menu);
         super.onCreateOptionsMenu(menu, inflater);
 
-        menu.getItem(0).setChecked(isFastScroll);
-        menu.getItem(1).setChecked(addPadding);
-        menu.getItem(2).setChecked(isShadowVisible);
+//        menu.getItem(0).setChecked(isFastScroll);
+//        menu.getItem(1).setChecked(addPadding);
+//        menu.getItem(2).setChecked(isShadowVisible);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_fastscroll:
-                isFastScroll = !isFastScroll;
-                item.setChecked(isFastScroll);
-                initializeAdapter();
-                break;
-            case R.id.action_addpadding:
-                addPadding = !addPadding;
-                item.setChecked(addPadding);
-                initializePadding();
-                break;
-            case R.id.action_showShadow:
-                isShadowVisible = !isShadowVisible;
-                item.setChecked(isShadowVisible);
-                ((PinnedSectionListView)getListView()).setShadowVisible(isShadowVisible);
-                break;
-            case R.id.action_showHeaderAndFooter:
-                hasHeaderAndFooter = !hasHeaderAndFooter;
-                item.setChecked(hasHeaderAndFooter);
-                initializeHeaderAndFooter();
-                break;
-            case R.id.action_updateDataset:
-                updateDataset();
+            case R.id.add_friend:
+
+                Intent intent = new Intent(getActivity(), AddFriendActivity.class);
+                startActivityForResult(intent,0);
                 break;
         }
         return true;
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            getFriends();
+        }
     }
 
     private void updateDataset() {

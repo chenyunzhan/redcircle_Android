@@ -53,6 +53,8 @@ public class RedCircleManager {
 
     public static final String LOGIN_IN_URL = HTTP_BASE_URL + "/login";
 
+    public static final String ADD_FRIEND_URL = HTTP_BASE_URL + "/addFriend";
+
     public static final String REGISTER_URL = HTTP_BASE_URL + "/register";
 
     public static final String FRIENDS_URL = HTTP_BASE_URL + "/getFriends";
@@ -130,6 +132,32 @@ public class RedCircleManager {
     }
 
 
+    public static void addFriend(final Context cxt, final String mePhone, final String friendPhone, final HttpRequestHandler<JSONObject> handler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        StringEntity entity = new StringEntity("{\"mePhone\":\"" + mePhone +"\", \"friendPhone\":\"" + friendPhone + "\"}","UTF-8");
+
+        client.post(cxt,ADD_FRIEND_URL,entity,"application/json",new JsonHttpResponseHandler() {
+
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.e(RedCircleManager.ACTIVITY_TAG,"1");
+                SafeHandler.onSuccess(handler,response);
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e(RedCircleManager.ACTIVITY_TAG,"5");
+
+            }
+        });
+    }
+
+
     /**
      *
      * @param userId
@@ -168,8 +196,14 @@ public class RedCircleManager {
 
         try {
             JSONObject jsonObject = new JSONObject(result);
-
-            UserInfo userInfo = new UserInfo(jsonObject.getString("mePhone"),jsonObject.getString("name"),Uri.parse(""));
+            String name = jsonObject.getString("name");
+            String showName;
+            if (name.length() > 0) {
+                showName = name;
+            } else  {
+                showName = jsonObject.getString("mePhone");
+            }
+            UserInfo userInfo = new UserInfo(jsonObject.getString("mePhone"),showName,Uri.parse(""));
 
             return userInfo;
         } catch (JSONException e) {

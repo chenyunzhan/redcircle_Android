@@ -26,7 +26,7 @@ public class BaseActivity extends AppCompatActivity implements AccountUtils.OnAc
 
         mIsLogin = AccountUtils.isLogined(this);
         if (mIsLogin) {
-//            mLoginProfile = AccountUtils.readLoginMember(this);
+            mUser = AccountUtils.readLoginMember(this);
         } else {
             AccountUtils.registerAccountListener(this);
 
