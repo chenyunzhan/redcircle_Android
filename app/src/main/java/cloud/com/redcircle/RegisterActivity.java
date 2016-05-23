@@ -78,6 +78,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
             case android.R.id.home:// 点击返回图标事件
+                SMSSDK.unregisterEventHandler(this.eventHandler);
                 this.finish();
                 break;
 
@@ -85,6 +86,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SMSSDK.registerEventHandler(this.eventHandler);
     }
 
     @Override

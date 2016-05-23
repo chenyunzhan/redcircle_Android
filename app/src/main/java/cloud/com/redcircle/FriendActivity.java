@@ -105,6 +105,7 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:// 点击返回图标事件
+                SMSSDK.unregisterAllEventHandler();
                 this.finish();
                 break;
             case R.id.do_finish_register:

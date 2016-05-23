@@ -1,9 +1,13 @@
 package cloud.com.redcircle;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -134,8 +138,10 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
             @Override
             public void onSuccess(String userId) {
 
-                mTabHost.onTabChanged("朋友");
-                mTabHost.onTabChanged("消息");
+                if (isAppOnForeground()) {
+                    mTabHost.onTabChanged("朋友");
+                    mTabHost.onTabChanged("消息");
+                }
 
                 Log.e("MainActivity", "——onSuccess—-" + userId);
             }
@@ -147,6 +153,23 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         });
     }
 
+
+    //在进程中去寻找当前APP的信息，判断是否在前台运行
+    private boolean isAppOnForeground() {
+        ActivityManager activityManager =(ActivityManager) getApplicationContext().getSystemService(
+                Context.ACTIVITY_SERVICE);
+        String packageName =getApplicationContext().getPackageName();
+        List<ActivityManager.RunningAppProcessInfo>appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null)
+            return false;
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.processName.equals(packageName)
+                    && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }
