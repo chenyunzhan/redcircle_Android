@@ -28,6 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cloud.com.redcircle.Application;
+import cloud.com.redcircle.utils.AccountUtils;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
@@ -52,6 +53,8 @@ public class RedCircleManager {
 
 
     public static final String LOGIN_IN_URL = HTTP_BASE_URL + "/login";
+
+    public static final String MODIFY_USER_URL = HTTP_BASE_URL + "/modify";
 
     public static final String ADD_FRIEND_URL = HTTP_BASE_URL + "/addFriend";
 
@@ -144,6 +147,62 @@ public class RedCircleManager {
                 super.onSuccess(statusCode, headers, response);
                 Log.e(RedCircleManager.ACTIVITY_TAG,"1");
                 SafeHandler.onSuccess(handler,response);
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e(RedCircleManager.ACTIVITY_TAG,"5");
+
+            }
+        });
+    }
+
+
+
+    public static void modifyUser(final Context cxt, final String name, final String value, final HttpRequestHandler<JSONObject> handler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        StringEntity entity = null;
+
+        JSONObject mUser = AccountUtils.readLoginMember(cxt);
+        String mePhone = null;
+        try {
+            mePhone = mUser.getString("mePhone");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if("姓名".equals(name)) {
+            entity = new StringEntity("{\"mePhone\":\"" + mePhone +"\", \"name\":\"" + value + "\"}","UTF-8");
+        } else if ("性别".equals(name)) {
+            entity = new StringEntity("{\"mePhone\":\"" + mePhone +"\", \"sex\":\"" + value + "\"}","UTF-8");
+        }
+
+        client.post(cxt,MODIFY_USER_URL,entity,"application/json",new JsonHttpResponseHandler() {
+
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.e(RedCircleManager.ACTIVITY_TAG,"1");
+
+
+
+                JSONObject mUser = AccountUtils.readLoginMember(cxt);
+                String mePhone = null;
+                try {
+                    mePhone = mUser.getString("mePhone");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+                RedCircleManager.loginWithUsername(cxt,mePhone,"",handler);
+
+
+//                SafeHandler.onSuccess(handler,response);
 
 
             }

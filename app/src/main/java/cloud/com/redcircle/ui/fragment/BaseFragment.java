@@ -33,6 +33,7 @@ public class BaseFragment extends Fragment implements AccountUtils.OnAccountList
 
     @Override
     public void onLogin(JSONObject member) {
-
+        mIsLogin = true;
+        mUser = member;
     }
 }
