@@ -14,6 +14,37 @@
         <include layout="@layout/divide_15_top_bottom" />
 
         <RelativeLayout
+            android:id="@+id/photo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff9f9f9">
+
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="96dp"
+                android:background="@drawable/common_item_click_selector"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/me_photo"
+                android:textSize="16sp" />
+
+
+            <ImageView
+                android:id="@+id/photo_imageView"
+                android:src="@drawable/user_photo"
+                android:layout_alignParentRight="true"
+                android:layout_margin="8dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
+
+        </RelativeLayout>
+
+        <include layout="@layout/divide_15_top_bottom" />
+
+
+        <RelativeLayout
             android:id="@+id/phone_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

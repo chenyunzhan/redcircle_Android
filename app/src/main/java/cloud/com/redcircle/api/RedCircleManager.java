@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.preference.PreferenceActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -18,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -48,8 +50,7 @@ public class RedCircleManager {
 
 //    public static final String HTTP_BASE_URL = "http://10.0.2.2:8080";
 
-    protected static final String ACTIVITY_TAG="MyAndroid";
-
+    protected static final String ACTIVITY_TAG = "MyAndroid";
 
 
     public static final String LOGIN_IN_URL = HTTP_BASE_URL + "/login";
@@ -71,24 +72,24 @@ public class RedCircleManager {
      * 使用用户名密码登录
      *
      * @param cxt
-     * @param phone 用户电话
+     * @param phone            用户电话
      * @param verificationCode 验证码
-     * @param handler  返回结果处理
+     * @param handler          返回结果处理
      */
     public static void loginWithUsername(final Context cxt, final String phone, final String verificationCode,
                                          final HttpRequestHandler<JSONObject> handler) {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        StringEntity entity = new StringEntity("{\"mePhone\":\"" + phone +"\"}","UTF-8");
+        StringEntity entity = new StringEntity("{\"mePhone\":\"" + phone + "\"}", "UTF-8");
 
-        client.post(cxt,LOGIN_IN_URL,entity,"application/json",new JsonHttpResponseHandler() {
+        client.post(cxt, LOGIN_IN_URL, entity, "application/json", new JsonHttpResponseHandler() {
 
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e(RedCircleManager.ACTIVITY_TAG,"1");
-                SafeHandler.onSuccess(handler,response);
+                Log.e(RedCircleManager.ACTIVITY_TAG, "1");
+                SafeHandler.onSuccess(handler, response);
 
 
             }
@@ -96,13 +97,10 @@ public class RedCircleManager {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e(RedCircleManager.ACTIVITY_TAG,"5");
+                Log.e(RedCircleManager.ACTIVITY_TAG, "5");
 
             }
         });
-
-
-
 
 
     }
@@ -111,16 +109,16 @@ public class RedCircleManager {
     public static void registerAccount(Context cxt, JSONObject friendArrayMap, final HttpRequestHandler<JSONObject> handler) {
         AsyncHttpClient client = new AsyncHttpClient();
 //        StringEntity entity = new StringEntity("{\"friendArrayMap\":[{\"phone_text\":\"\"}],\"meInfo\":{\"me_phone\":\"11\"}}","UTF-8");
-        StringEntity entity = new StringEntity(friendArrayMap.toString(),"UTF-8");
+        StringEntity entity = new StringEntity(friendArrayMap.toString(), "UTF-8");
 
-        client.post(cxt,REGISTER_URL,entity,"application/json",new JsonHttpResponseHandler() {
+        client.post(cxt, REGISTER_URL, entity, "application/json", new JsonHttpResponseHandler() {
 
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e(RedCircleManager.ACTIVITY_TAG,"1");
-                SafeHandler.onSuccess(handler,response);
+                Log.e(RedCircleManager.ACTIVITY_TAG, "1");
+                SafeHandler.onSuccess(handler, response);
 
 
             }
@@ -128,7 +126,7 @@ public class RedCircleManager {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e(RedCircleManager.ACTIVITY_TAG,"5");
+                Log.e(RedCircleManager.ACTIVITY_TAG, "5");
 
             }
         });
@@ -137,16 +135,16 @@ public class RedCircleManager {
 
     public static void addFriend(final Context cxt, final String mePhone, final String friendPhone, final HttpRequestHandler<JSONObject> handler) {
         AsyncHttpClient client = new AsyncHttpClient();
-        StringEntity entity = new StringEntity("{\"mePhone\":\"" + mePhone +"\", \"friendPhone\":\"" + friendPhone + "\"}","UTF-8");
+        StringEntity entity = new StringEntity("{\"mePhone\":\"" + mePhone + "\", \"friendPhone\":\"" + friendPhone + "\"}", "UTF-8");
 
-        client.post(cxt,ADD_FRIEND_URL,entity,"application/json",new JsonHttpResponseHandler() {
+        client.post(cxt, ADD_FRIEND_URL, entity, "application/json", new JsonHttpResponseHandler() {
 
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e(RedCircleManager.ACTIVITY_TAG,"1");
-                SafeHandler.onSuccess(handler,response);
+                Log.e(RedCircleManager.ACTIVITY_TAG, "1");
+                SafeHandler.onSuccess(handler, response);
 
 
             }
@@ -154,12 +152,11 @@ public class RedCircleManager {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e(RedCircleManager.ACTIVITY_TAG,"5");
+                Log.e(RedCircleManager.ACTIVITY_TAG, "5");
 
             }
         });
     }
-
 
 
     public static void modifyUser(final Context cxt, final String name, final String value, final HttpRequestHandler<JSONObject> handler) {
@@ -175,20 +172,19 @@ public class RedCircleManager {
             e.printStackTrace();
         }
 
-        if("姓名".equals(name)) {
-            entity = new StringEntity("{\"mePhone\":\"" + mePhone +"\", \"name\":\"" + value + "\"}","UTF-8");
+        if ("姓名".equals(name)) {
+            entity = new StringEntity("{\"mePhone\":\"" + mePhone + "\", \"name\":\"" + value + "\"}", "UTF-8");
         } else if ("性别".equals(name)) {
-            entity = new StringEntity("{\"mePhone\":\"" + mePhone +"\", \"sex\":\"" + value + "\"}","UTF-8");
+            entity = new StringEntity("{\"mePhone\":\"" + mePhone + "\", \"sex\":\"" + value + "\"}", "UTF-8");
         }
 
-        client.post(cxt,MODIFY_USER_URL,entity,"application/json",new JsonHttpResponseHandler() {
+        client.post(cxt, MODIFY_USER_URL, entity, "application/json", new JsonHttpResponseHandler() {
 
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e(RedCircleManager.ACTIVITY_TAG,"1");
-
+                Log.e(RedCircleManager.ACTIVITY_TAG, "1");
 
 
                 JSONObject mUser = AccountUtils.readLoginMember(cxt);
@@ -199,7 +195,7 @@ public class RedCircleManager {
                     e.printStackTrace();
 
                 }
-                RedCircleManager.loginWithUsername(cxt,mePhone,"",handler);
+                RedCircleManager.loginWithUsername(cxt, mePhone, "", handler);
 
 
 //                SafeHandler.onSuccess(handler,response);
@@ -210,7 +206,7 @@ public class RedCircleManager {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e(RedCircleManager.ACTIVITY_TAG,"5");
+                Log.e(RedCircleManager.ACTIVITY_TAG, "5");
 
             }
         });
@@ -218,7 +214,6 @@ public class RedCircleManager {
 
 
     /**
-     *
      * @param userId
      * @return
      */
@@ -251,7 +246,7 @@ public class RedCircleManager {
 //        return RedCircleManager.userInfo;
 
 
-        String result = HttpUtils.sendPostMessage(null,"{\"mePhone\":\"" + userId +"\"}","UTF-8");
+        String result = HttpUtils.sendPostMessage(null, "{\"mePhone\":\"" + userId + "\"}", "UTF-8");
 
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -259,10 +254,10 @@ public class RedCircleManager {
             String showName;
             if (name.length() > 0) {
                 showName = name;
-            } else  {
+            } else {
                 showName = jsonObject.getString("mePhone");
             }
-            UserInfo userInfo = new UserInfo(jsonObject.getString("mePhone"),showName,Uri.parse(""));
+            UserInfo userInfo = new UserInfo(jsonObject.getString("mePhone"), showName, Uri.parse(""));
 
             return userInfo;
         } catch (JSONException e) {
@@ -277,17 +272,17 @@ public class RedCircleManager {
 
     //获取所有朋友
     public static void getAllFriends(Context ctx, String mePhone,
-                                   final HttpRequestHandler<JSONArray> handler) {
+                                     final HttpRequestHandler<JSONArray> handler) {
         AsyncHttpClient client = new AsyncHttpClient();
 
         RequestParams params = new RequestParams();
         params.put("mePhone", mePhone);
 
-        client.get(ctx,FRIENDS_URL,params,new JsonHttpResponseHandler(){
+        client.get(ctx, FRIENDS_URL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
-                SafeHandler.onSuccess(handler,response);
+                SafeHandler.onSuccess(handler, response);
             }
 
             @Override
@@ -301,14 +296,14 @@ public class RedCircleManager {
 
     //获取融云token
     public static void getRongCloudToken(Context ctx, String mePhone, String name,
-                                     final HttpRequestHandler<JSONObject> handler) {
+                                         final HttpRequestHandler<JSONObject> handler) {
         AsyncHttpClient client = new AsyncHttpClient();
 
         RequestParams params = new RequestParams();
         params.put("mePhone", mePhone);
-        params.put("name",name);
+        params.put("name", name);
 
-        client.get(ctx,RONG_CLOUD_KEY_URL,params,new JsonHttpResponseHandler(){
+        client.get(ctx, RONG_CLOUD_KEY_URL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -317,7 +312,7 @@ public class RedCircleManager {
                     int code = response.getInt("code");
                     JSONObject result = response.getJSONObject("result");
                     if (code == 200) {
-                        SafeHandler.onSuccess(handler,result);
+                        SafeHandler.onSuccess(handler, result);
                     }
 
                 } catch (JSONException e) {
@@ -399,8 +394,8 @@ public class RedCircleManager {
             sClient = new AsyncHttpClient();
             sClient.setEnableRedirects(false);
             sClient.setCookieStore(new PersistentCookieStore(context));
-            sClient.addHeader("Accept","application/json; charset=utf-8");
-            sClient.addHeader("Content-type","application/json; charset=utf-8");
+            sClient.addHeader("Accept", "application/json; charset=utf-8");
+            sClient.addHeader("Content-type", "application/json; charset=utf-8");
 
 //            sClient.addHeader("Cache-Control", "max-age=0");
 //            sClient.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
@@ -430,4 +425,57 @@ public class RedCircleManager {
         cookieStore.clear();
     }
 
+
+    /**
+     * @param path 要上传的文件路径
+     * @param url  服务端接收URL
+     * @throws Exception
+     */
+    public static void uploadFile(final Context mContext, String path, String url) throws Exception {
+        File file = new File(path);
+        if (file.exists() && file.length() > 0) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            RequestParams params = new RequestParams();
+            params.put("uploadfile", file);
+            // 上传文件
+            client.post(url, params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers,
+                                      byte[] responseBody) {
+                    // 上传成功后要做的工作
+                    Toast.makeText(mContext, "上传成功", Toast.LENGTH_LONG).show();
+//                    progress.setProgress(0);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers,
+                                      byte[] responseBody, Throwable error) {
+                    // 上传失败后要做到工作
+                    Toast.makeText(mContext, "上传失败", Toast.LENGTH_LONG).show();
+                }
+
+
+                @Override
+                public void onProgress(long bytesWritten, long totalSize) {
+                    super.onProgress(bytesWritten, totalSize);
+                    int count = (int) ((bytesWritten * 1.0 / totalSize) * 100);
+                    // 上传进度显示
+//                    progress.setProgress(count);
+                    Log.e("上传 Progress>>>>>", bytesWritten + " / " + totalSize);
+                }
+
+
+                @Override
+                public void onRetry(int retryNo) {
+                    // TODO Auto-generated method stub
+                    super.onRetry(retryNo);
+                    // 返回重试次数
+                }
+
+            });
+        } else {
+            Toast.makeText(mContext, "文件不存在", Toast.LENGTH_LONG).show();
+        }
+
+    }
 }

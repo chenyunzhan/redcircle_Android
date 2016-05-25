@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ import cloud.com.redcircle.R;
 import cloud.com.redcircle.RegisterActivity;
 import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
+import cloud.com.redcircle.ui.ButtonAwesome;
 import cloud.com.redcircle.ui.PinnedSectionListView;
 import cloud.com.redcircle.utils.AccountUtils;
 import io.rong.imkit.RongIM;
@@ -47,6 +49,8 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
     protected JSONArray mData;
     protected boolean mIsLogin;
 
+
+
     @Override
     public void onLogout() {
 
@@ -59,6 +63,9 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
 
     static class SimpleAdapter extends ArrayAdapter<Item> implements PinnedSectionListView.PinnedSectionListAdapter {
 
+        private int resourceId;
+
+
         private static final int[] COLORS = new int[] {
                 R.color.green_light, R.color.orange_light,
                 R.color.blue_light, R.color.red_light };
@@ -68,6 +75,15 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
             generateDataset(new JSONArray(), false);
 
         }
+
+
+
+        public SimpleAdapter(Context context, int textViewResourceId, ArrayList objects) {
+            super(context, textViewResourceId, objects);
+            this.resourceId = textViewResourceId;
+        }
+
+
 
         public void generateDataset(JSONArray data, boolean clear)  {
             if (clear) clear();
@@ -87,7 +103,7 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
                     } else {
                         sectionTitle = friend.getString("friendPhone") + "的朋友圈";
                     }
-                    Item section = new Item(Item.SECTION, sectionTitle);
+                    Item section = new Item(Item.SECTION, sectionTitle, "");
                     section.sectionPosition = sectionPosition;
                     section.listPosition = listPosition++;
                     onSectionAdded(section, sectionPosition);
@@ -103,7 +119,7 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
                         } else {
                             itemTitle = ffriend.getString("mePhone");
                         }
-                        Item item = new Item(Item.ITEM, itemTitle);
+                        Item item = new Item(Item.ITEM, itemTitle, ffriend.getString("intimacy"));
                         item.sectionPosition = sectionPosition;
                         item.listPosition = listPosition++;
                         add(item);
@@ -130,7 +146,7 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
 
             int sectionPosition = 0, listPosition = 0;
             for (char i=0; i<sectionsNumber; i++) {
-                Item section = new Item(Item.SECTION, String.valueOf((char)('A' + i)));
+                Item section = new Item(Item.SECTION, String.valueOf((char)('A' + i)), "");
                 section.sectionPosition = sectionPosition;
                 section.listPosition = listPosition++;
                 onSectionAdded(section, sectionPosition);
@@ -138,7 +154,7 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
 
                 final int itemsNumber = (int) Math.abs((Math.cos(2f*Math.PI/3f * sectionsNumber / (i+1f)) * 25f));
                 for (int j=0;j<itemsNumber;j++) {
-                    Item item = new Item(Item.ITEM, section.text.toUpperCase(Locale.ENGLISH) + " - " + j);
+                    Item item = new Item(Item.ITEM, section.text.toUpperCase(Locale.ENGLISH) + " - " + j, "");
                     item.sectionPosition = sectionPosition;
                     item.listPosition = listPosition++;
                     add(item);
@@ -151,17 +167,48 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
         protected void prepareSections(int sectionsNumber) { }
         protected void onSectionAdded(Item section, int sectionPosition) { }
 
-        @Override public View getView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getView(position, convertView, parent);
-            view.setTextColor(Color.DKGRAY);
-            view.setTag("" + position);
+//        @Override public View getView(int position, View convertView, ViewGroup parent) {
+//            TextView view = (TextView) super.getView(position, convertView, parent);
+//            view.setTextColor(Color.DKGRAY);
+//            view.setTag("" + position);
+//            Item item = getItem(position);
+//            if (item.type == Item.SECTION) {
+//                //view.setOnClickListener(PinnedSectionListActivity.this);
+//                view.setBackgroundColor(parent.getResources().getColor(COLORS[item.sectionPosition % COLORS.length]));
+////                view.setBackgroundColor(Color.GRAY);
+//            }
+//            return view;
+//        }
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+
+            LinearLayout userListItem = new LinearLayout(getContext());
+
+            userListItem.setTag("" + position);
+
             Item item = getItem(position);
+            String inflater = Context.LAYOUT_INFLATER_SERVICE;
+            LayoutInflater vi = (LayoutInflater)getContext().getSystemService(inflater);
+            vi.inflate(resourceId, userListItem, true);
+            TextView nameTxt = (TextView)userListItem.findViewById(R.id.text1);
+            TextView intimacyTxt = (TextView)userListItem.findViewById(R.id.text2);
+            ButtonAwesome buttonAwesome = (ButtonAwesome)userListItem.findViewById(R.id.tvThumb);
+
+
+            nameTxt.setText(item.text);
+            intimacyTxt.setText(item.intimacy);
+
+
             if (item.type == Item.SECTION) {
                 //view.setOnClickListener(PinnedSectionListActivity.this);
-                view.setBackgroundColor(parent.getResources().getColor(COLORS[item.sectionPosition % COLORS.length]));
+                buttonAwesome.setVisibility(View.INVISIBLE);
+                userListItem.setBackgroundColor(parent.getResources().getColor(COLORS[item.sectionPosition % COLORS.length]));
 //                view.setBackgroundColor(Color.GRAY);
             }
-            return view;
+
+            return userListItem;
         }
 
         @Override public int getViewTypeCount() {
@@ -222,17 +269,19 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
 
         public final int type;
         public final String text;
+        public final String intimacy;
 
         public int sectionPosition;
         public int listPosition;
 
-        public Item(int type, String text) {
+        public Item(int type, String text, String intimacy) {
             this.type = type;
             this.text = text;
+            this.intimacy = intimacy;
         }
 
         @Override public String toString() {
-            return text;
+            return text + "=====" + intimacy;
         }
 
     }
@@ -460,7 +509,10 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
             }
             setListAdapter(new FastScrollAdapter(this.getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1));
         } else {
-            setListAdapter(new SimpleAdapter(this.getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1));
+//            setListAdapter(new SimpleAdapter(this.getActivity(), R.layout.simple_list_item_user, R.id.text1));
+
+            setListAdapter(new SimpleAdapter(this.getActivity(),R.layout.simple_list_item_user,new ArrayList()));
+
         }
     }
 

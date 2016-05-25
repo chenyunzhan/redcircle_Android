@@ -13,6 +13,7 @@
     <string name="tab_book">朋友</string>
     <string name="tab_me">我的</string>
 
+    <string name="me_photo">头像</string>
     <string name="me_phone">手机</string>
     <string name="me_name">姓名</string>
     <string name="me_sex">性别</string>

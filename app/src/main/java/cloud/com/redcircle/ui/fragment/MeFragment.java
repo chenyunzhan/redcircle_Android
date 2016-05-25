@@ -48,12 +48,15 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
         RelativeLayout phoneCell = (RelativeLayout)rootView.findViewById(R.id.name_layout);
         RelativeLayout sexCell = (RelativeLayout)rootView.findViewById(R.id.sex_layout);
+        RelativeLayout photoCell = (RelativeLayout)rootView.findViewById(R.id.photo_layout);
+
 
 
 
         logoutTextView.setOnClickListener(this);
         phoneCell.setOnClickListener(this);
         sexCell.setOnClickListener(this);
+        photoCell.setOnClickListener(this);
 
         return rootView;
     }
@@ -69,7 +72,19 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            this.initData();
+
+            switch (requestCode) {
+                case 0:
+                    this.initData();
+                    break;
+                case 2:
+
+                    break;
+                default:
+                    break;
+            }
+
+
         }
     }
 
@@ -102,6 +117,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 Intent intent1 = new Intent(getActivity(), ModifyActivity.class);
                 intent1.putExtra("name", "性别");
                 startActivityForResult(intent1,0);
+                break;
+            case R.id.photo_layout:
+                Intent local = new Intent();
+                local.setType("image/*");
+                local.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(local, 2);
                 break;
         }
 
