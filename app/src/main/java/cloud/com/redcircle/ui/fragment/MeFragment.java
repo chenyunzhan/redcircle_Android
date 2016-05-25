@@ -2,16 +2,29 @@ package cloud.com.redcircle.ui.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONException;
+
+import java.io.FileNotFoundException;
 
 import cloud.com.redcircle.LoginActivity;
 import cloud.com.redcircle.ModifyActivity;
@@ -20,6 +33,7 @@ import cloud.com.redcircle.api.RedCircleManager;
 import cloud.com.redcircle.ui.ButtonAwesome;
 import cloud.com.redcircle.ui.TextAwesome;
 import cloud.com.redcircle.utils.AccountUtils;
+import cloud.com.redcircle.utils.FileUtils;
 
 /**
  * Created by zhan on 16/4/25.
@@ -30,7 +44,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TextView phoneNumberTextView;
     private TextView usernameTextView;
     private TextView sexTextView;
-
+    private ImageView photoImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +59,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         phoneNumberTextView = (TextView) rootView.findViewById(R.id.phone_number_txt);
         usernameTextView = (TextView) rootView.findViewById(R.id.username_txt);
         sexTextView = (TextView) rootView.findViewById(R.id.sex_txt);
+        photoImageView = (ImageView) rootView.findViewById(R.id.photo_imageView);
+
 
         RelativeLayout phoneCell = (RelativeLayout)rootView.findViewById(R.id.name_layout);
         RelativeLayout sexCell = (RelativeLayout)rootView.findViewById(R.id.sex_layout);
@@ -78,6 +94,26 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                     this.initData();
                     break;
                 case 2:
+                    Uri uri = data.getData();
+                    Log.e("uri", uri.toString());
+                    ContentResolver cr = this.getActivity().getContentResolver();
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                        ImageView imageView = (ImageView) getActivity().findViewById(R.id.photo_imageView);
+                /* 将Bitmap设定到ImageView */
+                        imageView.setImageBitmap(bitmap);
+
+                        String path = FileUtils.getPathByUri4kitkat(this.getActivity(),uri);
+
+                        String name = phoneNumberTextView.getText().toString() + path.substring(path.lastIndexOf("."));
+
+                        RedCircleManager.uploadFile(this.getActivity(),path,name);
+                    } catch (FileNotFoundException e) {
+                        Log.e("Exception", e.getMessage(),e);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
 
                     break;
                 default:
@@ -134,6 +170,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 phoneNumberTextView.setText(mUser.getString("mePhone"));
                 usernameTextView.setText(mUser.getString("name"));
                 sexTextView.setText(mUser.getString("sex"));
+                ImageLoader imageLoader = ImageLoader.getInstance(); // Get singleton instance
+                imageLoader.displayImage("http://pic55.nipic.com/file/20141208/19462408_171130083000_2.jpg", photoImageView);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -35,6 +35,8 @@ dependencies {
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile project(':IMKit')
     compile 'info.hoang8f:fbutton:1.0.5'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
 //    compile 'cyd.awesome.android:awesome-material:1.0'
 
 }

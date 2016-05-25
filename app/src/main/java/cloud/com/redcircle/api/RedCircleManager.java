@@ -45,8 +45,8 @@ public class RedCircleManager {
     private static Application mApp = Application.getInstance();
 
     private static AsyncHttpClient sClient = null;
-    public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-//    public static final String HTTP_BASE_URL = "http://192.168.1.101:8080";
+//    public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
+    public static final String HTTP_BASE_URL = "http://192.168.1.101:8080";
 
 //    public static final String HTTP_BASE_URL = "http://10.0.2.2:8080";
 
@@ -54,6 +54,8 @@ public class RedCircleManager {
 
 
     public static final String LOGIN_IN_URL = HTTP_BASE_URL + "/login";
+
+    public static final String UPLOAD_PHOTO_URL = HTTP_BASE_URL + "/uploadPhoto";
 
     public static final String MODIFY_USER_URL = HTTP_BASE_URL + "/modify";
 
@@ -428,15 +430,18 @@ public class RedCircleManager {
 
     /**
      * @param path 要上传的文件路径
-     * @param url  服务端接收URL
+     * @param name  服务端接收URL
      * @throws Exception
      */
-    public static void uploadFile(final Context mContext, String path, String url) throws Exception {
+    public static void uploadFile(final Context mContext, String path, String name) throws Exception {
+        String url = UPLOAD_PHOTO_URL;
         File file = new File(path);
         if (file.exists() && file.length() > 0) {
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();
-            params.put("uploadfile", file);
+            params.put("name", name);
+            params.put("file", file);
+
             // 上传文件
             client.post(url, params, new AsyncHttpResponseHandler() {
                 @Override

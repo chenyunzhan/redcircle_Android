@@ -1,10 +1,16 @@
 package cloud.com.redcircle;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -31,6 +37,7 @@ public class Application extends android.app.Application {
          * 初始化融云
          */
         RongIM.init(this);
+        initImageLoader(getApplicationContext());
 
     }
 
@@ -45,6 +52,23 @@ public class Application extends android.app.Application {
 
     public static Application getInstance() {
         return mContext;
+    }
+
+    public static void initImageLoader(Context context) {
+        // This configuration tuning is custom. You can tune every option, you may tune some of them,
+        // or you can create default configuration by
+        //  ImageLoaderConfiguration.createDefault(this);
+        // method.
+        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
+        config.threadPriority(Thread.NORM_PRIORITY - 2);
+        config.denyCacheImageMultipleSizesInMemory();
+        config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
+        config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
+        config.tasksProcessingOrder(QueueProcessingType.LIFO);
+        config.writeDebugLogs(); // Remove for release app
+
+        // Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(config.build());
     }
 
 
