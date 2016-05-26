@@ -45,8 +45,8 @@ public class RedCircleManager {
     private static Application mApp = Application.getInstance();
 
     private static AsyncHttpClient sClient = null;
-//    public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-    public static final String HTTP_BASE_URL = "http://192.168.1.101:8080";
+    public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
+//    public static final String HTTP_BASE_URL = "http://192.168.1.101:8080";
 
 //    public static final String HTTP_BASE_URL = "http://10.0.2.2:8080";
 
@@ -253,13 +253,15 @@ public class RedCircleManager {
         try {
             JSONObject jsonObject = new JSONObject(result);
             String name = jsonObject.getString("name");
+            String mePhone = jsonObject.getString("mePhone");
+
             String showName;
             if (name.length() > 0) {
                 showName = name;
             } else {
                 showName = jsonObject.getString("mePhone");
             }
-            UserInfo userInfo = new UserInfo(jsonObject.getString("mePhone"), showName, Uri.parse(""));
+            UserInfo userInfo = new UserInfo(mePhone, showName, Uri.parse(RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + mePhone));
 
             return userInfo;
         } catch (JSONException e) {

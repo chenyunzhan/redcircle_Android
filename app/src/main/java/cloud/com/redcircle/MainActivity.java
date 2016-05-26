@@ -3,6 +3,7 @@ package cloud.com.redcircle;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +11,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cloud.com.redcircle.ui.ButtonAwesome;
+import cloud.com.redcircle.ui.TextAwesome;
 import cloud.com.redcircle.ui.fragment.BookFragment;
 import cloud.com.redcircle.ui.fragment.MeFragment;
 import cloud.com.redcircle.ui.fragment.MessageFragment;
@@ -31,7 +36,7 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
 
     private FragmentTabHost mTabHost;
     private LayoutInflater mLayoutInflater;
-    private List<ButtonAwesome> mTabIndicators = new ArrayList<ButtonAwesome>();
+    private List<LinearLayout> mTabIndicators = new ArrayList<LinearLayout>();
 
 
 
@@ -56,28 +61,92 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         TabHost.TabSpec[] tabSpecs = new TabHost.TabSpec[3];
         String[] texts = new String[3];
 
-        ButtonAwesome[] tabviews = new ButtonAwesome[3];
+        LinearLayout[] tabviews = new LinearLayout[3];
 
 
 
         ButtonAwesome btnMessage = new ButtonAwesome(this);
         btnMessage.setText(this.getResources().getString(R.string.fa_comment));
-        btnMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP,30);
+        btnMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+        btnMessage.setBackgroundColor(Color.TRANSPARENT);
+        btnMessage.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
+        btnMessage.setPadding(0,0,0,0);
+        btnMessage.setClickable(false);
+
 
         ButtonAwesome btnBook = new ButtonAwesome(this);
         btnBook.setText(this.getResources().getString(R.string.fa_users));
-        btnBook.setTextSize(TypedValue.COMPLEX_UNIT_SP,30);
+        btnBook.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+        btnBook.setBackgroundColor(Color.TRANSPARENT);
+        btnBook.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
+        btnBook.setPadding(0,0,0,0);
+        btnBook.setClickable(false);
 
         ButtonAwesome btnMe = new ButtonAwesome(this);
         btnMe.setText(this.getResources().getString(R.string.fa_user));
-        btnMe.setTextSize(TypedValue.COMPLEX_UNIT_SP,30);
+        btnMe.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+        btnMe.setBackgroundColor(Color.TRANSPARENT);
+        btnMe.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
+        btnMe.setPadding(0,0,0,0);
+        btnMe.setClickable(false);
+
+        TextView textViewMessage = new TextView(this);
+        textViewMessage.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP);
+        textViewMessage.setText("消息");
+
+        TextView textViewBook = new TextView(this);
+        textViewBook.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP);
+        textViewBook.setText("朋友");
+
+        TextView textViewMe = new TextView(this);
+        textViewMe.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP);
+        textViewMe.setText("我的");
+
+
+        LinearLayout linearLayoutMessage = new LinearLayout(this);
+        linearLayoutMessage.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout linearLayoutBook = new LinearLayout(this);
+        linearLayoutBook.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout linearLayoutMe = new LinearLayout(this);
+        linearLayoutMe.setOrientation(LinearLayout.VERTICAL);
+
+
+        LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.
+                LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(LinearLayout.
+                LayoutParams.MATCH_PARENT,60);
+
+
+
+
+//        TextAwesome textAwesome = new TextAwesome(this);
+//        textAwesome.setText(this.getResources().getString(R.string.fa_comment));
+//        textAwesome.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
+//        textAwesome.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+
+
+
+        linearLayoutMessage.addView(btnMessage,param2);
+        linearLayoutMessage.addView(textViewMessage,param1);
+
+        linearLayoutBook.addView(btnBook,param2);
+        linearLayoutBook.addView(textViewBook,param1);
+
+        linearLayoutMe.addView(btnMe,param2);
+        linearLayoutMe.addView(textViewMe,param1);
+
+
+
 
 
 //        AwesomeButton b = new AwesomeButton(this,this.getResources().getString(R.string.fa_user));
 
-        tabviews[0] = btnMessage;
-        tabviews[1] = btnBook;
-        tabviews[2] = btnMe;
+        tabviews[0] = linearLayoutMessage;
+        tabviews[1] = linearLayoutBook;
+        tabviews[2] = linearLayoutMe;
 
 
 //        Bundle bundle = new Bundle();

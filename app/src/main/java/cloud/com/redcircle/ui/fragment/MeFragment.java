@@ -171,7 +171,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 usernameTextView.setText(mUser.getString("name"));
                 sexTextView.setText(mUser.getString("sex"));
                 ImageLoader imageLoader = ImageLoader.getInstance(); // Get singleton instance
-                imageLoader.displayImage("http://pic55.nipic.com/file/20141208/19462408_171130083000_2.jpg", photoImageView);
+                imageLoader.displayImage(RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=18706734109", photoImageView);
 
             } catch (JSONException e) {
                 e.printStackTrace();
