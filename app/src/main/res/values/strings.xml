@@ -35,6 +35,8 @@
     <string name="settings_logout_or_not">确定退出登录？</string>
     <string name="title_confirm_yes">确定</string>
     <string name="title_confirm_cancel">取消</string>
+    <string name="de_save">"保存"</string>
+
 
 
     <string name="next_step">下一步</string>

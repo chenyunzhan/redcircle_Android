@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import cloud.com.redcircle.MyConversationBehaviorListener;
 import cloud.com.redcircle.R;
 import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
@@ -31,6 +32,7 @@ public class MessageFragment extends BaseFragment implements RongIM.UserInfoProv
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RongIM.setUserInfoProvider(this,true);
+
     }
 
     @Override

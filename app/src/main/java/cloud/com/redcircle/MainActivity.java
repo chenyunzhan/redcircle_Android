@@ -193,6 +193,14 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
+        /**
+         * 设置会话界面操作的监听器。
+         */
+        RongIM.setConversationBehaviorListener(new MyConversationBehaviorListener());
+
+
         /**
          * IMKit SDK调用第二步
          *

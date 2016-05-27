@@ -28,6 +28,11 @@
             </intent-filter>
         </activity>
 
+        <!--点击会话页面图片展示页面-->
+        <activity
+            android:name=".PhotoActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
