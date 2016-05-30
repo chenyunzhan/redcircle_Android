@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -32,6 +34,9 @@ import cloud.com.redcircle.utils.AccountUtils;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
+
+
+
 public class MainActivity extends BaseActivity implements TabHost.OnTabChangeListener {
 
     private FragmentTabHost mTabHost;
@@ -39,6 +44,8 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
     private List<LinearLayout> mTabIndicators = new ArrayList<LinearLayout>();
 
 
+    @android.support.annotation.IdRes int id1 = 100;
+    @android.support.annotation.IdRes int id2 = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,40 +72,68 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
 
 
 
-        ButtonAwesome btnMessage = new ButtonAwesome(this);
-        btnMessage.setText(this.getResources().getString(R.string.fa_comment));
-        btnMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
-        btnMessage.setBackgroundColor(Color.TRANSPARENT);
-        btnMessage.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
-        btnMessage.setPadding(0,0,0,0);
-        btnMessage.setClickable(false);
+//        ButtonAwesome btnMessage = new ButtonAwesome(this);
+//        btnMessage.setText(this.getResources().getString(R.string.fa_comment));
+//        btnMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+//        btnMessage.setBackgroundColor(Color.TRANSPARENT);
+//        btnMessage.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
+//        btnMessage.setPadding(0,0,0,0);
+//        btnMessage.setClickable(false);
+//
+//
+//        ButtonAwesome btnBook = new ButtonAwesome(this);
+//        btnBook.setText(this.getResources().getString(R.string.fa_users));
+//        btnBook.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+//        btnBook.setBackgroundColor(Color.TRANSPARENT);
+//        btnBook.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
+//        btnBook.setPadding(0,0,0,0);
+//        btnBook.setClickable(false);
+//
+//        ButtonAwesome btnMe = new ButtonAwesome(this);
+//        btnMe.setText(this.getResources().getString(R.string.fa_user));
+//        btnMe.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+//        btnMe.setBackgroundColor(Color.TRANSPARENT);
+//        btnMe.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
+//        btnMe.setPadding(0,0,0,0);
+//        btnMe.setClickable(false);
 
 
-        ButtonAwesome btnBook = new ButtonAwesome(this);
-        btnBook.setText(this.getResources().getString(R.string.fa_users));
-        btnBook.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
-        btnBook.setBackgroundColor(Color.TRANSPARENT);
-        btnBook.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
-        btnBook.setPadding(0,0,0,0);
-        btnBook.setClickable(false);
 
-        ButtonAwesome btnMe = new ButtonAwesome(this);
-        btnMe.setText(this.getResources().getString(R.string.fa_user));
-        btnMe.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
-        btnMe.setBackgroundColor(Color.TRANSPARENT);
-        btnMe.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
-        btnMe.setPadding(0,0,0,0);
-        btnMe.setClickable(false);
+        TextAwesome textAwesomeMessage = new TextAwesome(this);
+        textAwesomeMessage.setId(id1);
+        textAwesomeMessage.setText(this.getResources().getString(R.string.fa_comment));
+        textAwesomeMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+        textAwesomeMessage.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
+        textAwesomeMessage.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+
+
+        TextAwesome textAwesomeBook = new TextAwesome(this);
+        textAwesomeBook.setId(id1);
+        textAwesomeBook.setText(this.getResources().getString(R.string.fa_users));
+        textAwesomeBook.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+        textAwesomeBook.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
+
+
+        TextAwesome textAwesomeMe = new TextAwesome(this);
+        textAwesomeMe.setId(id1);
+        textAwesomeMe.setText(this.getResources().getString(R.string.fa_user));
+        textAwesomeMe.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
+        textAwesomeMe.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
 
         TextView textViewMessage = new TextView(this);
+        textViewMessage.setId(id2);
         textViewMessage.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP);
         textViewMessage.setText("消息");
+        textViewMessage.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+
 
         TextView textViewBook = new TextView(this);
+        textViewBook.setId(id2);
         textViewBook.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP);
         textViewBook.setText("朋友");
 
         TextView textViewMe = new TextView(this);
+        textViewMe.setId(id2);
         textViewMe.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP);
         textViewMe.setText("我的");
 
@@ -116,26 +151,20 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.
                 LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
 
+
         LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(LinearLayout.
-                LayoutParams.MATCH_PARENT,60);
+                LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        param2.topMargin = 10;
 
 
 
-
-//        TextAwesome textAwesome = new TextAwesome(this);
-//        textAwesome.setText(this.getResources().getString(R.string.fa_comment));
-//        textAwesome.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
-//        textAwesome.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
-
-
-
-        linearLayoutMessage.addView(btnMessage,param2);
+        linearLayoutMessage.addView(textAwesomeMessage,param2);
         linearLayoutMessage.addView(textViewMessage,param1);
 
-        linearLayoutBook.addView(btnBook,param2);
+        linearLayoutBook.addView(textAwesomeBook,param2);
         linearLayoutBook.addView(textViewBook,param1);
 
-        linearLayoutMe.addView(btnMe,param2);
+        linearLayoutMe.addView(textAwesomeMe,param2);
         linearLayoutMe.addView(textViewMe,param1);
 
 
@@ -171,9 +200,41 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         setTitle(texts[0]);
     }
 
+
+
+
+
     @Override
     public void onTabChanged(String tabId) {
         setTitle(tabId);
+
+        int count = mTabHost.getTabWidget().getChildCount();
+        for(int i=0; i<count; i++) {
+            View view = mTabHost.getTabWidget().getChildAt(i);
+            TextAwesome textAwesome = (TextAwesome) view.findViewById(id1);
+            textAwesome.setTextColor(Color.GRAY);
+
+            TextView textView = (TextView) view.findViewById(id2);
+            textView.setTextColor(Color.GRAY);
+
+
+        }
+
+        View view = null;
+
+        if(tabId.equals("消息")){
+            view = mTabHost.getTabWidget().getChildAt(0);
+        } else if (tabId.equals("朋友")) {
+            view = mTabHost.getTabWidget().getChildAt(1);
+        } else if (tabId.equals("我的")) {
+            view = mTabHost.getTabWidget().getChildAt(2);
+        }
+
+        TextAwesome textAwesome = (TextAwesome) view.findViewById(id1);
+        textAwesome.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        TextView textView = (TextView) view.findViewById(id2);
+        textView.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+
     }
 
 

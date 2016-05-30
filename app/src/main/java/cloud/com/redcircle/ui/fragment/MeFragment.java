@@ -46,6 +46,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TextView sexTextView;
     private ImageView photoImageView;
 
+    private View rootView;// 缓存Fragment view
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,26 +55,35 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_me, container, false);
 
-        View logoutTextView = rootView.findViewById(R.id.login_logout_txt);
-        phoneNumberTextView = (TextView) rootView.findViewById(R.id.phone_number_txt);
-        usernameTextView = (TextView) rootView.findViewById(R.id.username_txt);
-        sexTextView = (TextView) rootView.findViewById(R.id.sex_txt);
-        photoImageView = (ImageView) rootView.findViewById(R.id.photo_imageView);
+        if (rootView == null)
+        {
+            rootView = inflater.inflate(R.layout.fragment_me, container, false);
 
-
-        RelativeLayout phoneCell = (RelativeLayout)rootView.findViewById(R.id.name_layout);
-        RelativeLayout sexCell = (RelativeLayout)rootView.findViewById(R.id.sex_layout);
-        RelativeLayout photoCell = (RelativeLayout)rootView.findViewById(R.id.photo_layout);
+            View logoutTextView = rootView.findViewById(R.id.login_logout_txt);
+            phoneNumberTextView = (TextView) rootView.findViewById(R.id.phone_number_txt);
+            usernameTextView = (TextView) rootView.findViewById(R.id.username_txt);
+            sexTextView = (TextView) rootView.findViewById(R.id.sex_txt);
+            photoImageView = (ImageView) rootView.findViewById(R.id.photo_imageView);
 
 
+            RelativeLayout phoneCell = (RelativeLayout)rootView.findViewById(R.id.name_layout);
+            RelativeLayout sexCell = (RelativeLayout)rootView.findViewById(R.id.sex_layout);
+            RelativeLayout photoCell = (RelativeLayout)rootView.findViewById(R.id.photo_layout);
 
 
-        logoutTextView.setOnClickListener(this);
-        phoneCell.setOnClickListener(this);
-        sexCell.setOnClickListener(this);
-        photoCell.setOnClickListener(this);
+
+
+            logoutTextView.setOnClickListener(this);
+            phoneCell.setOnClickListener(this);
+            sexCell.setOnClickListener(this);
+            photoCell.setOnClickListener(this);
+
+
+            initData();
+
+        }
+
 
         return rootView;
     }
@@ -81,7 +92,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initData();
     }
 
 
@@ -171,7 +181,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 usernameTextView.setText(mUser.getString("name"));
                 sexTextView.setText(mUser.getString("sex"));
                 ImageLoader imageLoader = ImageLoader.getInstance(); // Get singleton instance
-                imageLoader.displayImage(RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=18706734109", photoImageView);
+                imageLoader.displayImage(RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + mUser.getString("mePhone"), photoImageView);
 
             } catch (JSONException e) {
                 e.printStackTrace();

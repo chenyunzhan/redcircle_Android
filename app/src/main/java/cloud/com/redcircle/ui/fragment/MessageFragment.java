@@ -15,9 +15,11 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 import cloud.com.redcircle.MyConversationBehaviorListener;
+import cloud.com.redcircle.MyReceiveMessageListener;
 import cloud.com.redcircle.R;
 import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
+import cloud.com.redcircle.utils.VibratorUtil;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
@@ -32,6 +34,13 @@ public class MessageFragment extends BaseFragment implements RongIM.UserInfoProv
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RongIM.setUserInfoProvider(this,true);
+        /**
+         *  设置接收消息的监听器。
+         */
+
+        MyReceiveMessageListener myReceiveMessageListener = new MyReceiveMessageListener();
+        myReceiveMessageListener.mContext = this.getActivity();
+        RongIM.setOnReceiveMessageListener(myReceiveMessageListener);
 
     }
 
@@ -62,7 +71,9 @@ public class MessageFragment extends BaseFragment implements RongIM.UserInfoProv
 
     @Override
     public UserInfo getUserInfo(String s) {
-        return RedCircleManager.getUserInfoById(this.getActivity(),s);
+        UserInfo userInfo = RedCircleManager.getUserInfoById(this.getActivity(),s);
+//        RongIM.getInstance().refreshUserInfoCache(userInfo);
+        return userInfo;
     }
 
 

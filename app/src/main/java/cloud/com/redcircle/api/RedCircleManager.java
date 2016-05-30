@@ -261,8 +261,7 @@ public class RedCircleManager {
             } else {
                 showName = jsonObject.getString("mePhone");
             }
-            UserInfo userInfo = new UserInfo(mePhone, showName, Uri.parse(RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + mePhone));
-
+            UserInfo userInfo = new UserInfo(mePhone, showName, Uri.parse(RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + mePhone + "&random=" + Math.random()));
             return userInfo;
         } catch (JSONException e) {
             e.printStackTrace();
