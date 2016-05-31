@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.pizidea.imagepicker.AndroidImagePicker;
 
 import org.json.JSONException;
 
@@ -28,6 +29,7 @@ import java.io.FileNotFoundException;
 
 import cloud.com.redcircle.LoginActivity;
 import cloud.com.redcircle.ModifyActivity;
+import cloud.com.redcircle.PickerActivity;
 import cloud.com.redcircle.R;
 import cloud.com.redcircle.api.RedCircleManager;
 import cloud.com.redcircle.ui.ButtonAwesome;
@@ -38,7 +40,7 @@ import cloud.com.redcircle.utils.FileUtils;
 /**
  * Created by zhan on 16/4/25.
  */
-public class MeFragment extends BaseFragment implements View.OnClickListener {
+public class MeFragment extends BaseFragment implements View.OnClickListener, AndroidImagePicker.OnImageCropCompleteListener {
 
 
     private TextView phoneNumberTextView;
@@ -94,6 +96,11 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        AndroidImagePicker.getInstance().addOnImageCropCompleteListener(this);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -104,26 +111,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                     this.initData();
                     break;
                 case 2:
-                    Uri uri = data.getData();
-                    Log.e("uri", uri.toString());
-                    ContentResolver cr = this.getActivity().getContentResolver();
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
-                        ImageView imageView = (ImageView) getActivity().findViewById(R.id.photo_imageView);
-                /* 将Bitmap设定到ImageView */
-                        imageView.setImageBitmap(bitmap);
-
-                        String path = FileUtils.getPathByUri4kitkat(this.getActivity(),uri);
-
-                        String name = phoneNumberTextView.getText().toString() + path.substring(path.lastIndexOf("."));
-
-                        RedCircleManager.uploadFile(this.getActivity(),path,name);
-                    } catch (FileNotFoundException e) {
-                        Log.e("Exception", e.getMessage(),e);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
 
                     break;
                 default:
@@ -165,10 +152,22 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 startActivityForResult(intent1,0);
                 break;
             case R.id.photo_layout:
-                Intent local = new Intent();
-                local.setType("image/*");
-                local.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(local, 2);
+//                Intent local = new Intent();
+//                local.setType("image/*");
+//                local.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(local, 2);
+
+
+                AndroidImagePicker.getInstance().setSelectMode(AndroidImagePicker.Select_Mode.MODE_SINGLE);
+                AndroidImagePicker.getInstance().setShouldShowCamera(true);
+
+                Intent intent2 = new Intent();
+
+                intent2.putExtra("isCrop", true);
+
+                intent2.setClass(this.getContext(),PickerActivity.class);
+                startActivityForResult(intent2, 2);
+
                 break;
         }
 
@@ -187,5 +186,42 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onImageCropComplete(Bitmap bmp, float ratio) {
+
+//        Uri uri = data.getData();
+//        Log.e("uri", uri.toString());
+//        ContentResolver cr = this.getActivity().getContentResolver();
+//        try {
+//            Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+//            ImageView imageView = (ImageView) getActivity().findViewById(R.id.photo_imageView);
+//                /* 将Bitmap设定到ImageView */
+//            imageView.setImageBitmap(bitmap);
+//
+//            String path = FileUtils.getPathByUri4kitkat(this.getActivity(),uri);
+//
+//            String name = phoneNumberTextView.getText().toString() + path.substring(path.lastIndexOf("."));
+//
+//            RedCircleManager.uploadFile(this.getActivity(),path,name);
+//        } catch (FileNotFoundException e) {
+//            Log.e("Exception", e.getMessage(),e);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        ImageView imageView = (ImageView) getActivity().findViewById(R.id.photo_imageView);
+        /* 将Bitmap设定到ImageView */
+        imageView.setImageBitmap(bmp);
+
+        String name = phoneNumberTextView.getText().toString() + ".png";
+        try {
+            RedCircleManager.uploadFile(this.getActivity(),bmp,name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 }

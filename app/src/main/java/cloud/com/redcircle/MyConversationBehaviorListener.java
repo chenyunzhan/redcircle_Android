@@ -2,10 +2,12 @@ package cloud.com.redcircle;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 
+import cloud.com.redcircle.api.RedCircleManager;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.widget.AlterDialogFragment;
 import io.rong.imlib.RongIMClient;
@@ -38,6 +40,25 @@ public class MyConversationBehaviorListener implements RongIM.ConversationBehavi
      */
     @Override
     public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo) {
+
+        if (userInfo != null) {
+
+            if (conversationType.equals(Conversation.ConversationType.PUBLIC_SERVICE) || conversationType.equals(Conversation.ConversationType.APP_PUBLIC_SERVICE)) {
+//                RongIM.getInstance().startPublicServiceProfile(mContext, conversationType, user.getUserId());
+            } else {
+
+                Intent intent = new Intent(context, PhotoActivity.class);
+
+                Uri uri = Uri.parse((RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + userInfo.getUserId()));
+
+                intent.putExtra("photo", uri);
+//                if (imageMessage.getThumUri() != null)
+//                    intent.putExtra("thumbnail", imageMessage.getThumUri());
+
+                context.startActivity(intent);
+            }
+        }
+
         return false;
     }
 
@@ -51,6 +72,8 @@ public class MyConversationBehaviorListener implements RongIM.ConversationBehavi
      */
     @Override
     public boolean onUserPortraitLongClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo) {
+
+
         return false;
     }
 

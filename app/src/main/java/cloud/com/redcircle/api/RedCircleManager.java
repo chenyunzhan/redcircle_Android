@@ -1,6 +1,7 @@
 package cloud.com.redcircle.api;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.preference.PreferenceActivity;
 import android.util.Log;
@@ -31,6 +32,7 @@ import java.util.regex.Pattern;
 
 import cloud.com.redcircle.Application;
 import cloud.com.redcircle.utils.AccountUtils;
+import cloud.com.redcircle.utils.PictureUtil;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
@@ -430,13 +432,19 @@ public class RedCircleManager {
 
 
     /**
-     * @param path 要上传的文件路径
+     * @param bitmap 要上传的图片
      * @param name  服务端接收URL
      * @throws Exception
      */
-    public static void uploadFile(final Context mContext, String path, String name) throws Exception {
+    public static void uploadFile(final Context mContext, Bitmap bitmap, String name) throws Exception {
         String url = UPLOAD_PHOTO_URL;
-        File file = new File(path);
+
+        String fileContent = PictureUtil.bitmapToString(bitmap);
+        PictureUtil.createFile(fileContent,mContext.getExternalCacheDir().getAbsolutePath()+"/temp");
+        File file = new File(mContext.getExternalCacheDir()+"/temp");
+
+
+
         if (file.exists() && file.length() > 0) {
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();

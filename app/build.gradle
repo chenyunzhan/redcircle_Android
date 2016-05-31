@@ -36,6 +36,7 @@ dependencies {
     compile project(':IMKit')
     compile 'info.hoang8f:fbutton:1.0.5'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile project(':imagepickerModule')
 
 //    compile 'cyd.awesome.android:awesome-material:1.0'
 

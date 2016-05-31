@@ -3,6 +3,7 @@ package cloud.com.redcircle;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +28,9 @@ public class PhotoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.de_ac_photo);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         mPhotoFragment = (PhotoFragment)getSupportFragmentManager().findFragmentById(R.id.photo_fragment);
         Uri uri = getIntent().getParcelableExtra("photo");
@@ -80,6 +84,8 @@ public class PhotoActivity extends BaseActivity {
                 return true;
             }
             copyFile(from.getAbsolutePath(), to.getAbsolutePath());
+        } else if(item.getItemId() == android.R.id.home) {
+            this.finish();
         }
         return super.onOptionsItemSelected(item);
     }
