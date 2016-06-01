@@ -221,55 +221,51 @@ public class RedCircleManager {
      * @param userId
      * @return
      */
-    public static UserInfo getUserInfoById(Context ctx, String userId) {
-//
-//        StringEntity entity = new StringEntity("{\"mePhone\":\"" + userId +"\"}","UTF-8");
-//
-//        SyncHttpClient client = new SyncHttpClient();
-//
-//
-//        client.post(ctx,LOGIN_IN_URL,entity,"application/json", new JsonHttpResponseHandler(){
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                super.onSuccess(statusCode, headers, response);
-//                try {
-//                    RedCircleManager.userInfo = new UserInfo(response.getString("mePhone"),response.getString("name"), Uri.parse(response.getString("")));
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                super.onFailure(statusCode, headers, throwable, errorResponse);
-//            }
-//        });
-//
-//
-//
-//        return RedCircleManager.userInfo;
+    public static void getUserInfoById(Context ctx, String userId, final HttpRequestHandler<JSONObject> handler) {
 
 
-        String result = HttpUtils.sendPostMessage(null, "{\"mePhone\":\"" + userId + "\"}", "UTF-8");
 
-        try {
-            JSONObject jsonObject = new JSONObject(result);
-            String name = jsonObject.getString("name");
-            String mePhone = jsonObject.getString("mePhone");
+        StringEntity entity = new StringEntity("{\"mePhone\":\"" + userId +"\"}","UTF-8");
 
-            String showName;
-            if (name.length() > 0) {
-                showName = name;
-            } else {
-                showName = jsonObject.getString("mePhone");
+        SyncHttpClient client = new SyncHttpClient();
+
+
+        client.post(ctx,LOGIN_IN_URL,entity,"application/json", new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                SafeHandler.onSuccess(handler, response);
+
             }
-            UserInfo userInfo = new UserInfo(mePhone, showName, Uri.parse(RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + mePhone + "&random=" + Math.random()));
-            return userInfo;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        return null;
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+
+
+
+//        String result = HttpUtils.sendPostMessage(null, "{\"mePhone\":\"" + userId + "\"}", "UTF-8");
+//
+//        try {
+//            JSONObject jsonObject = new JSONObject(result);
+//            String name = jsonObject.getString("name");
+//            String mePhone = jsonObject.getString("mePhone");
+//
+//            String showName;
+//            if (name.length() > 0) {
+//                showName = name;
+//            } else {
+//                showName = jsonObject.getString("mePhone");
+//            }
+//            UserInfo userInfo = new UserInfo(mePhone, showName, Uri.parse(RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + mePhone + "&random=" + Math.random()));
+//            return userInfo;
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
 
 
     }

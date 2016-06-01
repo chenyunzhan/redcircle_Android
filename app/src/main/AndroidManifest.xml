@@ -79,6 +79,7 @@
             android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
 
+
         <!--会话界面-->
         <activity
             android:name="cloud.com.redcircle.ConversationActivity"
