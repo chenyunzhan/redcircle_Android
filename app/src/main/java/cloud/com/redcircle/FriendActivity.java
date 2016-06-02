@@ -38,9 +38,9 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
     private FButton mVerificationCodeButton1;
     private EditText mVerificationCode1;
     private EditText mPhone1;
-    private FButton mVerificationCodeButton2;
-    private EditText mVerificationCode2;
-    private EditText mPhone2;
+//    private FButton mVerificationCodeButton2;
+//    private EditText mVerificationCode2;
+//    private EditText mPhone2;
 
     private TimeCount time1;
     private TimeCount time2;
@@ -59,13 +59,13 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         mPhone1 = (EditText) findViewById(R.id.register_friend_phone_edit1);
-        mPhone2 = (EditText) findViewById(R.id.register_friend_phone_edit2);
+//        mPhone2 = (EditText) findViewById(R.id.register_friend_phone_edit2);
 
         mVerificationCode1 = (EditText) findViewById(R.id.register_friend_verificationCode_edit1);
-        mVerificationCode2 = (EditText) findViewById(R.id.register_friend_verificationCode_edit2);
+//        mVerificationCode2 = (EditText) findViewById(R.id.register_friend_verificationCode_edit2);
 
         mVerificationCodeButton1 = (FButton) findViewById(R.id.register_friend_verificationCode_btn1);
-        mVerificationCodeButton2 = (FButton) findViewById(R.id.register_friend_verificationCode_btn2);
+//        mVerificationCodeButton2 = (FButton) findViewById(R.id.register_friend_verificationCode_btn2);
 
         mFriendsArray = new JSONArray();
 
@@ -78,13 +78,13 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         mVerificationCodeButton1.setOnClickListener(this);
-        mVerificationCodeButton2.setOnClickListener(this);
+//        mVerificationCodeButton2.setOnClickListener(this);
 
         time1 = new TimeCount(60000, 1000);//构造CountDownTimer对象
         time1.button = mVerificationCodeButton1;
 
-        time2 = new TimeCount(60000, 1000);//构造CountDownTimer对象
-        time2.button = mVerificationCodeButton2;
+//        time2 = new TimeCount(60000, 1000);//构造CountDownTimer对象
+//        time2.button = mVerificationCodeButton2;
 
         initSDK();
 
@@ -112,9 +112,9 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
                 if (mPhone1.getText().length() > 0 && mVerificationCode1.getText().length() > 0) {
                     SMSSDK.submitVerificationCode("86",mPhone1.getText().toString(),mVerificationCode1.getText().toString());
                 }
-                if (mPhone2.getText().length() > 0 && mVerificationCode2.getText().length() > 0) {
-                    SMSSDK.submitVerificationCode("86",mPhone2.getText().toString(),mVerificationCode2.getText().toString());
-                }
+//                if (mPhone2.getText().length() > 0 && mVerificationCode2.getText().length() > 0) {
+//                    SMSSDK.submitVerificationCode("86",mPhone2.getText().toString(),mVerificationCode2.getText().toString());
+//                }
                 break;
 
 
@@ -132,12 +132,12 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
                     SMSSDK.getVerificationCode("86",mPhone1.getText().toString());
                 }
                 break;
-            case R.id.register_friend_verificationCode_btn2:
-                if (mPhone2.getText().length() > 0) {
-                    time2.start();
-                    SMSSDK.getVerificationCode("86",mPhone2.getText().toString());
-                }
-                break;
+//            case R.id.register_friend_verificationCode_btn2:
+//                if (mPhone2.getText().length() > 0) {
+//                    time2.start();
+//                    SMSSDK.getVerificationCode("86",mPhone2.getText().toString());
+//                }
+//                break;
         }
 
     }
@@ -221,7 +221,7 @@ public class FriendActivity extends AppCompatActivity implements View.OnClickLis
             }
 
 
-            if (mFriendsArray.length() == 2) {
+            if (mFriendsArray.length() == 1) {
 
                 JSONObject friendsJsonObject = new JSONObject();
                 try {

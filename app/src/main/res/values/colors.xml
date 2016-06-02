@@ -15,6 +15,9 @@
 
     <color name="gray_b2">#ffb2b2b2</color>
 
+    <color name="gray_system">#808080</color>
+
+
     <color name="red">#FF0000</color>
     <color name="white">#FFFFFF</color>
     <color name="gray">#CDCDCD</color>
@@ -23,6 +26,17 @@
 
     <drawable name="white">#FFFFFF</drawable>
     <drawable name="red">#FF0000</drawable>
+
+
+    <color name="transparent">#00FFFFFF</color>
+
+
+    <color name="text_gray">#8D7A71</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_yellow">#FFC800</color>
+    <color name="text_topbar">#694E42</color>
+    <color name="div_white">#E5E5E5</color>
+
 
 
 </resources>

@@ -45,25 +45,31 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        mVerificationCodeButton = (FButton) findViewById(R.id.login_verificationCode_btn);
-        mPhone = (EditText) findViewById(R.id.login_phone_edit);
-        mLogin = (Button) findViewById(R.id.login_login_btn);
-        mVerificationCode = (EditText) findViewById(R.id.login_verificationCode_edit);
-        mRegister = (Button) findViewById(R.id.user_register_btn);
+        if(!mIsLogin) {
 
-        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
-        time.button = mVerificationCodeButton;
+            setContentView(R.layout.activity_login);
+
+            mVerificationCodeButton = (FButton) findViewById(R.id.login_verificationCode_btn);
+            mPhone = (EditText) findViewById(R.id.login_phone_edit);
+            mLogin = (Button) findViewById(R.id.login_login_btn);
+            mVerificationCode = (EditText) findViewById(R.id.login_verificationCode_edit);
+            mRegister = (Button) findViewById(R.id.user_register_btn);
+
+            time = new TimeCount(60000, 1000);//构造CountDownTimer对象
+            time.button = mVerificationCodeButton;
 
 
 
-        mVerificationCodeButton.setOnClickListener(this);
-        mLogin.setOnClickListener(this);
-        mRegister.setOnClickListener(this);
+            mVerificationCodeButton.setOnClickListener(this);
+            mLogin.setOnClickListener(this);
+            mRegister.setOnClickListener(this);
 
+
+        }
 
         initSDK();
+
 
     }
 

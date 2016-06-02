@@ -37,6 +37,7 @@ public class Application extends android.app.Application {
          * 初始化融云
          */
         RongIM.init(this);
+        RongCloudEvent.init(this);
         initImageLoader(getApplicationContext());
 
     }

@@ -5,8 +5,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +18,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -37,11 +41,28 @@ import io.rong.imlib.RongIMClient;
 
 
 
-public class MainActivity extends BaseActivity implements TabHost.OnTabChangeListener {
+public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener,
+        ViewPager.OnPageChangeListener {
 
     private FragmentTabHost mTabHost;
     private LayoutInflater mLayoutInflater;
     private List<LinearLayout> mTabIndicators = new ArrayList<LinearLayout>();
+
+
+    protected boolean mIsLogin;
+    private RadioGroup rg_tab_bar;
+    private RadioButton rb_channel;
+    private RadioButton rb_message;
+    private RadioButton rb_better;
+    private RadioButton rb_setting;
+    private ViewPager vpager;
+
+    private MyFragmentPagerAdapter mAdapter;
+
+    //几个代表页面的常量
+    public static final int PAGE_ONE = 0;
+    public static final int PAGE_TWO = 1;
+    public static final int PAGE_THREE = 2;
 
 
     @android.support.annotation.IdRes int id1 = 100;
@@ -50,192 +71,34 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mIsLogin = true;
         if (mIsLogin) {
             setContentView(R.layout.activity_main);
+
             initRongCloud();
-            initTabHost();
+            mAdapter = new MyFragmentPagerAdapter(this, getSupportFragmentManager());
+            bindViews();
+            rb_channel.setChecked(true);
+
         }
 
 
     }
 
-    private void initTabHost() {
-        mLayoutInflater = LayoutInflater.from(this);
-        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-        mTabHost.setup(this, getSupportFragmentManager(), R.id.tab_content);
-        mTabHost.getTabWidget().setDividerDrawable(null);
+    private void bindViews() {
+        rg_tab_bar = (RadioGroup) findViewById(R.id.rg_tab_bar);
+        rb_channel = (RadioButton) findViewById(R.id.rb_channel);
+        rb_message = (RadioButton) findViewById(R.id.rb_message);
+        rb_better = (RadioButton) findViewById(R.id.rb_better);
+        rg_tab_bar.setOnCheckedChangeListener(this);
 
-        TabHost.TabSpec[] tabSpecs = new TabHost.TabSpec[3];
-        String[] texts = new String[3];
-
-        LinearLayout[] tabviews = new LinearLayout[3];
-
-
-
-//        ButtonAwesome btnMessage = new ButtonAwesome(this);
-//        btnMessage.setText(this.getResources().getString(R.string.fa_comment));
-//        btnMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
-//        btnMessage.setBackgroundColor(Color.TRANSPARENT);
-//        btnMessage.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
-//        btnMessage.setPadding(0,0,0,0);
-//        btnMessage.setClickable(false);
-//
-//
-//        ButtonAwesome btnBook = new ButtonAwesome(this);
-//        btnBook.setText(this.getResources().getString(R.string.fa_users));
-//        btnBook.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
-//        btnBook.setBackgroundColor(Color.TRANSPARENT);
-//        btnBook.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
-//        btnBook.setPadding(0,0,0,0);
-//        btnBook.setClickable(false);
-//
-//        ButtonAwesome btnMe = new ButtonAwesome(this);
-//        btnMe.setText(this.getResources().getString(R.string.fa_user));
-//        btnMe.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
-//        btnMe.setBackgroundColor(Color.TRANSPARENT);
-//        btnMe.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
-//        btnMe.setPadding(0,0,0,0);
-//        btnMe.setClickable(false);
-
-
-
-        TextAwesome textAwesomeMessage = new TextAwesome(this);
-        textAwesomeMessage.setId(id1);
-        textAwesomeMessage.setText(this.getResources().getString(R.string.fa_comment));
-        textAwesomeMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
-        textAwesomeMessage.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
-        textAwesomeMessage.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
-
-
-        TextAwesome textAwesomeBook = new TextAwesome(this);
-        textAwesomeBook.setId(id1);
-        textAwesomeBook.setText(this.getResources().getString(R.string.fa_users));
-        textAwesomeBook.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
-        textAwesomeBook.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
-
-
-        TextAwesome textAwesomeMe = new TextAwesome(this);
-        textAwesomeMe.setId(id1);
-        textAwesomeMe.setText(this.getResources().getString(R.string.fa_user));
-        textAwesomeMe.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
-        textAwesomeMe.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
-
-        TextView textViewMessage = new TextView(this);
-        textViewMessage.setId(id2);
-        textViewMessage.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP);
-        textViewMessage.setText("消息");
-        textViewMessage.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
-
-
-        TextView textViewBook = new TextView(this);
-        textViewBook.setId(id2);
-        textViewBook.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP);
-        textViewBook.setText("朋友");
-
-        TextView textViewMe = new TextView(this);
-        textViewMe.setId(id2);
-        textViewMe.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP);
-        textViewMe.setText("我的");
-
-
-        LinearLayout linearLayoutMessage = new LinearLayout(this);
-        linearLayoutMessage.setOrientation(LinearLayout.VERTICAL);
-
-        LinearLayout linearLayoutBook = new LinearLayout(this);
-        linearLayoutBook.setOrientation(LinearLayout.VERTICAL);
-
-        LinearLayout linearLayoutMe = new LinearLayout(this);
-        linearLayoutMe.setOrientation(LinearLayout.VERTICAL);
-
-
-        LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.
-                LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-
-
-        LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(LinearLayout.
-                LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        param2.topMargin = 10;
-
-
-
-        linearLayoutMessage.addView(textAwesomeMessage,param2);
-        linearLayoutMessage.addView(textViewMessage,param1);
-
-        linearLayoutBook.addView(textAwesomeBook,param2);
-        linearLayoutBook.addView(textViewBook,param1);
-
-        linearLayoutMe.addView(textAwesomeMe,param2);
-        linearLayoutMe.addView(textViewMe,param1);
-
-
-
-
-
-//        AwesomeButton b = new AwesomeButton(this,this.getResources().getString(R.string.fa_user));
-
-        tabviews[0] = linearLayoutMessage;
-        tabviews[1] = linearLayoutBook;
-        tabviews[2] = linearLayoutMe;
-
-
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("type", ViewPagerFragment.TypeViewPager_Aggregation);
-        texts[0] = getString(R.string.tab_message);
-        tabSpecs[0] = mTabHost.newTabSpec(texts[0]).setIndicator(tabviews[0]);
-        mTabHost.addTab(tabSpecs[0], MessageFragment.class, null);
-        mTabIndicators.add(tabviews[0]);
-
-        texts[1] = getString(R.string.tab_book);
-        tabSpecs[1] = mTabHost.newTabSpec(texts[1]).setIndicator(tabviews[1]);
-        mTabHost.addTab(tabSpecs[1], BookFragment.class, null);
-        mTabIndicators.add(tabviews[1]);
-
-        texts[2] = getString(R.string.tab_me);
-        tabSpecs[2] = mTabHost.newTabSpec(texts[2]).setIndicator(tabviews[2]);
-        mTabHost.addTab(tabSpecs[2], MeFragment.class, null);
-        mTabIndicators.add(tabviews[2]);
-
-
-        mTabHost.setOnTabChangedListener(this);
-        setTitle(texts[0]);
+        vpager = (ViewPager) findViewById(R.id.vpager);
+        vpager.setAdapter(mAdapter);
+        vpager.setCurrentItem(0);
+        vpager.addOnPageChangeListener(this);
     }
 
 
-
-
-
-    @Override
-    public void onTabChanged(String tabId) {
-        setTitle(tabId);
-
-        int count = mTabHost.getTabWidget().getChildCount();
-        for(int i=0; i<count; i++) {
-            View view = mTabHost.getTabWidget().getChildAt(i);
-            TextAwesome textAwesome = (TextAwesome) view.findViewById(id1);
-            textAwesome.setTextColor(Color.GRAY);
-
-            TextView textView = (TextView) view.findViewById(id2);
-            textView.setTextColor(Color.GRAY);
-
-
-        }
-
-        View view = null;
-
-        if(tabId.equals("消息")){
-            view = mTabHost.getTabWidget().getChildAt(0);
-        } else if (tabId.equals("朋友")) {
-            view = mTabHost.getTabWidget().getChildAt(1);
-        } else if (tabId.equals("我的")) {
-            view = mTabHost.getTabWidget().getChildAt(2);
-        }
-
-        TextAwesome textAwesome = (TextAwesome) view.findViewById(id1);
-        textAwesome.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
-        TextView textView = (TextView) view.findViewById(id2);
-        textView.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
-
-    }
 
 
     private void initRongCloud() {
@@ -276,10 +139,25 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
             @Override
             public void onSuccess(String userId) {
 
-                if (isAppOnForeground()) {
-                    mTabHost.onTabChanged("朋友");
-                    mTabHost.onTabChanged("消息");
-                }
+
+                RongCloudEvent.getInstance().setUserInfoProviderListener();
+
+
+                /**
+                 *  设置接收消息的监听器。
+                 */
+
+                MyReceiveMessageListener myReceiveMessageListener = new MyReceiveMessageListener();
+                myReceiveMessageListener.mContext = MainActivity.this;
+                RongIM.setOnReceiveMessageListener(myReceiveMessageListener);
+
+
+                vpager.getAdapter().notifyDataSetChanged();
+
+//                if (isAppOnForeground()) {
+//                    mTabHost.onTabChanged("朋友");
+//                    mTabHost.onTabChanged("消息");
+//                }
 
                 Log.e("MainActivity", "——onSuccess—-" + userId);
             }
@@ -310,4 +188,45 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
     }
 
 
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.rb_channel:
+                vpager.setCurrentItem(PAGE_ONE,false);
+                break;
+            case R.id.rb_message:
+                vpager.setCurrentItem(PAGE_TWO,false);
+                break;
+            case R.id.rb_better:
+                vpager.setCurrentItem(PAGE_THREE,false);
+                break;
+        }
+    }
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        //state的状态有三个，0表示什么都没做，1正在滑动，2滑动完毕
+        if (state == 2) {
+            switch (vpager.getCurrentItem()) {
+                case PAGE_ONE:
+                    rb_channel.setChecked(true);
+                    break;
+                case PAGE_TWO:
+                    rb_message.setChecked(true);
+                    break;
+                case PAGE_THREE:
+                    rb_better.setChecked(true);
+                    break;
+            }
+        }
+    }
 }
