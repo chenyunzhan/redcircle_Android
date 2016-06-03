@@ -75,8 +75,9 @@ public class CropActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }else if(id == R.id.action_settings){
             Bitmap bmp = mFragment.getCropBitmap(60*10);
+            Bitmap thumbnail = mFragment.getCropBitmap(60*2);
             finish();
-            AndroidImagePicker.getInstance().notifyImageCropComplete(bmp, 0);
+            AndroidImagePicker.getInstance().notifyImageCropComplete(bmp,thumbnail, 0);
             return true;
         }
         return super.onOptionsItemSelected(item);

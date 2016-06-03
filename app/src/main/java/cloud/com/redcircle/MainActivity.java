@@ -54,7 +54,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private RadioButton rb_channel;
     private RadioButton rb_message;
     private RadioButton rb_better;
-    private RadioButton rb_setting;
     private ViewPager vpager;
 
     private MyFragmentPagerAdapter mAdapter;
@@ -93,6 +92,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         rg_tab_bar.setOnCheckedChangeListener(this);
 
         vpager = (ViewPager) findViewById(R.id.vpager);
+        vpager.setOffscreenPageLimit(4);
         vpager.setAdapter(mAdapter);
         vpager.setCurrentItem(0);
         vpager.addOnPageChangeListener(this);
@@ -119,11 +119,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         }
 
 
-        /**
-         * 设置会话界面操作的监听器。
-         */
-        RongIM.setConversationBehaviorListener(new MyConversationBehaviorListener());
-
 
         /**
          * IMKit SDK调用第二步
@@ -139,20 +134,17 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             @Override
             public void onSuccess(String userId) {
 
-
-                RongCloudEvent.getInstance().setUserInfoProviderListener();
-
-
-                /**
-                 *  设置接收消息的监听器。
-                 */
-
-                MyReceiveMessageListener myReceiveMessageListener = new MyReceiveMessageListener();
-                myReceiveMessageListener.mContext = MainActivity.this;
-                RongIM.setOnReceiveMessageListener(myReceiveMessageListener);
+                if (RongIM.getInstance() != null) {
+                    //设置自己发出的消息监听器。
+                    MyReceiveMessageListener myReceiveMessageListener = new MyReceiveMessageListener();
+                    myReceiveMessageListener.mContext = MainActivity.this;
+                    RongIM.setOnReceiveMessageListener(myReceiveMessageListener);
+                }
 
 
-                vpager.getAdapter().notifyDataSetChanged();
+                if (isAppOnForeground()) {
+                    vpager.getAdapter().notifyDataSetChanged();
+                }
 
 //                if (isAppOnForeground()) {
 //                    mTabHost.onTabChanged("朋友");

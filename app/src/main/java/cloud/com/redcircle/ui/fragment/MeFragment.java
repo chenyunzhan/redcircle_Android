@@ -189,7 +189,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, An
     }
 
     @Override
-    public void onImageCropComplete(Bitmap bmp, float ratio) {
+    public void onImageCropComplete(Bitmap bmp, Bitmap thumbnail, float ratio) {
 
 //        Uri uri = data.getData();
 //        Log.e("uri", uri.toString());
@@ -217,7 +217,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, An
 
         String name = phoneNumberTextView.getText().toString() + ".png";
         try {
-            RedCircleManager.uploadFile(this.getActivity(),bmp,name);
+            RedCircleManager.uploadFile(this.getActivity(),bmp, thumbnail, name);
         } catch (Exception e) {
             e.printStackTrace();
         }

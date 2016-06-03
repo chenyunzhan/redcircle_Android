@@ -48,7 +48,7 @@ public class RedCircleManager {
 
     private static AsyncHttpClient sClient = null;
     public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-//    public static final String HTTP_BASE_URL = "http://192.168.1.101:8080";
+//    public static final String HTTP_BASE_URL = "http://192.168.1.102:8080";
 
 //    public static final String HTTP_BASE_URL = "http://10.0.2.2:8080";
 
@@ -432,12 +432,17 @@ public class RedCircleManager {
      * @param name  服务端接收URL
      * @throws Exception
      */
-    public static void uploadFile(final Context mContext, Bitmap bitmap, String name) throws Exception {
+    public static void uploadFile(final Context mContext, Bitmap bitmap, Bitmap thumbnail, String name) throws Exception {
         String url = UPLOAD_PHOTO_URL;
 
         String fileContent = PictureUtil.bitmapToString(bitmap);
         PictureUtil.createFile(fileContent,mContext.getExternalCacheDir().getAbsolutePath()+"/temp");
         File file = new File(mContext.getExternalCacheDir()+"/temp");
+
+
+        String thumbnailContent = PictureUtil.bitmapToString(thumbnail);
+        PictureUtil.createFile(thumbnailContent,mContext.getExternalCacheDir().getAbsolutePath()+"/thumbnail");
+        File thumbnailFile = new File(mContext.getExternalCacheDir()+"/thumbnail");
 
 
 
@@ -446,6 +451,7 @@ public class RedCircleManager {
             RequestParams params = new RequestParams();
             params.put("name", name);
             params.put("file", file);
+            params.put("thumbnail", thumbnailFile);
 
             // 上传文件
             client.post(url, params, new AsyncHttpResponseHandler() {

@@ -68,21 +68,21 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case MainActivity.PAGE_ONE:
                 if (myFragment1 == null) {
-//                    ConversationListFragment listFragment = ConversationListFragment.getInstance();
-//                    listFragment.setAdapter(new ConversationListAdapter(RongContext.getInstance()));
-//                    Uri uri = Uri.parse("rong://" + mContext.getApplicationInfo().packageName).buildUpon()
-//                            .appendPath("conversationlist")
-//                            .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
-//                            .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "true")//群组
-//                            .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(), "false")//讨论组
-//                            .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "false")//公共服务号
-//                            .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "false")//公共服务号
-//                            .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//系统
-//                            .build();
-//                    listFragment.setUri(uri);
-//                    fragment = listFragment;
+                    ConversationListFragment listFragment = ConversationListFragment.getInstance();
+                    listFragment.setAdapter(new ConversationListAdapter(RongContext.getInstance()));
+                    Uri uri = Uri.parse("rong://" + mContext.getApplicationInfo().packageName).buildUpon()
+                            .appendPath("conversationlist")
+                            .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
+                            .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "true")//群组
+                            .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(), "false")//讨论组
+                            .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "false")//公共服务号
+                            .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "false")//公共服务号
+                            .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//系统
+                            .build();
+                    listFragment.setUri(uri);
+                    fragment = listFragment;
 
-                    fragment = new MessageFragment();
+//                    fragment = new MessageFragment();
                 } else {
                     fragment = myFragment1;
                 }
