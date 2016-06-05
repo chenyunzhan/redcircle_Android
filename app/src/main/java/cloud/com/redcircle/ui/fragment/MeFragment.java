@@ -72,6 +72,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, An
             RelativeLayout phoneCell = (RelativeLayout)rootView.findViewById(R.id.name_layout);
             RelativeLayout sexCell = (RelativeLayout)rootView.findViewById(R.id.sex_layout);
             RelativeLayout photoCell = (RelativeLayout)rootView.findViewById(R.id.photo_layout);
+            RelativeLayout meCircleCell = (RelativeLayout)rootView.findViewById(R.id.me_circle_layout);
 
 
 
@@ -80,6 +81,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, An
             phoneCell.setOnClickListener(this);
             sexCell.setOnClickListener(this);
             photoCell.setOnClickListener(this);
+            meCircleCell.setOnClickListener(this);
 
 
             initData();
@@ -168,6 +170,10 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, An
                 intent2.setClass(this.getContext(),PickerActivity.class);
                 startActivityForResult(intent2, 2);
 
+                break;
+            case R.id.me_circle_layout:
+                Intent intent3 = new Intent(getActivity(), ModifyActivity.class);
+                startActivityForResult(intent3,0);
                 break;
         }
 

@@ -1,8 +1,11 @@
 package cloud.com.redcircle;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +25,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import cloud.com.redcircle.api.RedCircleManager;
 import cloud.com.redcircle.ui.ButtonAwesome;
 import cloud.com.redcircle.ui.TextAwesome;
 import cloud.com.redcircle.ui.fragment.BookFragment;
@@ -49,7 +54,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private List<LinearLayout> mTabIndicators = new ArrayList<LinearLayout>();
 
 
-    protected boolean mIsLogin;
     private RadioGroup rg_tab_bar;
     private RadioButton rb_channel;
     private RadioButton rb_message;
@@ -70,7 +74,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mIsLogin = true;
         if (mIsLogin) {
             setContentView(R.layout.activity_main);
 
@@ -129,6 +132,31 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         RongIM.connect(Token, new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
+
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle(R.string.settings_dialog_hint)
+                                .setMessage(R.string.token_incorrect)
+                                .setPositiveButton(R.string.title_confirm_yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        RedCircleManager.logout(MainActivity.this);
+                                        AccountUtils.removeAll(MainActivity.this);
+                                        Intent intent2 = new Intent(MainActivity.this, LoginActivity.class);
+                                        startActivity(intent2);
+                                    }
+                                }).show();
+
+
+
+                        Toast.makeText(MainActivity.this, "过期的Token", Toast.LENGTH_LONG).show();
+                    }
+                });
+
                 //Connect Token 失效的状态处理，需要重新获取 Token
             }
             @Override
@@ -150,6 +178,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 //                    mTabHost.onTabChanged("朋友");
 //                    mTabHost.onTabChanged("消息");
 //                }
+                Toast.makeText(MainActivity.this, "——onSuccess—-" + userId, Toast.LENGTH_LONG).show();
 
                 Log.e("MainActivity", "——onSuccess—-" + userId);
             }
@@ -157,6 +186,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
                 Log.e("MainActivity", "——onError—-" + errorCode);
+                Toast.makeText(MainActivity.this, "——onError—-" + errorCode, Toast.LENGTH_LONG).show();
+
             }
         });
     }

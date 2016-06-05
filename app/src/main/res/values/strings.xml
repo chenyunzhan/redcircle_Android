@@ -19,6 +19,11 @@
     <string name="me_sex">性别</string>
     <string name="me_logout">退出登录</string>
 
+    <string name="red_circle">红圈</string>
+    <string name="friend_circle">朋友圈</string>
+    <string name="me_circle">相册</string>
+
+
 
     <string name="action_fastscroll">Fast scroll</string>
     <string name="action_addpadding">Add padding</string>
@@ -33,6 +38,7 @@
 
     <string name="settings_dialog_hint">提示</string>
     <string name="settings_logout_or_not">确定退出登录？</string>
+    <string name="token_incorrect">聊天TOKEN已经过期，请重新登录</string>
     <string name="title_confirm_yes">确定</string>
     <string name="title_confirm_cancel">取消</string>
     <string name="de_save">"保存"</string>

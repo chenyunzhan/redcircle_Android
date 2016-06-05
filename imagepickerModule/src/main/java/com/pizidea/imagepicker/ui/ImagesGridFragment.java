@@ -200,7 +200,7 @@ public class ImagesGridFragment extends Fragment implements OnImagesLoadedListen
     }
 
     @Override
-    public void onImageCropComplete(Bitmap bmp, float ratio) {
+    public void onImageCropComplete(Bitmap bmp,Bitmap thumbnail, float ratio) {
         getActivity().finish();
     }
 

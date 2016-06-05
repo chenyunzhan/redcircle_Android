@@ -152,11 +152,11 @@ public class AndroidImagePicker {
         this.mImageCropCompleteListeners.remove(l);
         Log.i(TAG, "=====remove mImageCropCompleteListeners:" + l.getClass().toString());
     }
-    public void notifyImageCropComplete(Bitmap bmp,int ratio) {
+    public void notifyImageCropComplete(Bitmap bmp, Bitmap thumbnail, int ratio) {
         if(mImageCropCompleteListeners != null){
             Log.i(TAG,"=====notify onImageCropCompleteListener  bitmap="+bmp.toString()+"  ratio="+ratio);
             for(OnImageCropCompleteListener l : mImageCropCompleteListeners){
-                l.onImageCropComplete(bmp,ratio);
+                l.onImageCropComplete(bmp,thumbnail,ratio);
             }
         }
     }
@@ -442,7 +442,7 @@ public class AndroidImagePicker {
 
 
     public interface OnImageCropCompleteListener{
-        void onImageCropComplete(Bitmap bmp,float ratio);
+        void onImageCropComplete(Bitmap bmp,Bitmap thumbnail, float ratio);
     }
 
     public interface OnPictureTakeCompleteListener{
