@@ -28,6 +28,7 @@ import org.json.JSONException;
 import java.io.FileNotFoundException;
 
 import cloud.com.redcircle.LoginActivity;
+import cloud.com.redcircle.MeCircleActivity;
 import cloud.com.redcircle.ModifyActivity;
 import cloud.com.redcircle.PickerActivity;
 import cloud.com.redcircle.R;
@@ -172,7 +173,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, An
 
                 break;
             case R.id.me_circle_layout:
-                Intent intent3 = new Intent(getActivity(), ModifyActivity.class);
+                Intent intent3 = new Intent(getActivity(), MeCircleActivity.class);
                 startActivityForResult(intent3,0);
                 break;
         }

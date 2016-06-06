@@ -29,12 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-
-        </activity>
-
-
-        <activity android:name=".ShareActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -42,6 +36,24 @@
 
                 <data android:mimeType="image/*" />
             </intent-filter>
+
+
+        </activity>
+
+
+        <activity android:name=".ShareActivity">
+
+
+        </activity>
+
+        <activity android:name=".MeCircleActivity">
+
+
+        </activity>
+
+
+        <activity android:name=".AddArticleActivity">
+
         </activity>
 
         <!--点击会话页面图片展示页面-->

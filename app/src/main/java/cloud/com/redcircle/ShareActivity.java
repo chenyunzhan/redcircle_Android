@@ -10,8 +10,10 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,6 +29,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.smssdk.SMSSDK;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -52,23 +55,28 @@ public class ShareActivity extends AppCompatActivity {
 
         // Get intent, action and MIME type
         Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
+        this.targetImageUri = intent.getParcelableExtra("targetImageUri");
+//        String action = intent.getAction();
+//        String type = intent.getType();
+//
+//        if (Intent.ACTION_SEND.equals(action) && type != null) {
+//            if ("text/plain".equals(type)) {
+//                handleSendText(intent); // Handle text being sent
+//            } else if (type.startsWith("image/")) {
+//                handleSendImage(intent); // Handle single image being sent
+//            }
+//        } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
+//            if (type.startsWith("image/")) {
+//                handleSendMultipleImages(intent); // Handle multiple images being sent
+//            }
+//        } else {
+//            // Handle other intents, such as being started from the home screen
+//        }
 
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
-                handleSendText(intent); // Handle text being sent
-            } else if (type.startsWith("image/")) {
-                handleSendImage(intent); // Handle single image being sent
-            }
-        } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
-            if (type.startsWith("image/")) {
-                handleSendMultipleImages(intent); // Handle multiple images being sent
-            }
-        } else {
-            // Handle other intents, such as being started from the home screen
-        }
 
+        setTitle("选择");
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
 
         setContentView(R.layout.acitivity_share);
@@ -175,6 +183,7 @@ public class ShareActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Message message) {
                 //发送成功
+                ShareActivity.this.finish();
             }
 
             @Override
@@ -186,6 +195,19 @@ public class ShareActivity extends AppCompatActivity {
 
 
 
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:// 点击返回图标事件
+                this.finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
