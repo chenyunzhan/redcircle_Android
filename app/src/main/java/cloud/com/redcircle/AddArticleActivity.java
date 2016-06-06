@@ -3,6 +3,8 @@ package cloud.com.redcircle;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -19,9 +21,17 @@ import android.widget.Toast;
 import com.pizidea.imagepicker.AndroidImagePicker;
 import com.pizidea.imagepicker.bean.ImageItem;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
+
+import cloud.com.redcircle.api.RedCircleManager;
 
 /**
  * Created by zhan on 16/6/6.
@@ -32,7 +42,7 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
     private Bitmap bmp;                      //导入临时图片
     private ArrayList<HashMap<String, Object>> imageItem;
     private SimpleAdapter simpleAdapter;     //适配器
-
+    private List<ImageItem> imageItems;
 
 
     @Override
@@ -135,7 +145,7 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
                 this.finish();
                 break;
             case R.id.do_send_article_action:// 点击返回图标事件
-
+                this.doSendArticle();
                 break;
         }
 
@@ -152,6 +162,7 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
     @Override
     public void onImagePickComplete(List<ImageItem> items) {
 
+        this.imageItems = items;
 //        Bitmap addbmp=BitmapFactory.decodeFile(pathImage);
 
         for (int i = 0; i < items.size(); i++) {
@@ -186,5 +197,84 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
         simpleAdapter.notifyDataSetChanged();
         //刷新后释放防止手机休眠后自动添加
 
+    }
+
+
+
+    private void doSendArticle() {
+
+        File[] sourceImages = new File[3];
+
+        File[] thumbImages = new File[3];
+
+
+        for (int i=0; i<this.imageItems.size(); i++) {
+            ImageItem item = this.imageItems.get(i);
+            List list = this.generateFile(item.path);
+            sourceImages[i] = (File) list.get(0);
+            thumbImages[i] = (File) list.get(1);
+
+        }
+
+        try {
+            RedCircleManager.addArticle(this,sourceImages,thumbImages,"","");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private List generateFile(String sourcePath) {
+
+        UUID uuid1 = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+
+
+        File imageFileSource = new File(getCacheDir(), uuid1 + ".jpg");
+        File imageFileThumb = new File(getCacheDir(), uuid2 + ".jpg");
+
+        try {
+
+//            InputStream is = getContentResolver().openInputStream(sourcePath);
+
+            // 读取图片。
+
+
+            InputStream is = new FileInputStream(new File(sourcePath));
+
+
+
+            Bitmap bmpSource = BitmapFactory.decodeStream(is);
+
+            imageFileSource.createNewFile();
+
+            FileOutputStream fosSource = new FileOutputStream(imageFileSource);
+
+            // 保存原图。
+            bmpSource.compress(Bitmap.CompressFormat.JPEG, 100, fosSource);
+
+            // 创建缩略图变换矩阵。
+            Matrix m = new Matrix();
+            m.setRectToRect(new RectF(0, 0, bmpSource.getWidth(), bmpSource.getHeight()), new RectF(0, 0, 160, 160), Matrix.ScaleToFit.CENTER);
+
+            // 生成缩略图。
+            Bitmap bmpThumb = Bitmap.createBitmap(bmpSource, 0, 0, bmpSource.getWidth(), bmpSource.getHeight(), m, true);
+
+            imageFileThumb.createNewFile();
+
+            FileOutputStream fosThumb = new FileOutputStream(imageFileThumb);
+
+            // 保存缩略图。
+            bmpThumb.compress(Bitmap.CompressFormat.JPEG, 60, fosThumb);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List list = new ArrayList();
+        list.add(imageFileThumb);
+        list.add(imageFileSource);
+        return list;
     }
 }
