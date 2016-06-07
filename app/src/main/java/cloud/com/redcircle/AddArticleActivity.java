@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 
 import com.pizidea.imagepicker.AndroidImagePicker;
 import com.pizidea.imagepicker.bean.ImageItem;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
 
 /**
@@ -43,7 +47,7 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
     private ArrayList<HashMap<String, Object>> imageItem;
     private SimpleAdapter simpleAdapter;     //适配器
     private List<ImageItem> items;
-
+    private EditText editText;
 
 
     @Override
@@ -56,7 +60,7 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         gridView = (GridView) findViewById(R.id.gridView1);
-
+        editText = (EditText) findViewById(R.id.editText1);
 
                 /*
          * 载入默认图片添加图片加号
@@ -217,7 +221,24 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
 
 
         try {
-            RedCircleManager.addArticle(this,sourceList,thumbList,"","");
+
+            String mePhone = mUser.getString("mePhone");
+            RedCircleManager.addArticle(this, sourceList, thumbList, mePhone, this.editText.getText().toString(), new HttpRequestHandler<JSONObject>() {
+                @Override
+                public void onSuccess(JSONObject data) {
+
+                }
+
+                @Override
+                public void onSuccess(JSONObject data, int totalPages, int currentPage) {
+
+                }
+
+                @Override
+                public void onFailure(String error) {
+
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -49,7 +49,7 @@ public class RedCircleManager {
 
     private static AsyncHttpClient sClient = null;
 //    public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-    public static final String HTTP_BASE_URL = "http://192.168.1.102:8080";
+    public static final String HTTP_BASE_URL = "http://192.168.1.100:8080";
 
 //    public static final String HTTP_BASE_URL = "http://10.0.2.2:8080";
 
@@ -500,7 +500,7 @@ public class RedCircleManager {
     }
 
 
-    public static void addArticle(final Context mContext, File[] sourceList, File[] thumbList, String mePhone, String content) throws Exception {
+    public static void addArticle(final Context mContext, File[] sourceList, File[] thumbList, String mePhone, String content, final HttpRequestHandler<JSONObject> handler) throws Exception {
         String url = ADD_ARTICLE_URL;
 
 
@@ -522,6 +522,17 @@ public class RedCircleManager {
                     // 上传成功后要做的工作
                     Toast.makeText(mContext, "上传成功", Toast.LENGTH_LONG).show();
 //                    progress.setProgress(0);
+                    JSONObject object = null;
+                    String content = new String(responseBody);
+
+                    try {
+                        object = new JSONObject(content);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    SafeHandler.onSuccess(handler, object);
+
                 }
 
                 @Override
