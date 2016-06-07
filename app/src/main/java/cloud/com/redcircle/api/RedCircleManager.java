@@ -49,7 +49,7 @@ public class RedCircleManager {
 
     private static AsyncHttpClient sClient = null;
 //    public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-    public static final String HTTP_BASE_URL = "http://192.168.1.100:8080";
+    public static final String HTTP_BASE_URL = "http://192.168.1.102:8080";
 
 //    public static final String HTTP_BASE_URL = "http://10.0.2.2:8080";
 
@@ -501,51 +501,58 @@ public class RedCircleManager {
 
 
     public static void addArticle(final Context mContext, File[] sourceList, File[] thumbList, String mePhone, String content) throws Exception {
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("sourceList", sourceList);
-        params.put("thumbList", thumbList);
-        params.put("mePhone", mePhone);
-        params.put("content", content);
-
-
         String url = ADD_ARTICLE_URL;
 
-        // 上传文件
-        client.post(url, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers,
-                                  byte[] responseBody) {
-                // 上传成功后要做的工作
-                Toast.makeText(mContext, "上传成功", Toast.LENGTH_LONG).show();
+
+        File thumbnailFile = new File(mContext.getExternalCacheDir()+"/thumbnail");
+
+
+        if (sourceList.length>0 && thumbList.length > 0) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            RequestParams params = new RequestParams();
+            params.put("mePhone", mePhone);
+            params.put("content", content);
+            params.put("sourceList", sourceList);
+            params.put("thumbList", thumbList);
+            // 上传文件
+            client.post(url, params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers,
+                                      byte[] responseBody) {
+                    // 上传成功后要做的工作
+                    Toast.makeText(mContext, "上传成功", Toast.LENGTH_LONG).show();
 //                    progress.setProgress(0);
-            }
+                }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers,
-                                  byte[] responseBody, Throwable error) {
-                // 上传失败后要做到工作
-                Toast.makeText(mContext, "上传失败", Toast.LENGTH_LONG).show();
-            }
+                @Override
+                public void onFailure(int statusCode, Header[] headers,
+                                      byte[] responseBody, Throwable error) {
+                    // 上传失败后要做到工作
+                    Toast.makeText(mContext, "上传失败", Toast.LENGTH_LONG).show();
+                }
 
 
-            @Override
-            public void onProgress(long bytesWritten, long totalSize) {
-                super.onProgress(bytesWritten, totalSize);
-                int count = (int) ((bytesWritten * 1.0 / totalSize) * 100);
-                // 上传进度显示
+                @Override
+                public void onProgress(long bytesWritten, long totalSize) {
+                    super.onProgress(bytesWritten, totalSize);
+                    int count = (int) ((bytesWritten * 1.0 / totalSize) * 100);
+                    // 上传进度显示
 //                    progress.setProgress(count);
-                Log.e("上传 Progress>>>>>", bytesWritten + " / " + totalSize);
-            }
+                    Log.e("上传 Progress>>>>>", bytesWritten + " / " + totalSize);
+                }
 
 
-            @Override
-            public void onRetry(int retryNo) {
-                // TODO Auto-generated method stub
-                super.onRetry(retryNo);
-                // 返回重试次数
-            }
+                @Override
+                public void onRetry(int retryNo) {
+                    // TODO Auto-generated method stub
+                    super.onRetry(retryNo);
+                    // 返回重试次数
+                }
 
-        });
+            });
+        } else {
+            Toast.makeText(mContext, "文件不存在", Toast.LENGTH_LONG).show();
+        }
+
     }
 }

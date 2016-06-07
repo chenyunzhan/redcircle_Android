@@ -42,7 +42,8 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
     private Bitmap bmp;                      //导入临时图片
     private ArrayList<HashMap<String, Object>> imageItem;
     private SimpleAdapter simpleAdapter;     //适配器
-    private List<ImageItem> imageItems;
+    private List<ImageItem> items;
+
 
 
     @Override
@@ -145,7 +146,7 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
                 this.finish();
                 break;
             case R.id.do_send_article_action:// 点击返回图标事件
-                this.doSendArticle();
+                this.addArticle();
                 break;
         }
 
@@ -162,7 +163,8 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
     @Override
     public void onImagePickComplete(List<ImageItem> items) {
 
-        this.imageItems = items;
+        this.items = items;
+
 //        Bitmap addbmp=BitmapFactory.decodeFile(pathImage);
 
         for (int i = 0; i < items.size(); i++) {
@@ -200,24 +202,22 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
     }
 
 
+    private  void addArticle() {
+        File[] sourceList = new File[this.items.size()];
+        File[] thumbList = new File[this.items.size()];
 
-    private void doSendArticle() {
-
-        File[] sourceImages = new File[3];
-
-        File[] thumbImages = new File[3];
-
-
-        for (int i=0; i<this.imageItems.size(); i++) {
-            ImageItem item = this.imageItems.get(i);
+        for (int i=0; i<this.items.size(); i++) {
+            ImageItem item = items.get(i);
             List list = this.generateFile(item.path);
-            sourceImages[i] = (File) list.get(0);
-            thumbImages[i] = (File) list.get(1);
+            sourceList[i] = (File) list.get(0);
+            thumbList[i] = (File) list.get(1);
+
 
         }
 
+
         try {
-            RedCircleManager.addArticle(this,sourceImages,thumbImages,"","");
+            RedCircleManager.addArticle(this,sourceList,thumbList,"","");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -225,25 +225,21 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
     }
 
 
-    private List generateFile(String sourcePath) {
+    private List generateFile (String targetPath) {
 
         UUID uuid1 = UUID.randomUUID();
         UUID uuid2 = UUID.randomUUID();
 
 
-        File imageFileSource = new File(getCacheDir(), uuid1 + ".jpg");
-        File imageFileThumb = new File(getCacheDir(), uuid2 + ".jpg");
+        File imageFileSource = new File(getCacheDir(), uuid1.toString());
+        File imageFileThumb = new File(getCacheDir(), uuid2.toString());
 
         try {
 
-//            InputStream is = getContentResolver().openInputStream(sourcePath);
+            InputStream is = new FileInputStream(new File(targetPath));
 
             // 读取图片。
-
-
-            InputStream is = new FileInputStream(new File(sourcePath));
-
-
+//            InputStream is = getAssets().open("emmy.jpg");
 
             Bitmap bmpSource = BitmapFactory.decodeStream(is);
 
@@ -272,9 +268,11 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
             e.printStackTrace();
         }
 
+
         List list = new ArrayList();
-        list.add(imageFileThumb);
         list.add(imageFileSource);
+        list.add(imageFileThumb);
+
         return list;
     }
 }
