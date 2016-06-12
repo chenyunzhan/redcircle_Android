@@ -16,9 +16,11 @@ import org.json.JSONObject;
 import java.util.List;
 
 import cloud.com.redcircle.R;
+import cloud.com.redcircle.api.RedCircleManager;
 import cloud.com.redcircle.config.DynamicType;
 import cloud.com.redcircle.mvp.presenter.DynamicPresenterImpl;
 import cloud.com.redcircle.ui.widget.ClickShowMoreLayout;
+import cloud.com.redcircle.ui.widget.SuperImageView;
 
 /**
  * Created by 大灯泡 on 2016/2/16.
@@ -35,6 +37,9 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
     protected RelativeLayout contentLayout;
     protected Activity context;
 
+    //顶部
+    protected SuperImageView avatar;
+    protected TextView nick;
     protected ClickShowMoreLayout textField;
 
     @Override
@@ -98,6 +103,8 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
 
     /** 绑定共用部分 */
     private void bindView(View v) {
+        if (avatar == null) avatar = (SuperImageView) v.findViewById(R.id.avatar);
+        if (nick == null) nick = (TextView) v.findViewById(R.id.nick);
         if (contentLayout == null) contentLayout = (RelativeLayout) v.findViewById(R.id.content);
         if (textField == null) textField = (ClickShowMoreLayout) v.findViewById(R.id.item_text_field);
 
@@ -107,8 +114,12 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
     private void bindShareData(JSONObject jsonObject) {
 
         try {
+
+            String urlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + jsonObject.getString("created_by");
             int type = jsonObject.getInt("type");
-            textField.setText(jsonObject.getString("url"));
+            textField.setText(jsonObject.getString("content"));
+            nick.setText(jsonObject.getString("created_by"));
+            avatar.loadImageDefault(urlStr);
 
             if (type == DynamicType.TYPE_ONLY_CHAR) {
                 contentLayout.setVisibility(View.GONE);

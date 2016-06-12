@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cloud.com.redcircle.adapter.FriendCircleAdapter;
+import cloud.com.redcircle.api.HttpRequestHandler;
+import cloud.com.redcircle.api.RedCircleManager;
 import cloud.com.redcircle.interfaces.OnLoadMoreRefreshListener;
 import cloud.com.redcircle.interfaces.OnPullDownRefreshListener;
 import cloud.com.redcircle.mvp.presenter.DynamicPresenterImpl;
@@ -33,7 +36,7 @@ public class MeCircleActivity extends BaseActivity{
     protected FriendCirclePtrListView mListView;
     protected FriendCircleAdapter mAdapter;
     private DynamicPresenterImpl mPresenter;
-    protected List<JSONObject> mMomentsInfos = new ArrayList<>();
+    protected List mMomentsInfos = new ArrayList();
 
 
     @Override
@@ -47,13 +50,49 @@ public class MeCircleActivity extends BaseActivity{
 
         mPresenter = new DynamicPresenterImpl();
 
-
+        String mePhone = null;
         try {
-            JSONObject jsonObject = new JSONObject("{\"url\": \"/x/mobsrv/user/list?sortid=DEPT_CODE&proxy=intrust\", \"type\": \"10\", \"method\": \"get\", \"title\": \"\\u6309\\u90e8\\u95e8\"}");
-            mMomentsInfos.add(jsonObject);
+            mePhone  = mUser.getString("mePhone");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        RedCircleManager.getArticles(this, mePhone, new HttpRequestHandler<JSONArray>() {
+            @Override
+            public void onSuccess(JSONArray data) {
+//                try {
+//                    JSONObject jsonObject = new JSONObject("{\"url\": \"/x/mobsrv/user/list?sortid=DEPT_CODE&proxy=intrust\", \"type\": \"10\", \"method\": \"get\", \"title\": \"\\u6309\\u90e8\\u95e8\"}");
+//                    mMomentsInfos.add(jsonObject);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+                for (int i = 0; i <data.length() ; i++) {
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = data.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    mMomentsInfos.add(jsonObject);
+                }
+
+                mAdapter.notifyDataSetChanged();
+
+
+            }
+
+            @Override
+            public void onSuccess(JSONArray data, int totalPages, int currentPage) {
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        });
+
+
 
         bindListView(R.id.listview, null,
                 FriendCircleAdapterUtil.getAdapter(this, mMomentsInfos, mPresenter));

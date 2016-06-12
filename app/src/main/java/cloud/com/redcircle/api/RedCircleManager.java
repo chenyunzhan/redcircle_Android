@@ -60,9 +60,6 @@ public class RedCircleManager {
 
     public static final String UPLOAD_PHOTO_URL = HTTP_BASE_URL + "/uploadPhoto";
 
-    public static final String ADD_ARTICLE_URL = HTTP_BASE_URL + "/addArticle";
-
-
     public static final String MODIFY_USER_URL = HTTP_BASE_URL + "/modify";
 
     public static final String ADD_FRIEND_URL = HTTP_BASE_URL + "/addFriend";
@@ -72,6 +69,10 @@ public class RedCircleManager {
     public static final String FRIENDS_URL = HTTP_BASE_URL + "/getFriends";
 
     public static final String RONG_CLOUD_KEY_URL = HTTP_BASE_URL + "/getRongCloudToken";
+
+
+    public static final String ADD_ARTICLE_URL = HTTP_BASE_URL + "/addArticle";
+    public static final String ARTICLES_URL = HTTP_BASE_URL + "/getArticles";
 
     private static UserInfo userInfo;
 
@@ -564,6 +565,29 @@ public class RedCircleManager {
         } else {
             Toast.makeText(mContext, "文件不存在", Toast.LENGTH_LONG).show();
         }
+
+    }
+
+    //获取所有朋友
+    public static void getArticles(Context ctx, String mePhone,
+                                     final HttpRequestHandler<JSONArray> handler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        RequestParams params = new RequestParams();
+        params.put("mePhone", mePhone);
+
+        client.get(ctx, ARTICLES_URL, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                SafeHandler.onSuccess(handler, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
 
     }
 }
