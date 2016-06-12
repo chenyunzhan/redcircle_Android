@@ -49,7 +49,7 @@ public class RedCircleManager {
 
     private static AsyncHttpClient sClient = null;
 //    public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-    public static final String HTTP_BASE_URL = "http://192.168.1.102:8080";
+    public static final String HTTP_BASE_URL = "http://192.168.1.100:8080";
 
 //    public static final String HTTP_BASE_URL = "http://10.0.2.2:8080";
 

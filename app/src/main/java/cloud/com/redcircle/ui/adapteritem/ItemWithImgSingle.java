@@ -11,12 +11,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cloud.com.redcircle.R;
 import cloud.com.redcircle.adapter.viewholder.BaseItemDelegate;
+import cloud.com.redcircle.api.RedCircleManager;
 import cloud.com.redcircle.config.DynamicType;
 import cloud.com.redcircle.ui.widget.ForceClickImageView;
 import cloud.com.redcircle.utils.ImgUtil;
@@ -56,9 +59,27 @@ public class ItemWithImgSingle extends BaseItemDelegate {
 
     @Override
     protected void bindData(int position, @NonNull View v, @NonNull JSONObject data, int dynamicType) {
-        final String imgUrl = null;
-//        mUrls.clear();
-//        mUrls.addAll(data.content.imgurl);
+
+
+        String urlStr = null;
+        String[] images = null;
+        List<String> imagesList = new ArrayList<String>();
+        try {
+
+            images = data.getString("images").split("#");
+
+            for (int i = 0; i < images.length ; i++) {
+                imagesList.add(images[i]);
+            }
+
+            urlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + imagesList.get(0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        final String imgUrl = urlStr;
+        mUrls.clear();
+        mUrls.addAll(imagesList);
         if (!TextUtils.isEmpty(imgUrl)) {
             Glide.with(context).load(imgUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
                 @Override
