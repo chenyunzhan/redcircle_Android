@@ -21,7 +21,7 @@
             />
 
     </RelativeLayout>
-    <!--<include layout="@layout/include_item_bottom"/>-->
+    <include layout="@layout/include_item_bottom"/>
     <!--点赞控件/评论控件-->
 
 </LinearLayout>

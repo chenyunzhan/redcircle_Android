@@ -49,7 +49,7 @@ public class RedCircleManager {
 
     private static AsyncHttpClient sClient = null;
 //    public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-    public static final String HTTP_BASE_URL = "http://192.168.1.100:8080";
+    public static final String HTTP_BASE_URL = "http://192.168.1.102:8080";
 
 //    public static final String HTTP_BASE_URL = "http://10.0.2.2:8080";
 
@@ -508,7 +508,7 @@ public class RedCircleManager {
         File thumbnailFile = new File(mContext.getExternalCacheDir()+"/thumbnail");
 
 
-        if (sourceList.length>0 && thumbList.length > 0) {
+//        if (sourceList.length>0 && thumbList.length > 0) {
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();
             params.put("mePhone", mePhone);
@@ -562,19 +562,20 @@ public class RedCircleManager {
                 }
 
             });
-        } else {
-            Toast.makeText(mContext, "文件不存在", Toast.LENGTH_LONG).show();
-        }
+//        } else {
+//            Toast.makeText(mContext, "文件不存在", Toast.LENGTH_LONG).show();
+//        }
 
     }
 
     //获取所有朋友
-    public static void getArticles(Context ctx, String mePhone,
+    public static void getArticles(Context ctx, String mePhone, String circleLevel,
                                      final HttpRequestHandler<JSONArray> handler) {
         AsyncHttpClient client = new AsyncHttpClient();
 
         RequestParams params = new RequestParams();
         params.put("mePhone", mePhone);
+        params.put("circleLevel",circleLevel);
 
         client.get(ctx, ARTICLES_URL, params, new JsonHttpResponseHandler() {
             @Override

@@ -42,6 +42,12 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
     protected TextView nick;
     protected ClickShowMoreLayout textField;
 
+    //底部
+    protected TextView createTime;
+
+    private DynamicPresenterImpl mPresenter;
+
+
     @Override
     public void onChildViewAdded(View parent, View child) {
 
@@ -82,12 +88,12 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
 
     @Override
     public void setPresenter(DynamicPresenterImpl presenter) {
-
+        this.mPresenter = presenter;
     }
 
     @Override
     public DynamicPresenterImpl getPresenter() {
-        return null;
+        return mPresenter;
     }
 
     @Override
@@ -107,6 +113,7 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
         if (nick == null) nick = (TextView) v.findViewById(R.id.nick);
         if (contentLayout == null) contentLayout = (RelativeLayout) v.findViewById(R.id.content);
         if (textField == null) textField = (ClickShowMoreLayout) v.findViewById(R.id.item_text_field);
+        if (createTime == null) createTime = (TextView) v.findViewById(R.id.create_time);
 
     }
 
@@ -120,6 +127,7 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
             textField.setText(jsonObject.getString("content"));
             nick.setText(jsonObject.getString("created_by"));
             avatar.loadImageDefault(urlStr);
+            createTime.setText(jsonObject.getString("created_at"));
 
             if (type == DynamicType.TYPE_ONLY_CHAR) {
                 contentLayout.setVisibility(View.GONE);

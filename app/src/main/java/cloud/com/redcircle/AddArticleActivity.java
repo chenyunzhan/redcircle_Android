@@ -1,5 +1,6 @@
 package cloud.com.redcircle;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -207,17 +208,24 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
 
 
     private  void addArticle() {
-        File[] sourceList = new File[this.items.size()];
-        File[] thumbList = new File[this.items.size()];
-
-        for (int i=0; i<this.items.size(); i++) {
-            ImageItem item = items.get(i);
-            List list = this.generateFile(item.path);
-            sourceList[i] = (File) list.get(0);
-            thumbList[i] = (File) list.get(1);
+        File[] sourceList = new File[0];
+        File[] thumbList = new File[0];
 
 
+        if (this.items != null && this.items.size() > 0) {
+            sourceList = new File[this.items.size()];
+            thumbList = new File[this.items.size()];
+
+
+            for (int i=0; i<this.items.size(); i++) {
+                ImageItem item = items.get(i);
+                List list = this.generateFile(item.path);
+                sourceList[i] = (File) list.get(0);
+                thumbList[i] = (File) list.get(1);
+
+            }
         }
+
 
 
         try {
@@ -226,7 +234,8 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
             RedCircleManager.addArticle(this, sourceList, thumbList, mePhone, this.editText.getText().toString(), new HttpRequestHandler<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject data) {
-
+                    setResult(Activity.RESULT_OK);
+                    finish();
                 }
 
                 @Override

@@ -61,25 +61,28 @@ public class ItemWithImgSingle extends BaseItemDelegate {
     protected void bindData(int position, @NonNull View v, @NonNull JSONObject data, int dynamicType) {
 
 
-        String urlStr = null;
         String[] images = null;
         List<String> imagesList = new ArrayList<String>();
+        List<String> originalImagesList = new ArrayList<String>();
+
+
         try {
-
             images = data.getString("images").split("#");
-
             for (int i = 0; i < images.length ; i++) {
-                imagesList.add(images[i]);
-            }
 
-            urlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + imagesList.get(0);
+                String urlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + images[i] + "&type=thumbnail";
+                String originalUrlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + images[i];
+
+                imagesList.add(urlStr);
+                originalImagesList.add(originalUrlStr);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        final String imgUrl = urlStr;
+        final String imgUrl = imagesList.get(0);
         mUrls.clear();
-        mUrls.addAll(imagesList);
+        mUrls.addAll(originalImagesList);
         if (!TextUtils.isEmpty(imgUrl)) {
             Glide.with(context).load(imgUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
                 @Override
@@ -117,7 +120,7 @@ public class ItemWithImgSingle extends BaseItemDelegate {
                 mRects.clear();
                 mRects.add(0,bound);
                 int pos=0;
-//                getPresenter().shoPhoto(mUrls,mRects,pos);
+                getPresenter().shoPhoto(mUrls,mRects,pos);
                 break;
         }
     }
