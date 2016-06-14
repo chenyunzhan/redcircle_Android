@@ -33,6 +33,7 @@ import java.util.Locale;
 import cloud.com.redcircle.AddFriendActivity;
 import cloud.com.redcircle.R;
 import cloud.com.redcircle.RegisterActivity;
+import cloud.com.redcircle.UserDetailActivity;
 import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
 import cloud.com.redcircle.ui.ButtonAwesome;
@@ -372,6 +373,9 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
 
             JSONObject friend = null;
 
+            JSONObject me = null;
+
+
 
             int index = 0;
             for (int i = 0; i < mData.length(); i++) {
@@ -379,9 +383,13 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
                 if (friend != null) {
                     break;
                 }
-
+                //一个朋友圈
                 JSONObject ffriends = mData.getJSONObject(i);
+                //朋友圈的人员
                 JSONArray friends = ffriends.getJSONArray("ffriend");
+                //谁的朋友圈
+                me = ffriends.getJSONObject("friend");
+
 
                 index ++;
                 for (int j = 0; j < friends.length(); j++) {
@@ -396,26 +404,39 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
                 }
             }
 
+            //当朋友圈为当前用户的朋友圈时
+            if (me.getString("friendPhone").equals(mUser.getString("mePhone"))) {
 
-            if (friend != null) {
+                if(friend.getString("recommendLanguage").length() > 0) {
 
-                //启动会话界面
-                if (RongIM.getInstance() != null) {
-
-                    String itemTitle = null;
-                    if (friend.getString("name").length()> 0) {
-                        itemTitle = friend.getString("name");
-                    } else {
-                        itemTitle = friend.getString("mePhone");
-                    }
-
-                    RongIM.getInstance().startPrivateChat(this.getActivity(), friend.getString("mePhone"), itemTitle);
-
-                    Toast.makeText(this.getActivity(), "Item " + position + ": " + friend.getString("mePhone"), Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(this.getActivity(), UserDetailActivity.class);
+                    intent.putExtra("friendPhone",friend.getString("friendPhone"));
+                    startActivity(intent);
                 }
-            } else {
-                Toast.makeText(this.getActivity(), "Item " + position, Toast.LENGTH_SHORT).show();
+
             }
+
+
+//            if (friend != null) {
+//
+//                //启动会话界面
+//                if (RongIM.getInstance() != null) {
+//
+//                    String itemTitle = null;
+//                    if (friend.getString("name").length()> 0) {
+//                        itemTitle = friend.getString("name");
+//                    } else {
+//                        itemTitle = friend.getString("mePhone");
+//                    }
+//
+//                    RongIM.getInstance().startPrivateChat(this.getActivity(), friend.getString("mePhone"), itemTitle);
+//
+//                    Toast.makeText(this.getActivity(), "Item " + position + ": " + friend.getString("mePhone"), Toast.LENGTH_SHORT).show();
+//                }
+//            } else {
+//                Toast.makeText(this.getActivity(), "Item " + position, Toast.LENGTH_SHORT).show();
+//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

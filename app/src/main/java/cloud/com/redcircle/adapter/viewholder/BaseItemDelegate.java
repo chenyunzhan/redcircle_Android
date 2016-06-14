@@ -125,7 +125,11 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
             String urlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + jsonObject.getString("created_by");
             int type = jsonObject.getInt("type");
             textField.setText(jsonObject.getString("content"));
-            nick.setText(jsonObject.getString("created_by"));
+            if(jsonObject.getString("name").length() > 0) {
+                nick.setText(jsonObject.getString("name"));
+            } else {
+                nick.setText(jsonObject.getString("created_by"));
+            }
             avatar.loadImageDefault(urlStr);
             createTime.setText(jsonObject.getString("created_at"));
 

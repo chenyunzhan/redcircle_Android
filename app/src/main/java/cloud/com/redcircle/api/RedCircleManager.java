@@ -569,13 +569,15 @@ public class RedCircleManager {
     }
 
     //获取所有朋友
-    public static void getArticles(Context ctx, String mePhone, String circleLevel,
+    public static void getArticles(Context ctx, String mePhone, String circleLevel, String startNoStr,
                                      final HttpRequestHandler<JSONArray> handler) {
         AsyncHttpClient client = new AsyncHttpClient();
 
         RequestParams params = new RequestParams();
         params.put("mePhone", mePhone);
         params.put("circleLevel",circleLevel);
+        params.put("startNo",startNoStr);
+
 
         client.get(ctx, ARTICLES_URL, params, new JsonHttpResponseHandler() {
             @Override

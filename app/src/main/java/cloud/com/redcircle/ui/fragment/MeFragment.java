@@ -74,7 +74,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, An
             RelativeLayout sexCell = (RelativeLayout)rootView.findViewById(R.id.sex_layout);
             RelativeLayout photoCell = (RelativeLayout)rootView.findViewById(R.id.photo_layout);
             RelativeLayout meCircleCell = (RelativeLayout)rootView.findViewById(R.id.me_circle_layout);
-            RelativeLayout FriendCircleCell = (RelativeLayout)rootView.findViewById(R.id.friend_circle_layout);
+            RelativeLayout friendCircleCell = (RelativeLayout)rootView.findViewById(R.id.friend_circle_layout);
+            RelativeLayout redCircleCell = (RelativeLayout)rootView.findViewById(R.id.red_circle_layout);
+
 
 
 
@@ -84,7 +86,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, An
             sexCell.setOnClickListener(this);
             photoCell.setOnClickListener(this);
             meCircleCell.setOnClickListener(this);
-            FriendCircleCell.setOnClickListener(this);
+            friendCircleCell.setOnClickListener(this);
+            redCircleCell.setOnClickListener(this);
 
             initData();
 
@@ -183,6 +186,11 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, An
                 break;
             case R.id.friend_circle_layout:
                 bundle.putString("circle_level","1");
+                intent3.putExtras(bundle);
+                startActivityForResult(intent3,0);
+                break;
+            case R.id.red_circle_layout:
+                bundle.putString("circle_level","2");
                 intent3.putExtras(bundle);
                 startActivityForResult(intent3,0);
                 break;

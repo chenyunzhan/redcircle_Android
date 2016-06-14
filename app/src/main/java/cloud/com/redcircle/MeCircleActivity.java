@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +25,7 @@ import java.util.List;
 import cloud.com.redcircle.adapter.FriendCircleAdapter;
 import cloud.com.redcircle.api.HttpRequestHandler;
 import cloud.com.redcircle.api.RedCircleManager;
+import cloud.com.redcircle.config.PullMode;
 import cloud.com.redcircle.interfaces.OnLoadMoreRefreshListener;
 import cloud.com.redcircle.interfaces.OnPullDownRefreshListener;
 import cloud.com.redcircle.mvp.presenter.DynamicPresenterImpl;
@@ -48,7 +50,7 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
     protected List mMomentsInfos = new ArrayList();
     private  Menu mMenu;
     private String circleLevel;
-
+    private int startNO;
     //图片浏览的pager
     private PhotoPagerManager mPhotoPagerManager;
 
@@ -56,7 +58,6 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setTitle("相册");
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -64,6 +65,16 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
 
         mPresenter = new DynamicPresenterImpl(this);
 
+        Bundle bundle = this.getIntent().getExtras();
+        circleLevel=bundle.getString("circle_level");
+
+        if("0".equals(circleLevel)) {
+            setTitle("相册");
+        } else if("1".equals(circleLevel)) {
+            setTitle("朋友圈");
+        } else if("2".equals(circleLevel)) {
+            setTitle("红圈");
+        }
 
         getArticles();
 
@@ -74,8 +85,7 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
         mPhotoPagerManager = PhotoPagerManager.create(this, (HackyViewPager) findViewById(R.id.photo_pager),
                 findViewById(R.id.photo_container), (DotIndicator) findViewById(R.id.dot_indicator));
 
-        Intent intent = this.getIntent();
-        circleLevel=intent.getStringExtra("circle_level");
+
     }
 
     @Override
@@ -106,6 +116,7 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
+            mMomentsInfos.clear();
             getArticles();
         }
     }
@@ -116,7 +127,6 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
         mListView = (FriendCirclePtrListView) findViewById(listResId);
 //        mListView.setRotateIcon(bindRefreshIcon());
         if (headerView != null) mListView.addHeaderView(headerView);
-        mListView.setAdapter(adapter);
 
         mListView.setOnPullDownRefreshListener(new OnPullDownRefreshListener() {
             @Override
@@ -130,16 +140,25 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
                 onLoadMore();
             }
         });
+
+        mListView.setHasMore(true);
+        mListView.setAdapter(adapter);
+
     }
 
     public void onPullDownRefresh() {
-//        mCircleRequest.setStart(0);
-//        mCircleRequest.execute();
+        this.startNO = 0;
+        this.getArticles();
+
     }
 
     public void onLoadMore() {
-//        mCircleRequest.execute();
+        this.getArticles();
     }
+
+//    public ImageView bindRefreshIcon() {
+//        return (ImageView) findViewById(R.id.rotate_icon);
+//    }
 
     @Override
     public void showPhoto(@NonNull ArrayList<String> photoAddress, @NonNull ArrayList<Rect> originViewBounds, int curSelectedPos) {
@@ -169,16 +188,25 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
             e.printStackTrace();
         }
 
-        RedCircleManager.getArticles(this, mePhone, circleLevel, new HttpRequestHandler<JSONArray>() {
+        RedCircleManager.getArticles(this, mePhone, circleLevel, String.valueOf(startNO), new HttpRequestHandler<JSONArray>() {
             @Override
             public void onSuccess(JSONArray data) {
+
+                startNO += 10;
 //                try {
 //                    JSONObject jsonObject = new JSONObject("{\"url\": \"/x/mobsrv/user/list?sortid=DEPT_CODE&proxy=intrust\", \"type\": \"10\", \"method\": \"get\", \"title\": \"\\u6309\\u90e8\\u95e8\"}");
 //                    mMomentsInfos.add(jsonObject);
 //                } catch (JSONException e) {
 //                    e.printStackTrace();
 //                }
-                mMomentsInfos.clear();
+
+                if (mListView != null && mListView.getCurMode() == PullMode.FROM_START) {
+                    mMomentsInfos.clear();
+                }
+
+                if (mListView != null && mListView.getCurMode() == PullMode.FROM_BOTTOM) {
+                    mListView.loadmoreCompelete();
+                }
 
                 for (int i = 0; i <data.length() ; i++) {
                     JSONObject jsonObject = null;
@@ -190,6 +218,9 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
                     mMomentsInfos.add(jsonObject);
                 }
 
+
+
+                mListView.refreshComplete();
                 mAdapter.notifyDataSetChanged();
 
 
