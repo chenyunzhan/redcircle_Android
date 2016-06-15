@@ -1,5 +1,6 @@
 package cloud.com.redcircle;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -114,6 +115,22 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
 
     }
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (resultCode == Activity.RESULT_OK) {
+//
+//            switch (requestCode) {
+//                case 0:
+//                    vpager.getAdapter().notifyDataSetChanged();
+//                    break;
+//                default:
+//                    break;
+//            }
+//
+//
+//        }
+//    }
 
     private void bindViews() {
         rg_tab_bar = (RadioGroup) findViewById(R.id.rg_tab_bar);

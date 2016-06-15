@@ -58,9 +58,13 @@ public class RedCircleManager {
 
     public static final String LOGIN_IN_URL = HTTP_BASE_URL + "/login";
 
+    public static final String USER_RELATION_URL = HTTP_BASE_URL + "/userDetail";
+
     public static final String UPLOAD_PHOTO_URL = HTTP_BASE_URL + "/uploadPhoto";
 
     public static final String MODIFY_USER_URL = HTTP_BASE_URL + "/modify";
+
+    public static final String MODIFY_DETAIL_USER_URL = HTTP_BASE_URL + "/modifyDetail";
 
     public static final String ADD_FRIEND_URL = HTTP_BASE_URL + "/addFriend";
 
@@ -222,6 +226,31 @@ public class RedCircleManager {
     }
 
 
+
+
+    public static void modifyDetailUser(final Context cxt, final String mePhone, final String friendPhone, final String value, final HttpRequestHandler<JSONObject> handler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        StringEntity entity = new StringEntity("{\"mePhone\":\"" + mePhone + "\", \"friendPhone\":\"" + friendPhone + "\", \"recommendLanguage\":\"" + value + "\"}", "UTF-8");;
+
+
+        client.post(cxt, MODIFY_DETAIL_USER_URL, entity, "application/json", new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                SafeHandler.onSuccess(handler, response);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+
+            }
+        });
+    }
+
     /**
      * @param userId
      * @return
@@ -272,6 +301,37 @@ public class RedCircleManager {
 //
 //        return null;
 
+
+    }
+
+
+
+    /**
+     * @param mePhone
+     * @Param friendPhone
+     * @return
+     */
+    public static void getUserRelationById(final Context ctx, final String mePhone, final String friendPhone, final HttpRequestHandler<JSONObject> handler) {
+
+
+        StringEntity entity = new StringEntity("{\"mePhone\":\"" + mePhone +"\", \"friendPhone\":\"" + friendPhone +"\"}","UTF-8");
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+
+        client.post(ctx,USER_RELATION_URL,entity,"application/json", new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                SafeHandler.onSuccess(handler, response);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
 
     }
 

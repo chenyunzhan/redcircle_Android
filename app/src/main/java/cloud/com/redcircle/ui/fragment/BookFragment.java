@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import cloud.com.redcircle.AddFriendActivity;
+import cloud.com.redcircle.ModifyMeFriendActivity;
 import cloud.com.redcircle.R;
 import cloud.com.redcircle.RegisterActivity;
 import cloud.com.redcircle.UserDetailActivity;
@@ -408,11 +409,14 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
             if (me.getString("friendPhone").equals(mUser.getString("mePhone"))) {
 
                 if(friend.getString("recommendLanguage").length() > 0) {
-
-                } else {
                     Intent intent = new Intent(this.getActivity(), UserDetailActivity.class);
-                    intent.putExtra("friendPhone",friend.getString("friendPhone"));
+                    intent.putExtra("friendPhone",friend.getString("mePhone"));
                     startActivity(intent);
+                } else {
+                    Intent intent = new Intent(this.getActivity(), ModifyMeFriendActivity.class);
+                    intent.putExtra("friendPhone",friend.getString("mePhone"));
+                    intent.putExtra("mePhone",mUser.getString("mePhone"));
+                    startActivityForResult(intent,0);
                 }
 
             }
