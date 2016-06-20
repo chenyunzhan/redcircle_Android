@@ -30,6 +30,7 @@ import cloud.com.redcircle.interfaces.OnLoadMoreRefreshListener;
 import cloud.com.redcircle.interfaces.OnPullDownRefreshListener;
 import cloud.com.redcircle.mvp.presenter.DynamicPresenterImpl;
 import cloud.com.redcircle.mvp.view.DynamicView;
+import cloud.com.redcircle.ui.fragment.BookFragment;
 import cloud.com.redcircle.ui.widget.DotIndicator;
 import cloud.com.redcircle.ui.widget.HackyViewPager;
 import cloud.com.redcircle.ui.widget.ptrwidget.FriendCirclePtrListView;
@@ -51,8 +52,13 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
     private  Menu mMenu;
     private String circleLevel;
     private int startNO;
+    private Boolean isShowPhoto;
     //图片浏览的pager
     private PhotoPagerManager mPhotoPagerManager;
+
+
+    private String mePhone;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +82,23 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
             setTitle("红圈");
         }
 
+        if (this.mePhone == null) {
+            this.mePhone=bundle.getString("mePhone");
+
+        }
+
+        if (this.mePhone == null) {
+            try {
+                mePhone  = mUser.getString("mePhone");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        isShowPhoto = false;
+
+
+
         getArticles();
 
 
@@ -90,9 +113,14 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        mMenu = menu;
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_add_new_event, menu);
+        Bundle bundle = this.getIntent().getExtras();
+
+        if (bundle.getString("mePhone") == null ) {
+            mMenu = menu;
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_add_new_event, menu);
+        }
+
         return true;
     }
 
@@ -116,6 +144,7 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
+            this.startNO = 0;
             mMomentsInfos.clear();
             getArticles();
         }
@@ -147,6 +176,7 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
     }
 
     public void onPullDownRefresh() {
+
         this.startNO = 0;
         this.getArticles();
 
@@ -167,26 +197,24 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
         hiddenEditMenu();
+        isShowPhoto = true;
     }
 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 && isShowPhoto){
             mPhotoPagerManager.dismiss();
+            isShowPhoto = false;
             return true;
         }
+        this.finish();
         return false;
     }
 
 
     public void getArticles() {
-        String mePhone = null;
-        try {
-            mePhone  = mUser.getString("mePhone");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
 
         RedCircleManager.getArticles(this, mePhone, circleLevel, String.valueOf(startNO), new HttpRequestHandler<JSONArray>() {
             @Override
@@ -199,6 +227,10 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
 //                } catch (JSONException e) {
 //                    e.printStackTrace();
 //                }
+
+                if(data.length() == 0) {
+                    mListView.setHasMore(false);
+                }
 
                 if (mListView != null && mListView.getCurMode() == PullMode.FROM_START) {
                     mMomentsInfos.clear();

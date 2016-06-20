@@ -52,7 +52,8 @@ public class UserDetailActivity extends BaseActivity implements View.OnClickList
 
         Intent intent = getIntent();
         this.friendPhone = intent.getStringExtra("friendPhone");
-        String mePhone = null;
+        this.mePhone = intent.getStringExtra("mePhone");
+
 
 
         nameTextView = (TextView) findViewById(R.id.txt_fragment_user_name);
@@ -69,13 +70,7 @@ public class UserDetailActivity extends BaseActivity implements View.OnClickList
         dialMobileButton.setOnClickListener(this);
         seePhotoLinearLayout.setOnClickListener(this);
         addRecommandLayout.setOnClickListener(this);
-
-        try {
-            mePhone = mUser.getString("mePhone");
-            this.mePhone = mePhone;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        photoImageView.setOnClickListener(this);
 
         this.initData();
 
@@ -135,9 +130,8 @@ public class UserDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.dial_mobile_btn:
 
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + this.friendPhone));
+
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    startActivity(intent);
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -146,16 +140,45 @@ public class UserDetailActivity extends BaseActivity implements View.OnClickList
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
                     return;
+                } else {
+
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + this.friendPhone));
+                    startActivity(intent);
                 }
+
 
                 break;
             case R.id.add_recommand_language_layout:
-                Intent intent2 = new Intent(this, ModifyMeFriendActivity.class);
-                intent2.putExtra("friendPhone",this.friendPhone);
-                intent2.putExtra("mePhone",this.mePhone);
-                startActivityForResult(intent2,0);
+
+                try {
+                    if (this.mePhone.equals(mUser.getString("mePhone"))) {
+
+                        Intent intent2 = new Intent(this, ModifyMeFriendActivity.class);
+                        intent2.putExtra("friendPhone",this.friendPhone);
+                        intent2.putExtra("mePhone",this.mePhone);
+                        startActivityForResult(intent2,0);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
                 break;
+
+            case R.id.see_photp_layout:
+                Intent intent3 = new Intent(this, MeCircleActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("circle_level","0");
+                bundle.putString("mePhone",this.friendPhone);
+                intent3.putExtras(bundle);
+                startActivityForResult(intent3,0);
+                break;
+
+            case R.id.header_logo_fragment_user:
+                Intent intent4 = new Intent(this, PhotoActivity.class);
+                Uri uri = Uri.parse((RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + this.friendPhone) + "&type=original&random=" + Math.random());
+                intent4.putExtra("photo", uri);
+                startActivity(intent4);
 
         }
     }
@@ -178,7 +201,7 @@ public class UserDetailActivity extends BaseActivity implements View.OnClickList
                             phoneTextView.setText(data.getString("me_phone"));
                             recommandLanguageView.setText(data.getString("recommend_language"));
                             ImageLoader imageLoader = ImageLoader.getInstance(); // Get singleton instance
-                            imageLoader.displayImage(RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + mUser.getString("mePhone"), photoImageView);
+                            imageLoader.displayImage(RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + data.getString("me_phone") + "&type=thumbnail", photoImageView);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

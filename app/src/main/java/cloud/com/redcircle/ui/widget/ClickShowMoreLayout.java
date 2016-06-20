@@ -3,6 +3,7 @@ package cloud.com.redcircle.ui.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,10 @@ public class ClickShowMoreLayout extends LinearLayout implements View.OnClickLis
     }
 
     private void initView(Context context) {
+
+
         mTextView=new TextView(context);
+        mTextView.setAutoLinkMask(Linkify.ALL);
         mClickToShow=new TextView(context);
 
         mTextView.setTextSize(textSize);

@@ -167,7 +167,7 @@ public class RongCloudEvent implements RongIM.UserInfoProvider, RongIM.Conversat
 
                 Intent intent = new Intent(context, PhotoActivity.class);
 
-                Uri uri = Uri.parse((RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + userInfo.getUserId() + "&type=original"));
+                Uri uri = Uri.parse((RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + userInfo.getUserId() + "&type=original&random=" + Math.random()));
 
                 intent.putExtra("photo", uri);
 //                if (imageMessage.getThumUri() != null)

@@ -129,6 +129,7 @@
         <item>@drawable/u1f601</item>
         <item>@drawable/u1f680</item>
         <item>@drawable/u23f3</item>
+        <item>@drawable/u23f4</item>
     </array>
 
     <integer-array name="rc_emoji_code">
@@ -260,5 +261,6 @@
             <item>0x1f601</item>
             <item>0x1f680</item>
             <item>0x23f3</item>
+            <item>0x23f4</item>
         </integer-array>
 </resources>

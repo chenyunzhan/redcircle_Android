@@ -105,7 +105,7 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
                     } else {
                         sectionTitle = friend.getString("friendPhone") + "的朋友圈";
                     }
-                    Item section = new Item(Item.SECTION, sectionTitle, "");
+                    Item section = new Item(Item.SECTION, sectionTitle, "", "");
                     section.sectionPosition = sectionPosition;
                     section.listPosition = listPosition++;
                     onSectionAdded(section, sectionPosition);
@@ -116,12 +116,19 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
                     for (int j=0;j<itemsNumber;j++) {
                         JSONObject ffriend = friends.getJSONObject(j);
                         String itemTitle = null;
+                        String recommendLanguage = new String();
+
                         if (ffriend.getString("name").length()> 0) {
                             itemTitle = ffriend.getString("name");
                         } else {
                             itemTitle = ffriend.getString("mePhone");
                         }
-                        Item item = new Item(Item.ITEM, itemTitle, ffriend.getString("intimacy"));
+
+                        if (ffriend.getString("recommendLanguage").length() > 0) {
+                            recommendLanguage =  "(" + ffriend.getString("recommendLanguage") + ")";
+                        }
+
+                        Item item = new Item(Item.ITEM, itemTitle, ffriend.getString("intimacy"), recommendLanguage);
                         item.sectionPosition = sectionPosition;
                         item.listPosition = listPosition++;
                         add(item);
@@ -148,7 +155,7 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
 
             int sectionPosition = 0, listPosition = 0;
             for (char i=0; i<sectionsNumber; i++) {
-                Item section = new Item(Item.SECTION, String.valueOf((char)('A' + i)), "");
+                Item section = new Item(Item.SECTION, String.valueOf((char)('A' + i)), "", "");
                 section.sectionPosition = sectionPosition;
                 section.listPosition = listPosition++;
                 onSectionAdded(section, sectionPosition);
@@ -156,7 +163,7 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
 
                 final int itemsNumber = (int) Math.abs((Math.cos(2f*Math.PI/3f * sectionsNumber / (i+1f)) * 25f));
                 for (int j=0;j<itemsNumber;j++) {
-                    Item item = new Item(Item.ITEM, section.text.toUpperCase(Locale.ENGLISH) + " - " + j, "");
+                    Item item = new Item(Item.ITEM, section.text.toUpperCase(Locale.ENGLISH) + " - " + j, "", "");
                     item.sectionPosition = sectionPosition;
                     item.listPosition = listPosition++;
                     add(item);
@@ -197,10 +204,11 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
             TextView nameTxt = (TextView)userListItem.findViewById(R.id.text1);
             TextView intimacyTxt = (TextView)userListItem.findViewById(R.id.text2);
             ButtonAwesome buttonAwesome = (ButtonAwesome)userListItem.findViewById(R.id.tvThumb);
-
+            TextView recommandLanguageTxt = (TextView)userListItem.findViewById(R.id.recommand_language_txt);
 
             nameTxt.setText(item.text);
             intimacyTxt.setText(item.intimacy);
+            recommandLanguageTxt.setText(item.recommandLanguage);
 
 
             if (item.type == Item.SECTION) {
@@ -272,14 +280,17 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
         public final int type;
         public final String text;
         public final String intimacy;
+        public final String recommandLanguage;
+
 
         public int sectionPosition;
         public int listPosition;
 
-        public Item(int type, String text, String intimacy) {
+        public Item(int type, String text, String intimacy, String recommandLanguage) {
             this.type = type;
             this.text = text;
             this.intimacy = intimacy;
+            this.recommandLanguage = recommandLanguage;
         }
 
         @Override public String toString() {
@@ -411,6 +422,8 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
                 if(friend.getString("recommendLanguage").length() > 0) {
                     Intent intent = new Intent(this.getActivity(), UserDetailActivity.class);
                     intent.putExtra("friendPhone",friend.getString("mePhone"));
+                    intent.putExtra("mePhone",me.getString("friendPhone"));
+
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(this.getActivity(), ModifyMeFriendActivity.class);
@@ -419,6 +432,12 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
                     startActivityForResult(intent,0);
                 }
 
+            } else {
+                Intent intent = new Intent(this.getActivity(), UserDetailActivity.class);
+                intent.putExtra("friendPhone",friend.getString("mePhone"));
+                intent.putExtra("mePhone",me.getString("friendPhone"));
+
+                startActivity(intent);
             }
 
 

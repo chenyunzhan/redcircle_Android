@@ -33,7 +33,8 @@ public class ModifyMeFriendActivity extends BaseActivity {
 
 
         editText = (EditText)findViewById(R.id.edit_text);
-        editText.setHint("请用一句语来描述朋友和你的关系及推荐语");
+        editText.setTextSize(12);
+        editText.setHint("请用一句话来描述朋友和你的关系及推荐语");
 
 
     }

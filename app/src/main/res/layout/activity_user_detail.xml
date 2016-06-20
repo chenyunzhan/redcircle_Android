@@ -93,115 +93,115 @@
 
         <include layout="@layout/divide_1_12" />
 
-        <LinearLayout
-            android:id="@+id/github_layout"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:background="@drawable/common_item_click_selector"
-            android:gravity="center_vertical"
-            android:paddingLeft="15sp"
-            android:paddingRight="15sp">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/github_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="36dp"-->
+            <!--android:background="@drawable/common_item_click_selector"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:paddingLeft="15sp"-->
+            <!--android:paddingRight="15sp">-->
 
-            <cloud.com.redcircle.ui.ButtonAwesome
-                android:layout_marginRight="15dp"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:text="@string/fa_map_marker"
-                android:textColor="@color/gray_b2"
-                android:gravity="center"
-                android:paddingTop="6px"
-                android:layout_centerVertical="true"
-                android:focusable="false"
-                android:background="@android:color/transparent"
-                android:textSize="15sp" />
+            <!--<cloud.com.redcircle.ui.ButtonAwesome-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:text="@string/fa_map_marker"-->
+                <!--android:textColor="@color/gray_b2"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingTop="6px"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:focusable="false"-->
+                <!--android:background="@android:color/transparent"-->
+                <!--android:textSize="15sp" />-->
 
-            <TextView
-                android:id="@+id/title_github_account"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="#222222"
-                android:textSize="16sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/title_github_account"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:ellipsize="end"-->
+                <!--android:singleLine="true"-->
+                <!--android:textColor="#222222"-->
+                <!--android:textSize="16sp" />-->
 
-            <include layout="@layout/list_item_common_arrow" />
+            <!--<include layout="@layout/list_item_common_arrow" />-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
-        <include layout="@layout/divide_1_12" />
+        <!--<include layout="@layout/divide_1_12" />-->
 
-        <LinearLayout
-            android:id="@+id/homepage_layout"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:background="@drawable/common_item_click_selector"
-            android:gravity="center_vertical"
-            android:paddingLeft="15sp"
-            android:paddingRight="15sp">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/homepage_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="36dp"-->
+            <!--android:background="@drawable/common_item_click_selector"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:paddingLeft="15sp"-->
+            <!--android:paddingRight="15sp">-->
 
-            <cloud.com.redcircle.ui.ButtonAwesome
-                android:layout_marginRight="15dp"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:text="@string/fa_heartbeat"
-                android:textColor="@color/gray_b2"
-                android:gravity="center"
-                android:paddingTop="6px"
-                android:layout_centerVertical="true"
-                android:focusable="false"
-                android:background="@android:color/transparent"
-                android:textSize="15sp" />
+            <!--<cloud.com.redcircle.ui.ButtonAwesome-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:text="@string/fa_heartbeat"-->
+                <!--android:textColor="@color/gray_b2"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingTop="6px"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:focusable="false"-->
+                <!--android:background="@android:color/transparent"-->
+                <!--android:textSize="15sp" />-->
 
-            <TextView
-                android:id="@+id/title_homepage"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="#222222"
-                android:textSize="16sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/title_homepage"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:ellipsize="end"-->
+                <!--android:singleLine="true"-->
+                <!--android:textColor="#222222"-->
+                <!--android:textSize="16sp" />-->
 
-            <include layout="@layout/list_item_common_arrow" />
+            <!--<include layout="@layout/list_item_common_arrow" />-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
-        <include layout="@layout/divide_1_12" />
+        <!--<include layout="@layout/divide_1_12" />-->
 
-        <LinearLayout
-            android:id="@+id/location_layout"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:gravity="center_vertical"
-            android:background="@drawable/common_item_click_selector"
-            android:paddingLeft="15sp"
-            android:paddingRight="15sp">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/location_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="36dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:background="@drawable/common_item_click_selector"-->
+            <!--android:paddingLeft="15sp"-->
+            <!--android:paddingRight="15sp">-->
 
-            <cloud.com.redcircle.ui.ButtonAwesome
-                android:layout_marginRight="15dp"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:text="@string/fa_heartbeat"
-                android:textColor="@color/gray_b2"
-                android:gravity="center"
-                android:paddingTop="6px"
-                android:layout_centerVertical="true"
-                android:focusable="false"
-                android:background="@android:color/transparent"
-                android:textSize="15sp" />
+            <!--<cloud.com.redcircle.ui.ButtonAwesome-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:text="@string/fa_heartbeat"-->
+                <!--android:textColor="@color/gray_b2"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingTop="6px"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:focusable="false"-->
+                <!--android:background="@android:color/transparent"-->
+                <!--android:textSize="15sp" />-->
 
-            <TextView
-                android:id="@+id/title_location"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="#222222"
-                android:textSize="16sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/title_location"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:ellipsize="end"-->
+                <!--android:singleLine="true"-->
+                <!--android:textColor="#222222"-->
+                <!--android:textSize="16sp" />-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
         <include layout="@layout/divide_15_top_bottom" />
 
@@ -235,7 +235,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="#222222"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
 
         <include layout="@layout/list_item_common_arrow" />
 

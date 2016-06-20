@@ -70,7 +70,7 @@ public class ItemWithImgSingle extends BaseItemDelegate {
             images = data.getString("images").split("#");
             for (int i = 0; i < images.length ; i++) {
 
-                String urlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + images[i] + "&type=thumbnail";
+                String urlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + images[i] + "&type=thumbnail&random=" + Math.random();
                 String originalUrlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + images[i];
 
                 imagesList.add(urlStr);
@@ -80,7 +80,7 @@ public class ItemWithImgSingle extends BaseItemDelegate {
             e.printStackTrace();
         }
 
-        final String imgUrl = imagesList.get(0);
+        final String imgUrl = originalImagesList.get(0);
         mUrls.clear();
         mUrls.addAll(originalImagesList);
         if (!TextUtils.isEmpty(imgUrl)) {
