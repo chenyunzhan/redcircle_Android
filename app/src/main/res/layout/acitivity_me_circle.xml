@@ -29,6 +29,7 @@
 
     </FrameLayout>
 
+    <include layout="@layout/include_input_layout"/>
 
 
 </LinearLayout>

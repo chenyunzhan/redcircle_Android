@@ -2,7 +2,12 @@ package cloud.com.redcircle.mvp.view;
 
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+import cloud.com.redcircle.ui.widget.CommentWidget;
 
 
 /**
@@ -18,9 +23,9 @@ public interface DynamicView {
 //
 //    // 评论刷新
 //    void refreshCommentData(int currentDynamicPos, @NonNull List<CommentInfo> commentList);
-//
-//    // 评论框展示
-//    void showInputBox(int currentDynamicPos, CommentWidget commentWidget, DynamicInfo dynamicInfo);
+
+    // 评论框展示
+    void showInputBox(CommentWidget commentWidget, JSONObject articleModel);
 
     // 浏览图片
     void showPhoto(

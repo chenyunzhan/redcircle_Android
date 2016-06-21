@@ -49,7 +49,7 @@ public class RedCircleManager {
 
     private static AsyncHttpClient sClient = null;
     public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-//    public static final String HTTP_BASE_URL = "http://192.168.1.102:8080";
+//    public static final String HTTP_BASE_URL = "http://192.168.1.101:8080";
 
 //    public static final String HTTP_BASE_URL = "http://10.0.2.2:8080";
 
@@ -77,6 +77,9 @@ public class RedCircleManager {
 
     public static final String ADD_ARTICLE_URL = HTTP_BASE_URL + "/addArticle";
     public static final String ARTICLES_URL = HTTP_BASE_URL + "/getArticles";
+
+    public static final String ADD_COMMENT_URL = HTTP_BASE_URL + "/addComment";
+
 
     private static UserInfo userInfo;
 
@@ -652,5 +655,28 @@ public class RedCircleManager {
             }
         });
 
+    }
+
+
+    public static void addComment(final Context mContext,String articleId, String content,String commentBy,String commentTo, final HttpRequestHandler<JSONObject> handler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("articleId", articleId);
+        params.put("content", content);
+        params.put("commentBy", commentBy);
+        params.put("commentTo", commentTo);
+        // 上传文件
+        client.post(mContext, ADD_COMMENT_URL, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                SafeHandler.onSuccess(handler, response);
+            }
+        });
     }
 }

@@ -4,16 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,19 +34,19 @@ import cloud.com.redcircle.interfaces.OnLoadMoreRefreshListener;
 import cloud.com.redcircle.interfaces.OnPullDownRefreshListener;
 import cloud.com.redcircle.mvp.presenter.DynamicPresenterImpl;
 import cloud.com.redcircle.mvp.view.DynamicView;
-import cloud.com.redcircle.ui.fragment.BookFragment;
+import cloud.com.redcircle.ui.widget.CommentWidget;
 import cloud.com.redcircle.ui.widget.DotIndicator;
 import cloud.com.redcircle.ui.widget.HackyViewPager;
 import cloud.com.redcircle.ui.widget.ptrwidget.FriendCirclePtrListView;
 import cloud.com.redcircle.utils.FriendCircleAdapterUtil;
+import cloud.com.redcircle.utils.InputMethodUtils;
 import cloud.com.redcircle.utils.PhotoPagerManager;
-import cn.smssdk.SMSSDK;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * Created by zhan on 16/6/6.
  */
-public class MeCircleActivity extends BaseActivity implements DynamicView {
+public class MeCircleActivity extends BaseActivity implements DynamicView , View.OnClickListener{
 
 
     protected FriendCirclePtrListView mListView;
@@ -59,6 +63,14 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
 
     private String mePhone;
 
+
+    //input views
+    private LinearLayout mInputLayout;
+    private EditText mInputBox;
+    private TextView mSend;
+
+    private JSONObject articleModel;
+    private CommentWidget mCommentWidget;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,12 +113,33 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
 
         getArticles();
 
+        mInputLayout = (LinearLayout) findViewById(R.id.ll_input);
+        mInputBox = (EditText) findViewById(R.id.ed_input);
+        mSend = (TextView) findViewById(R.id.btn_send);
+
+        mSend.setOnClickListener(this);
+
+
+
+
 
         bindListView(R.id.listview, null,
                 FriendCircleAdapterUtil.getAdapter(this, mMomentsInfos, mPresenter));
 
         mPhotoPagerManager = PhotoPagerManager.create(this, (HackyViewPager) findViewById(R.id.photo_pager),
                 findViewById(R.id.photo_container), (DotIndicator) findViewById(R.id.dot_indicator));
+
+        mListView.setOnDispatchTouchEventListener(new FriendCirclePtrListView.OnDispatchTouchEventListener() {
+            @Override
+            public boolean OnDispatchTouchEvent(MotionEvent ev) {
+                if (mInputLayout.getVisibility() == View.VISIBLE) {
+                    mInputLayout.setVisibility(View.GONE);
+                    InputMethodUtils.hideInputMethod(mInputBox);
+                    return true;
+                }
+                return false;
+            }
+        });
 
 
     }
@@ -202,6 +235,32 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
 
 
     @Override
+    public void showInputBox(CommentWidget commentWidget, JSONObject articleModel) {
+//        this.currentDynamicPos = currentDynamicPos;
+//        this.mCommentWidget = commentWidget;
+//        // 如果点击评论，而评论的创建者为本人，则显示删除评论窗口
+//        if (commentWidget!=null){
+//            CommentInfo info=commentWidget.getData();
+//            if (info.userA.userId==LocalHostInfo.INSTANCE.getHostId()){
+//                mDeleteCommentPopup.showPopupWindow();
+//                return;
+//            }
+//        }
+//        if (!TextUtils.isEmpty(draftStr)) {
+//            mInputBox.setText(draftStr);
+//            mInputBox.setSelection(draftStr.length());
+//        }
+        this.articleModel = articleModel;
+        this.mCommentWidget = commentWidget;
+
+        mInputLayout.setVisibility(View.VISIBLE);
+        InputMethodUtils.showInputMethod(mInputBox);
+    }
+
+
+
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 && isShowPhoto){
             mPhotoPagerManager.dismiss();
@@ -210,6 +269,71 @@ public class MeCircleActivity extends BaseActivity implements DynamicView {
         }
         this.finish();
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_send:
+
+                String articleId = null;
+                String commentTo = null;
+                String commentBy = null;
+                String content = mInputBox.getText().toString().trim();
+
+                try {
+                    articleId = this.articleModel.getString("id");
+                    commentTo = "";
+                    commentBy = this.mUser.getString("mePhone");
+
+
+                    if (mCommentWidget != null) {
+                        JSONObject info = mCommentWidget.getData();
+                        commentTo = info.getString("commentBy");
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (!TextUtils.isEmpty(content)) {
+//                    mPresenter.addComment(currentDynamicPos, dynamicId, userid, replyId, content);
+
+                    RedCircleManager.addComment(this, articleId, content, commentBy, commentTo, new HttpRequestHandler<JSONObject>() {
+                        @Override
+                        public void onSuccess(JSONObject data) {
+                            startNO = 0;
+                            mMomentsInfos.clear();
+
+
+                            if (mInputLayout.getVisibility() == View.VISIBLE) {
+                                mInputBox.setText("");
+                                mInputLayout.setVisibility(View.GONE);
+                                InputMethodUtils.hideInputMethod(mInputBox);
+                            }
+
+                            getArticles();
+
+
+                        }
+
+                        @Override
+                        public void onSuccess(JSONObject data, int totalPages, int currentPage) {
+
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+
+                        }
+                    });
+                }
+                else {
+                    Toast.makeText(this, "回复内容不能为空哦",Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
 

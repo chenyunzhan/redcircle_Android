@@ -3,10 +3,13 @@ package cloud.com.redcircle.mvp.presenter;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cloud.com.redcircle.mvp.view.DynamicView;
+import cloud.com.redcircle.ui.widget.CommentWidget;
 
 /**
  * Created by 大灯泡 on 2016/3/17.
@@ -27,6 +30,12 @@ public class DynamicPresenterImpl  {
     public void shoPhoto(@NonNull ArrayList<String> photoAddress, @NonNull ArrayList<Rect> originViewBounds, int
             curSelectedPos){
         mView.showPhoto(photoAddress,originViewBounds,curSelectedPos);
+    }
+
+    //=============================================================
+    // 展示输入框
+    public void showInputBox(CommentWidget commentWidget, JSONObject articleModel){
+        mView.showInputBox(commentWidget, articleModel);
     }
 
 }

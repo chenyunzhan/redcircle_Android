@@ -33,4 +33,15 @@
     </FrameLayout>
 
 
+    <LinearLayout
+        android:id="@+id/comment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/comment_button"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/comment_praise"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
 </RelativeLayout>

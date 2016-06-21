@@ -54,4 +54,10 @@
 
     <color name="transparent_white">#88ffffff</color>
 
+    <color name="comment_click_bg">#CCD2DF</color>
+
+    <color name="color_f9f9f9">#f9f9f9</color>
+    <color name="line_bg">#e5e5e5</color>
+
+
 </resources>
