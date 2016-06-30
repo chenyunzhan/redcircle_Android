@@ -25,7 +25,7 @@ public interface DynamicView {
 //    void refreshCommentData(int currentDynamicPos, @NonNull List<CommentInfo> commentList);
 
     // 评论框展示
-    void showInputBox(CommentWidget commentWidget, JSONObject articleModel);
+    void showInputBox(int currentDynamicPos, CommentWidget commentWidget, JSONObject articleModel);
 
     // 浏览图片
     void showPhoto(

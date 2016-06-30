@@ -70,6 +70,7 @@ public class MeCircleActivity extends BaseActivity implements DynamicView , View
     private TextView mSend;
 
     private JSONObject articleModel;
+    private int currentDynamicPos = 0;
     private CommentWidget mCommentWidget;
 
     @Override
@@ -235,7 +236,7 @@ public class MeCircleActivity extends BaseActivity implements DynamicView , View
 
 
     @Override
-    public void showInputBox(CommentWidget commentWidget, JSONObject articleModel) {
+    public void showInputBox(int currentDynamicPos, CommentWidget commentWidget, JSONObject articleModel) {
 //        this.currentDynamicPos = currentDynamicPos;
 //        this.mCommentWidget = commentWidget;
 //        // 如果点击评论，而评论的创建者为本人，则显示删除评论窗口
@@ -252,7 +253,7 @@ public class MeCircleActivity extends BaseActivity implements DynamicView , View
 //        }
         this.articleModel = articleModel;
         this.mCommentWidget = commentWidget;
-
+        this.currentDynamicPos = currentDynamicPos;
         mInputLayout.setVisibility(View.VISIBLE);
         InputMethodUtils.showInputMethod(mInputBox);
     }
@@ -289,7 +290,7 @@ public class MeCircleActivity extends BaseActivity implements DynamicView , View
 
                     if (mCommentWidget != null) {
                         JSONObject info = mCommentWidget.getData();
-                        commentTo = info.getString("commentBy");
+                        commentTo = info.getString("commenter_by");
                     }
 
 
@@ -300,11 +301,21 @@ public class MeCircleActivity extends BaseActivity implements DynamicView , View
                 if (!TextUtils.isEmpty(content)) {
 //                    mPresenter.addComment(currentDynamicPos, dynamicId, userid, replyId, content);
 
-                    RedCircleManager.addComment(this, articleId, content, commentBy, commentTo, new HttpRequestHandler<JSONObject>() {
+                    RedCircleManager.addComment(this, articleId, content, commentBy, commentTo, new HttpRequestHandler<JSONArray>() {
                         @Override
-                        public void onSuccess(JSONObject data) {
-                            startNO = 0;
-                            mMomentsInfos.clear();
+                        public void onSuccess(JSONArray data) {
+
+                            JSONObject comment = mAdapter.getItem(currentDynamicPos);
+
+                            if(comment != null && data.length() > 0) {
+                                try {
+                                    comment.put("comments",data);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            mAdapter.notifyDataSetChanged();
 
 
                             if (mInputLayout.getVisibility() == View.VISIBLE) {
@@ -313,13 +324,17 @@ public class MeCircleActivity extends BaseActivity implements DynamicView , View
                                 InputMethodUtils.hideInputMethod(mInputBox);
                             }
 
-                            getArticles();
+
+//
+//                            startNO = 0;
+//                            mMomentsInfos.clear();
+//                            getArticles();
 
 
                         }
 
                         @Override
-                        public void onSuccess(JSONObject data, int totalPages, int currentPage) {
+                        public void onSuccess(JSONArray data, int totalPages, int currentPage) {
 
                         }
 

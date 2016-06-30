@@ -34,8 +34,8 @@ public class DynamicPresenterImpl  {
 
     //=============================================================
     // 展示输入框
-    public void showInputBox(CommentWidget commentWidget, JSONObject articleModel){
-        mView.showInputBox(commentWidget, articleModel);
+    public void showInputBox(int currentDynamicPos, CommentWidget commentWidget, JSONObject articleModel){
+        mView.showInputBox(currentDynamicPos, commentWidget, articleModel);
     }
 
 }

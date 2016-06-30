@@ -71,7 +71,7 @@ public class ItemWithImgSingle extends BaseItemDelegate {
             for (int i = 0; i < images.length ; i++) {
 
                 String urlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + images[i] + "&type=thumbnail&random=" + Math.random();
-                String originalUrlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + images[i];
+                String originalUrlStr = RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + images[i] + "&random=" + Math.random();
 
                 imagesList.add(urlStr);
                 originalImagesList.add(originalUrlStr);
@@ -96,7 +96,7 @@ public class ItemWithImgSingle extends BaseItemDelegate {
                     try {
                         mImageView.setImageBitmap(ImgUtil.ScaleBitmap(resource, width, (int) (width * ratio)));
                     } catch (Exception e) {
-                        e.printStackTrace();
+//                        e.printStackTrace();
 //                        Log.e("ItemWithImgSingle", "有可能是原图被回收了。该动态的nick=  " + data.userInfo.nick);
                     }
                 }

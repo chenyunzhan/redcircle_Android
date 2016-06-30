@@ -233,12 +233,17 @@ public class AddArticleActivity extends BaseActivity implements  AndroidImagePic
 
 
 
+
+
         try {
+
+            showProgressBar(true, getString(R.string.sending));
 
             String mePhone = mUser.getString("mePhone");
             RedCircleManager.addArticle(this, sourceList, thumbList, mePhone, this.editText.getText().toString(), new HttpRequestHandler<JSONObject>() {
                 @Override
                 public void onSuccess(JSONObject data) {
+                    showProgressBar(false);
                     setResult(Activity.RESULT_OK);
                     finish();
                 }

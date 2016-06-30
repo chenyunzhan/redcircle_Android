@@ -55,6 +55,9 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
 
     private JSONObject articleModel;
 
+    private int curPos;
+
+
     //评论区的view对象池
     private static final CommentPool COMMENT_TEXT_POOL = new CommentPool(35);
 
@@ -85,6 +88,7 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
     public void onBindData(int position, @NonNull View v, @NonNull JSONObject data, int dynamicType) {
 
         this.articleModel = data;
+        this.curPos = position;
 
 
         bindView(v);
@@ -118,7 +122,7 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
             // 评论按钮
             case R.id.comment_button:
                 if (mPresenter != null) {
-                    mPresenter.showInputBox(null, articleModel);
+                    mPresenter.showInputBox(curPos, null, articleModel);
                 }
                 break;
             default:
@@ -129,7 +133,7 @@ public abstract class BaseItemDelegate implements BaseItemView<JSONObject>,
         //评论的click
         if (v instanceof CommentWidget) {
             if (mPresenter != null) {
-                mPresenter.showInputBox((CommentWidget) v, articleModel);
+                mPresenter.showInputBox(curPos, (CommentWidget) v, articleModel);
             }
         }
     }

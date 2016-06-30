@@ -157,6 +157,8 @@ public class PickerActivity extends AppCompatActivity implements AndroidImagePic
         if(requestCode == AndroidImagePicker.REQ_PREVIEW && resultCode == RESULT_OK){
             setResult(RESULT_OK);
             finish();
+            androidImagePicker.notifyOnImagePickComplete(androidImagePicker.getSelectedImages());
+
         }
     }
 }
