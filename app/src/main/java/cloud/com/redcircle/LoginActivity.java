@@ -1,5 +1,6 @@
 package cloud.com.redcircle;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -152,7 +153,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
             } else  {
 
-                if("18706734109".equals(mPhone.getText().toString()) || "15891739884".equals(mPhone.getText().toString())) {
+                if("18611206039".equals(mPhone.getText().toString()) || "15891739884".equals(mPhone.getText().toString())) {
                     login();
                 }
 
@@ -193,7 +194,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onFailure(String error) {
-//                        MessageUtils.showErrorMessage(LoginActivity.this, error);
+                        new AlertDialog.Builder(LoginActivity.this).setTitle("温馨提示") .setMessage("该手机尚未注册，请先注册").show();
                         showProgressBar(false);
                     }
                 });

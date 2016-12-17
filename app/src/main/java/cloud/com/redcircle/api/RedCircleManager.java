@@ -48,8 +48,8 @@ public class RedCircleManager {
     private static Application mApp = Application.getInstance();
 
     private static AsyncHttpClient sClient = null;
-//    public static final String HTTP_BASE_URL = "http://redcircle.tiger.mopaasapp.com";
-    public static final String HTTP_BASE_URL = "http://192.168.1.104:8080";
+    public static final String HTTP_BASE_URL = "http://snowjlz.gicp.net:19959/redcircle";
+//    public static final String HTTP_BASE_URL = "http://192.168.1.104:8080";
 
 //    public static final String HTTP_BASE_URL = "http://10.0.2.2:8080";
 
@@ -116,6 +116,15 @@ public class RedCircleManager {
                 Log.e(RedCircleManager.ACTIVITY_TAG, "5");
 
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.e(RedCircleManager.ACTIVITY_TAG, "error");
+                SafeHandler.onFailure(handler,responseString);
+            }
+
+
         });
 
 

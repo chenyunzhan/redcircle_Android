@@ -2,17 +2,16 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
-    android:background="#11111111"
+    android:background="#ffffff"
     android:layout_height="fill_parent">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#fff0f0f0"
+        android:background="#ffffff"
         android:fadingEdge="none"
         android:orientation="vertical">
 
-        <include layout="@layout/divide_15_top_bottom" />
 
 
         <LinearLayout
@@ -27,31 +26,37 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:hint="请输入朋友的手机号" />
-            <LinearLayout
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/register_friend_verificationCode_edit1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:singleLine="true"
-                    android:layout_weight="2"
-                    android:hint="请输入验证码" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/fbutton_color_orange"
+                android:text="说明：请认真填写朋友的手机号，最好填写不同维度的亲戚、朋友，我们将根据该手机号，分析、计算您的朋友关系，务必保证此人与你关系非常亲密！"/>
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<EditText-->
+                    <!--android:id="@+id/register_friend_verificationCode_edit1"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:hint="请输入验证码" />-->
 
-                <info.hoang8f.widget.FButton
-                    fbutton:buttonColor="@color/red"
-                    fbutton:shadowColor="@color/gray"
-                    fbutton:shadowEnabled="false"
-                    fbutton:cornerRadius="5dp"
-                    android:id="@+id/register_friend_verificationCode_btn1"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:text="获取验证码"
-                    android:textColor="@color/white"/>
+                <!--<info.hoang8f.widget.FButton-->
+                    <!--fbutton:buttonColor="@color/red"-->
+                    <!--fbutton:shadowColor="@color/gray"-->
+                    <!--fbutton:shadowEnabled="false"-->
+                    <!--fbutton:cornerRadius="5dp"-->
+                    <!--android:id="@+id/register_friend_verificationCode_btn1"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="获取验证码"-->
+                    <!--android:textColor="@color/white"/>-->
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 

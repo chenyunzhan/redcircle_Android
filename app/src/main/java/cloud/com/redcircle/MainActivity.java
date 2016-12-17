@@ -251,7 +251,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 //                    mTabHost.onTabChanged("朋友");
 //                    mTabHost.onTabChanged("消息");
 //                }
-                Toast.makeText(MainActivity.this, "——onSuccess—-" + userId, Toast.LENGTH_LONG).show();
+//                Toast.makeText(MainActivity.this, "——onSuccess—-" + userId, Toast.LENGTH_LONG).show();
 
                 Log.e("MainActivity", "——onSuccess—-" + userId);
             }
@@ -259,7 +259,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
                 Log.e("MainActivity", "——onError—-" + errorCode);
-                Toast.makeText(MainActivity.this, "——onError—-" + errorCode, Toast.LENGTH_LONG).show();
+//                Toast.makeText(MainActivity.this, "——onError—-" + errorCode, Toast.LENGTH_LONG).show();
 
             }
         });
