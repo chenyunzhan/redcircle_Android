@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import cloud.com.redcircle.AddFriendActivity;
+import cloud.com.redcircle.InviteActivity;
 import cloud.com.redcircle.ModifyMeFriendActivity;
 import cloud.com.redcircle.R;
 import cloud.com.redcircle.RegisterActivity;
@@ -418,6 +419,26 @@ public class BookFragment extends ListFragment implements View.OnClickListener, 
 
             //当朋友圈为当前用户的朋友圈时
             if (me.getString("friendPhone").equals(mUser.getString("mePhone"))) {
+
+                for (int i = 0; i < mData.length(); i++) {
+                    //一个朋友圈
+                    JSONObject ffriends = mData.getJSONObject(i);
+                    //朋友圈的人员
+                    JSONArray friends = ffriends.getJSONArray("ffriend");
+                    //谁的朋友圈
+                    JSONObject temp = ffriends.getJSONObject("friend");
+
+
+                    if (friend.getString("mePhone").equals(temp.get("friendPhone")) && friends.length() == 0) {
+                        Intent intent = new Intent(this.getActivity(), InviteActivity.class);
+                        startActivity(intent);
+                        return;
+                    }
+
+                }
+
+
+
 
                 if(friend.getString("recommendLanguage").length() > 0) {
                     Intent intent = new Intent(this.getActivity(), UserDetailActivity.class);

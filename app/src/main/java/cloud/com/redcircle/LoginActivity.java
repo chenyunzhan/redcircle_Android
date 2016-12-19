@@ -153,7 +153,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
             } else  {
 
-                if("18611206039".equals(mPhone.getText().toString()) || "15891739884".equals(mPhone.getText().toString())) {
+                if("15202462012".equals(mPhone.getText().toString()) || "15891739884".equals(mPhone.getText().toString())) {
                     login();
                 }
 

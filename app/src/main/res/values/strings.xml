@@ -55,6 +55,8 @@
 
     <string name="see_photo">查看相册</string>
 
-
+    <string name="no_register">你的朋友尚未激活账号，复制内容，发送好友</string>
+    <string name="invite_friend">亲爱的，我正在玩“红圈”，它是一款专注于熟人之间交友的社交软件，让咱们的生活，工作，旅游更容易！快快来和我一起玩吧！\n安卓APP下载地址：http://mobile.baidu.com/item?docid=10206498  \n苹果APP下载地址：https://itunes.apple.com/cn/app/hong-quan/id1098028444</string>
+    <string name="copy_invite">复制邀请</string>
 
 </resources>
