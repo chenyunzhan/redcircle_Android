@@ -29,7 +29,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="Username"
+                    android:text=""
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp" />
 
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="2dp"
-                    android:text="简介" />
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/txt_fragment_user_description"
@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="2dp"
-                    android:text="V2EX 第8888号会员"
+                    android:text=""
                     android:textColor="#222222" />
             </LinearLayout>
         </RelativeLayout>

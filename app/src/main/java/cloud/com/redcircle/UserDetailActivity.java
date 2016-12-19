@@ -117,7 +117,7 @@ public class UserDetailActivity extends BaseActivity implements View.OnClickList
                 if (RongIM.getInstance() != null) {
 
                     String itemTitle = null;
-                    if (friendName != null && friendName.length() > 0) {
+                    if (!"暂未填写".equals(friendName) && friendName.length() > 0) {
                         itemTitle = friendName;
                     } else {
                         itemTitle = friendPhone;
@@ -194,11 +194,24 @@ public class UserDetailActivity extends BaseActivity implements View.OnClickList
                     public void onSuccess(JSONObject data) {
 
                         try {
+
+
                             friendName = data.getString("name");
 
-                            nameTextView.setText(data.getString("name"));
-                            sexTextView.setText(data.getString("sex"));
-                            phoneTextView.setText(data.getString("me_phone"));
+                            if ("null".equals(friendName)) {
+                                friendName = "暂未填写";
+                            }
+
+
+                            String sex = data.getString("sex");
+
+                            if ("null".equals(sex)) {
+                                sex = "暂未填写";
+                            }
+
+                            nameTextView.setText(friendName);
+                            sexTextView.setText(sex);
+                            phoneTextView.setText(friendPhone);
                             recommandLanguageView.setText(data.getString("recommend_language"));
                             ImageLoader imageLoader = ImageLoader.getInstance(); // Get singleton instance
                             imageLoader.displayImage(RedCircleManager.HTTP_BASE_URL + "/downPhotoByPhone?mePhone=" + data.getString("me_phone") + "&type=thumbnail", photoImageView);
